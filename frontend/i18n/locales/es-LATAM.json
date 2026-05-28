@@ -1,0 +1,166 @@
+{
+  "app": {
+    "name": "NidoQuest",
+    "tagline": "Misiones, estrellas y recompensas sanas"
+  },
+  "nav": {
+    "home": "Inicio",
+    "how": "Cómo funciona",
+    "pricing": "Precio",
+    "faq": "Preguntas",
+    "login": "Ingresar",
+    "register": "Crear mi Nido",
+    "dashboard": "Panel",
+    "logout": "Salir"
+  },
+  "landing": {
+    "heroTitle": "Convierte los hábitos de casa en misiones motivadoras",
+    "heroSubtitle": "NidoQuest ayuda a padres, tutores y familias a formar hábitos positivos en niños y jóvenes usando misiones, estrellas y recompensas sanas.",
+    "primaryCta": "Crear mi Nido",
+    "secondaryCta": "Ver cómo funciona",
+    "problemTitle": "El reto diario",
+    "problemText": "Sabemos que repetir todos los días las mismas tareas puede ser agotador: estudiar, organizar la habitación, limitar pantallas, cumplir rutinas y mantener buenos hábitos.",
+    "solutionTitle": "Una forma clara y positiva",
+    "solutionText": "Con NidoQuest, cada responsabilidad se convierte en una misión clara, medible y motivadora.",
+    "howTitle": "Cómo funciona",
+    "steps": {
+      "nest": "Crea tu Nido",
+      "explorers": "Agrega tus Exploradores",
+      "missions": "Define Misiones",
+      "stars": "Entrega Estrellas",
+      "rewards": "Redime Recompensas"
+    },
+    "benefitsTitle": "Beneficios",
+    "benefits": {
+      "talks": "Menos discusiones en casa",
+      "motivation": "Más motivación",
+      "habits": "Hábitos visibles",
+      "controlledRewards": "Recompensas controladas",
+      "progress": "Progreso medible",
+      "support": "Acompañamiento positivo"
+    },
+    "priceTitle": "Plan anual",
+    "price": "COP $150.000 / año por Nido",
+    "faqTitle": "Preguntas frecuentes",
+    "faq": {
+      "parentingQ": "¿Esto reemplaza la crianza?",
+      "parentingA": "No. Es una herramienta de apoyo para acompañar hábitos y responsabilidades.",
+      "childrenQ": "¿Puedo usarlo con más de un hijo?",
+      "childrenA": "Sí. Cada Nido puede tener varios Exploradores.",
+      "customRewardsQ": "¿Puedo crear mis propias recompensas?",
+      "customRewardsA": "Sí.",
+      "mobileQ": "¿Funciona en celular?",
+      "mobileA": "Sí. Es una PWA instalable.",
+      "languagesQ": "¿Tiene varios idiomas?",
+      "languagesA": "Sí. Español Latino, Inglés y Francés."
+    }
+  },
+  "auth": {
+    "welcome": "Bienvenido de vuelta",
+    "create": "Crea tu Nido",
+    "name": "Nombre",
+    "email": "Correo",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "tenantName": "Nombre del Nido",
+    "login": "Ingresar",
+    "register": "Crear cuenta",
+    "loading": "Conectando",
+    "demoHint": "Ingresa para continuar con tu Nido.",
+    "noAccount": "Crear un Nido nuevo",
+    "hasAccount": "Ya tengo cuenta"
+  },
+  "onboarding": {
+    "title": "Prepara tu Nido",
+    "subtitle": "Empieza con una estructura simple y positiva para acompañar hábitos.",
+    "nestName": "Nombre del Nido",
+    "explorerName": "Primer Explorador",
+    "focusArea": "Área inicial",
+    "mission": "Primera misión",
+    "continue": "Entrar al panel",
+    "areas": {
+      "study": "Estudio",
+      "home": "Hogar",
+      "wellbeing": "Bienestar",
+      "reading": "Lectura"
+    }
+  },
+  "dashboard": {
+    "guideTitle": "Panel del Guía",
+    "explorerTitle": "Panel del Explorador",
+    "adminTitle": "Administrador SaaS",
+    "starsByExplorer": "Estrellas por Explorador",
+    "pendingMissions": "Misiones pendientes",
+    "completedMissions": "Misiones cumplidas",
+    "expiredMissions": "Misiones vencidas",
+    "requestedRewards": "Recompensas solicitadas",
+    "weeklyProgress": "Progreso semanal",
+    "strongAreas": "Áreas fuertes",
+    "areasToSupport": "Áreas por reforzar",
+    "consistency": "Constancia",
+    "usedRewards": "Recompensas más usadas",
+    "screenTime": "Tiempo de pantalla redimido",
+    "availableStars": "Estrellas disponibles",
+    "todayMissions": "Misiones de hoy",
+    "nextGoal": "Próxima meta",
+    "availableRewards": "Recompensas disponibles",
+    "badges": "Insignias",
+    "dailyMessage": "Mensaje del día",
+    "markDone": "Marcar realizada",
+    "redeem": "Solicitar recompensa",
+    "tenants": "Nidos",
+    "users": "Usuarios",
+    "plans": "Planes",
+    "payments": "Pagos",
+    "globalMetrics": "Métricas globales"
+  },
+  "ui": {
+    "stars": "Estrellas",
+    "missions": "Misiones",
+    "rewards": "Recompensas",
+    "progress": "Progreso",
+    "active": "Activo",
+    "trial": "Prueba",
+    "calmProgress": "Avance tranquilo",
+    "save": "Guardar",
+    "offlineTitle": "Estás sin conexión",
+    "offlineText": "Puedes volver cuando tengas internet. Tu Nido estará esperándote."
+  },
+  "pwa": {
+    "title": "Lleva tu Nido contigo",
+    "text": "Instala NidoQuest y activa avisos tranquilos para misiones, recompensas y pagos.",
+    "install": "Instalar",
+    "notifications": "Activar avisos",
+    "dismiss": "Cerrar"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "close": "Cerrar",
+    "markRead": "Marcar leída"
+  },
+  "billing": {
+    "eyebrow": "Suscripción",
+    "title": "Activa tu Nido por un año",
+    "subtitle": "Un plan sencillo para acompañar hábitos en familia sin anuncios ni rankings tóxicos.",
+    "checkoutTitle": "Pago seguro con Wompi",
+    "checkoutText": "Generamos la firma en el backend para proteger el monto, la referencia y la moneda antes de enviarte al checkout.",
+    "prepare": "Preparar pago",
+    "pay": "Pagar con Wompi",
+    "reference": "Referencia",
+    "expires": "Expira",
+    "checkoutFallback": "No pudimos preparar el checkout ahora. Revisa que el backend esté activo y las llaves Wompi estén configuradas.",
+    "bannerTitle": "Mantén activo el plan anual del Nido",
+    "manage": "Gestionar plan",
+    "returnEyebrow": "Pago",
+    "verifying": "Verificando pago",
+    "returnTitle": "Gracias por cuidar este Nido",
+    "returnText": "Estamos esperando la confirmación de Wompi.",
+    "status": {
+      "approved": "Pago aprobado. Tu suscripción anual queda activa.",
+      "declined": "El pago no fue aprobado. Puedes intentarlo nuevamente con calma.",
+      "voided": "El pago fue anulado.",
+      "error": "Wompi reportó un error. Revisa el método de pago o intenta más tarde.",
+      "pending": "El pago sigue en revisión."
+    }
+  }
+}

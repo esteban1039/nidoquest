@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="NidoQuest">
+  <rect width="512" height="512" rx="96" fill="#f7fbf8"/>
+  <path d="M106 258c0-84 68-152 152-152s152 68 152 152v92a42 42 0 0 1-42 42H148a42 42 0 0 1-42-42z" fill="#79c7c5"/>
+  <path d="M158 263c28-36 62-54 102-54 38 0 70 18 96 54" fill="none" stroke="#2f4f4d" stroke-width="26" stroke-linecap="round"/>
+  <circle cx="207" cy="302" r="18" fill="#2f4f4d"/>
+  <circle cx="309" cy="302" r="18" fill="#2f4f4d"/>
+  <path d="M232 345c17 13 36 13 52 0" fill="none" stroke="#2f4f4d" stroke-width="18" stroke-linecap="round"/>
+  <path d="M256 89l16 34 37 5-27 26 7 37-33-18-33 18 7-37-27-26 37-5z" fill="#f4c95d"/>
+</svg>

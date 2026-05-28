@@ -1,0 +1,18 @@
+{
+  "name": "NidoQuest",
+  "short_name": "NidoQuest",
+  "description": "Misiones, estrellas y recompensas sanas para formar hábitos positivos.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7fbf8",
+  "theme_color": "#79c7c5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
