@@ -613,55 +613,57 @@ async function toggleGuide(guide: Guide) {
 
 <template>
   <AppShell :title="t('dashboard.guideTitle')" section="guide">
-    <section class="dashboard-grid">
-      <MetricCard
-        v-for="(stat, index) in stats"
-        :key="stat.key"
-        :label="'label' in stat ? stat.label : t(`dashboard.${stat.key}`)"
-        :value="stat.value"
-        :tone="tones[index]"
-      />
-    </section>
+    <template v-if="activeTab === 'overview'">
+      <section class="dashboard-grid">
+        <MetricCard
+          v-for="(stat, index) in stats"
+          :key="stat.key"
+          :label="'label' in stat ? stat.label : t(`dashboard.${stat.key}`)"
+          :value="stat.value"
+          :tone="tones[index]"
+        />
+      </section>
 
-    <section class="dashboard-columns">
-      <article class="panel wide">
-        <div class="panel-header">
-          <h2>{{ t('dashboard.starsByExplorer') }}</h2>
-          <span>{{ t('ui.active') }}</span>
-        </div>
-        <div class="explorer-list">
-          <div v-for="explorer in dashboard?.stars_by_explorer || []" :key="explorer.explorer_id" class="explorer-row">
-            <span>{{ explorer.name }}</span>
-            <strong>{{ explorer.stars }} {{ t('ui.stars') }}</strong>
+      <section class="dashboard-columns">
+        <article class="panel wide">
+          <div class="panel-header">
+            <h2>{{ t('dashboard.starsByExplorer') }}</h2>
+            <span>{{ t('ui.active') }}</span>
           </div>
-          <div v-if="!dashboard?.stars_by_explorer?.length" class="explorer-row">
-            <span>Crea tu primer explorador</span>
-            <strong>0 {{ t('ui.stars') }}</strong>
+          <div class="explorer-list">
+            <div v-for="explorer in dashboard?.stars_by_explorer || []" :key="explorer.explorer_id" class="explorer-row">
+              <span>{{ explorer.name }}</span>
+              <strong>{{ explorer.stars }} {{ t('ui.stars') }}</strong>
+            </div>
+            <div v-if="!dashboard?.stars_by_explorer?.length" class="explorer-row">
+              <span>Crea tu primer explorador</span>
+              <strong>0 {{ t('ui.stars') }}</strong>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <article class="panel">
+        <article class="panel">
+          <div class="panel-header">
+            <h2>{{ t('dashboard.weeklyProgress') }}</h2>
+            <span>{{ t('dashboard.consistency') }}</span>
+          </div>
+          <ProgressBars :values="weeklyProgress" />
+        </article>
+      </section>
+
+      <section class="panel">
         <div class="panel-header">
-          <h2>{{ t('dashboard.weeklyProgress') }}</h2>
-          <span>{{ t('dashboard.consistency') }}</span>
+          <h2>Acciones del Nido</h2>
+          <span>Selecciona una opcion</span>
         </div>
-        <ProgressBars :values="weeklyProgress" />
-      </article>
-    </section>
-
-    <section v-if="activeTab === 'overview'" class="panel">
-      <div class="panel-header">
-        <h2>Acciones del Nido</h2>
-        <span>Selecciona una opcion</span>
-      </div>
-      <div class="workspace-tabs">
-        <button class="button small" type="button" @click="activeTab = 'explorers'">Exploradores</button>
-        <button class="button small" type="button" @click="activeTab = 'missions'">Misiones</button>
-        <button class="button small" type="button" @click="activeTab = 'rewards'">Recompensas</button>
-        <button class="button small" type="button" @click="activeTab = 'guides'">Formadores</button>
-      </div>
-    </section>
+        <div class="workspace-tabs">
+          <button class="button small" type="button" @click="activeTab = 'explorers'">Exploradores</button>
+          <button class="button small" type="button" @click="activeTab = 'missions'">Misiones</button>
+          <button class="button small" type="button" @click="activeTab = 'rewards'">Recompensas</button>
+          <button class="button small" type="button" @click="activeTab = 'guides'">Formadores</button>
+        </div>
+      </section>
+    </template>
 
     <section v-if="activeTab !== 'overview'" class="panel">
       <div class="panel-header">
