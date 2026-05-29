@@ -4,19 +4,24 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\MailgunEmailService;
 use App\Services\TenantContext;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class GuideController extends Controller
 {
+    public function __construct(private readonly MailgunEmailService $mailgun)
+    {
+    }
+
     public function index(TenantContext $tenantContext)
     {
         $guides = User::query()
             ->where('role', User::ROLE_GUIDE)
             ->whereHas('tenants', fn ($query) => $query->whereKey($tenantContext->id()))
             ->latest()
-            ->get(['id', 'name', 'email', 'last_login_at']);
+            ->get(['id', 'name', 'email', 'active', 'last_login_at']);
 
         return response()->json(['data' => $guides]);
     }
@@ -41,7 +46,30 @@ class GuideController extends Controller
         ]);
 
         $guide->tenants()->attach($tenantContext->id(), ['role' => User::ROLE_GUIDE]);
+        $this->mailgun->sendWelcome($guide, $data['password']);
 
         return response()->json(['data' => $guide->only(['id', 'name', 'email', 'last_login_at'])], 201);
+    }
+
+    public function update(Request $request, User $guide, TenantContext $tenantContext)
+    {
+        abort_unless(in_array($request->user()?->role, [User::ROLE_SUPER_ADMIN, User::ROLE_GUIDE], true), 403);
+        abort_unless($guide->role === User::ROLE_GUIDE && $guide->belongsToTenant($tenantContext->id()), 404);
+
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($guide->id)],
+            'password' => ['nullable', 'string', 'min:8'],
+            'active' => ['boolean'],
+        ]);
+
+        $guide->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'active' => $data['active'] ?? $guide->active,
+            ...(! empty($data['password']) ? ['password' => $data['password']] : []),
+        ]);
+
+        return response()->json(['data' => $guide->only(['id', 'name', 'email', 'last_login_at', 'active'])]);
     }
 }

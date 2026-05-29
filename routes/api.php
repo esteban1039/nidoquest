@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('throttle:api')->group(function (): void {
     Route::post('/auth/register', [AuthController::class, 'register']);
     Route::post('/auth/login', [AuthController::class, 'login']);
+    Route::post('/auth/forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('/auth/reset-password', [AuthController::class, 'resetPassword']);
     Route::post('/payments/wompi/webhook', [PaymentController::class, 'webhook']);
 
     Route::middleware(['auth:sanctum', 'tenant', 'audit'])->group(function (): void {
@@ -28,6 +30,7 @@ Route::middleware('throttle:api')->group(function (): void {
         Route::get('/growth-areas', [GrowthAreaController::class, 'index']);
         Route::get('/guides', [GuideController::class, 'index']);
         Route::post('/guides', [GuideController::class, 'store']);
+        Route::put('/guides/{guide}', [GuideController::class, 'update']);
 
         Route::apiResource('nests', TenantController::class)->parameters(['nests' => 'nest'])->except(['destroy']);
         Route::apiResource('explorers', ExplorerController::class);

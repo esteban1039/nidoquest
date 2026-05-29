@@ -21,6 +21,8 @@ type Explorer = {
   id: number
   name: string
   email?: string | null
+  password?: string
+  status?: string
   available_stars: number
 }
 
@@ -56,6 +58,8 @@ type Guide = {
   id: number
   name: string
   email: string
+  password?: string
+  active: boolean
   last_login_at?: string | null
 }
 
@@ -101,6 +105,7 @@ const guideForm = reactive({
 const editingExplorer = ref<number | null>(null)
 const editingMission = ref<number | null>(null)
 const editingReward = ref<number | null>(null)
+const editingGuide = ref<number | null>(null)
 const reviewingMission = ref<number | null>(null)
 
 const { data: dashboard, refresh: refreshDashboard } = await useAsyncData('guide-dashboard', () => request<GuideDashboard>('/dashboard/guide'))
@@ -288,6 +293,8 @@ async function updateExplorer(explorer: Explorer) {
       body: {
         name: explorer.name,
         email: explorer.email || undefined,
+        password: explorer.password || undefined,
+        status: explorer.status || 'active',
       },
     })
 
@@ -296,6 +303,32 @@ async function updateExplorer(explorer: Explorer) {
     await reloadWorkspace()
   } catch (updateError) {
     error.value = getApiErrorMessage(updateError, 'No pudimos actualizar el explorador.')
+  } finally {
+    saving.value = false
+  }
+}
+
+async function updateGuide(guide: Guide) {
+  saving.value = true
+  resetMessages()
+
+  try {
+    await request(`/guides/${guide.id}`, {
+      method: 'PUT',
+      body: {
+        name: guide.name,
+        email: guide.email,
+        password: guide.password || undefined,
+        active: guide.active,
+      },
+    })
+
+    guide.password = ''
+    editingGuide.value = null
+    success.value = 'Formador actualizado.'
+    await reloadWorkspace()
+  } catch (updateError) {
+    error.value = getApiErrorMessage(updateError, 'No pudimos actualizar el formador.')
   } finally {
     saving.value = false
   }
@@ -376,6 +409,26 @@ async function reviewMission(mission: Mission, action: 'approve' | 'reject') {
     reviewingMission.value = null
   }
 }
+
+async function toggleExplorer(explorer: Explorer) {
+  explorer.status = explorer.status === 'inactive' ? 'active' : 'inactive'
+  await updateExplorer(explorer)
+}
+
+async function toggleMission(mission: Mission) {
+  mission.active = !mission.active
+  await updateMission(mission)
+}
+
+async function toggleReward(reward: Reward) {
+  reward.active = !reward.active
+  await updateReward(reward)
+}
+
+async function toggleGuide(guide: Guide) {
+  guide.active = !guide.active
+  await updateGuide(guide)
+}
 </script>
 
 <template>
@@ -455,12 +508,14 @@ async function reviewMission(mission: Mission, action: 'approve' | 'reject') {
             <template v-if="editingExplorer === explorer.id">
               <input v-model="explorer.name" aria-label="Nombre del explorador">
               <input v-model="explorer.email" type="email" aria-label="Correo del explorador">
+              <input v-model="explorer.password" type="password" placeholder="Nueva contrasena opcional" aria-label="Nueva contrasena">
               <button class="button small primary" type="button" :disabled="saving" @click="updateExplorer(explorer)">Guardar</button>
             </template>
             <template v-else>
-              <span>{{ explorer.name }}<small>{{ explorer.email || 'Sin ingreso propio' }}</small></span>
+              <span>{{ explorer.name }}<small>{{ explorer.email || 'Sin ingreso propio' }} · {{ explorer.status || 'active' }}</small></span>
               <strong>{{ explorer.available_stars }} {{ t('ui.stars') }}</strong>
               <button class="button small" type="button" @click="editingExplorer = explorer.id">Editar</button>
+              <button class="button small" type="button" @click="toggleExplorer(explorer)">{{ explorer.status === 'inactive' ? 'Activar' : 'Inactivar' }}</button>
             </template>
           </div>
         </div>
@@ -513,6 +568,7 @@ async function reviewMission(mission: Mission, action: 'approve' | 'reject') {
               <span>{{ mission.title }}<small>{{ mission.status }}</small></span>
               <strong>{{ mission.stars }} {{ t('ui.stars') }}</strong>
               <button class="button small" type="button" @click="editingMission = mission.id">Editar</button>
+              <button class="button small" type="button" @click="toggleMission(mission)">{{ mission.active ? 'Inactivar' : 'Activar' }}</button>
             </template>
           </div>
         </div>
@@ -552,6 +608,7 @@ async function reviewMission(mission: Mission, action: 'approve' | 'reject') {
               <span>{{ reward.name }}<small>{{ reward.type }}</small></span>
               <strong>{{ reward.stars_cost }} {{ t('ui.stars') }}</strong>
               <button class="button small" type="button" @click="editingReward = reward.id">Editar</button>
+              <button class="button small" type="button" @click="toggleReward(reward)">{{ reward.active ? 'Inactivar' : 'Activar' }}</button>
             </template>
           </div>
         </div>
@@ -576,8 +633,18 @@ async function reviewMission(mission: Mission, action: 'approve' | 'reject') {
 
         <div class="manager-list">
           <div v-for="guide in guides || []" :key="guide.id" class="explorer-row">
-            <span>{{ guide.name }}<small>{{ guide.email }}</small></span>
-            <strong>{{ guide.last_login_at ? new Date(guide.last_login_at).toLocaleDateString() : 'Sin ingreso' }}</strong>
+            <template v-if="editingGuide === guide.id">
+              <input v-model="guide.name" aria-label="Nombre del formador">
+              <input v-model="guide.email" type="email" aria-label="Correo del formador">
+              <input v-model="guide.password" type="password" placeholder="Nueva contrasena opcional" aria-label="Nueva contrasena">
+              <button class="button small primary" type="button" :disabled="saving" @click="updateGuide(guide)">Guardar</button>
+            </template>
+            <template v-else>
+              <span>{{ guide.name }}<small>{{ guide.email }} · {{ guide.active ? 'Activo' : 'Inactivo' }}</small></span>
+              <strong>{{ guide.last_login_at ? new Date(guide.last_login_at).toLocaleDateString() : 'Sin ingreso' }}</strong>
+              <button class="button small" type="button" @click="editingGuide = guide.id">Editar</button>
+              <button class="button small" type="button" @click="toggleGuide(guide)">{{ guide.active ? 'Inactivar' : 'Activar' }}</button>
+            </template>
           </div>
         </div>
       </div>

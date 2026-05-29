@@ -1,6 +1,18 @@
 <?php
 
 return [
+    'mailgun' => [
+        'domain' => env('MAILGUN_DOMAIN'),
+        'secret' => env('MAILGUN_SECRET'),
+        'endpoint' => env('MAILGUN_ENDPOINT', 'https://api.mailgun.net'),
+        'from' => env('MAIL_FROM_ADDRESS', 'soporte@nidoquest.com'),
+        'from_name' => env('MAIL_FROM_NAME', 'NidoQuest'),
+    ],
+
+    'frontend' => [
+        'url' => env('FRONTEND_URL', env('APP_URL', 'http://localhost:3000')),
+    ],
+
     'wompi' => [
         'base_url' => env('WOMPI_BASE_URL', 'https://production.wompi.co/v1'),
         'public_key' => env('WOMPI_PUBLIC_KEY'),

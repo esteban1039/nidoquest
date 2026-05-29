@@ -7,11 +7,16 @@ use App\Http\Requests\Explorer\StoreExplorerRequest;
 use App\Http\Resources\ExplorerResource;
 use App\Models\Explorer;
 use App\Models\User;
+use App\Services\MailgunEmailService;
 use App\Services\TenantContext;
 use Illuminate\Support\Facades\DB;
 
 class ExplorerController extends Controller
 {
+    public function __construct(private readonly MailgunEmailService $mailgun)
+    {
+    }
+
     public function index(TenantContext $tenantContext)
     {
         $query = Explorer::forTenant($tenantContext->id())->with('user')->latest();
@@ -53,6 +58,10 @@ class ExplorerController extends Controller
             ]);
         });
 
+        if ($explorer->user && ! empty($data['password'])) {
+            $this->mailgun->sendWelcome($explorer->user, $data['password']);
+        }
+
         return ExplorerResource::make($explorer);
     }
 
@@ -71,6 +80,7 @@ class ExplorerController extends Controller
         DB::transaction(function () use ($data, $explorer): void {
             $explorer->update([
                 'name' => $data['name'],
+                'status' => $data['status'] ?? $explorer->status,
                 'birthdate' => $data['birthdate'] ?? $explorer->birthdate,
                 'avatar' => $data['avatar'] ?? $explorer->avatar,
                 'preferences' => $data['preferences'] ?? $explorer->preferences,
@@ -80,6 +90,7 @@ class ExplorerController extends Controller
                 $explorer->user->update([
                     'name' => $data['name'],
                     'email' => $data['email'],
+                    'active' => ($data['status'] ?? $explorer->status) === 'active',
                     ...(! empty($data['password']) ? ['password' => $data['password']] : []),
                 ]);
             }

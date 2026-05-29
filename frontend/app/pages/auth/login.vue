@@ -43,6 +43,7 @@ async function submit() {
       <button class="button primary full" type="submit" :disabled="loading">
         {{ loading ? t('auth.loading') : t('auth.login') }}
       </button>
+      <NuxtLink class="text-link" to="/auth/forgot-password">Olvide mi contrasena</NuxtLink>
       <NuxtLink class="text-link" to="/auth/register">{{ t('auth.noAccount') }}</NuxtLink>
     </form>
   </AuthPanel>
