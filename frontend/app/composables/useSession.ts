@@ -19,7 +19,7 @@ export function useSession() {
   const user = useState<User | null>('nidoquest_user', () => null)
   const tenant = useState<Tenant | null>('nidoquest_tenant', () => null)
   const { request } = useApi()
-  const { setLocale } = useI18n()
+  const { locale, setLocale } = useI18n()
 
   const isAuthenticated = computed(() => Boolean(token.value && token.value !== 'demo-token'))
   const role = computed(() => user.value?.role || 'guide')
@@ -32,8 +32,14 @@ export function useSession() {
   }
 
   async function applyUserLocale(nextUser: User) {
-    if (nextUser.locale) {
+    if (!nextUser.locale || nextUser.locale === locale.value) {
+      return
+    }
+
+    try {
       await setLocale(nextUser.locale)
+    } catch {
+      locale.value = nextUser.locale
     }
   }
 

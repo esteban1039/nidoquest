@@ -21,7 +21,8 @@ async function submit() {
       await navigateTo(role.value === 'super_admin' ? '/dashboard/admin' : role.value === 'explorer' ? '/dashboard/explorer' : '/dashboard/guide')
     }
   } catch (loginError) {
-    error.value = getApiErrorMessage(loginError, 'No pudimos iniciar sesión. Revisa el correo, la contraseña y que el backend esté encendido.')
+    console.error(loginError)
+    error.value = getApiErrorMessage(loginError, 'No pudimos iniciar sesion. Revisa el correo, la contrasena y que el backend este activo.')
   } finally {
     loading.value = false
   }
