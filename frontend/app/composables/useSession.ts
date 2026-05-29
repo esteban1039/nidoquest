@@ -13,15 +13,12 @@ type Tenant = {
   status: string
 }
 
-const SUPPORTED_LOCALES = ['es-LATAM', 'en', 'fr'] as const
-
 export function useSession() {
   const token = useCookie<string | null>('nidoquest_token', { sameSite: 'lax' })
   const tenantId = useCookie<string | null>('nidoquest_tenant_id', { sameSite: 'lax' })
   const user = useState<User | null>('nidoquest_user', () => null)
   const tenant = useState<Tenant | null>('nidoquest_tenant', () => null)
   const { request } = useApi()
-  const { locale, setLocale } = useI18n()
 
   const isAuthenticated = computed(() => Boolean(token.value && token.value !== 'demo-token'))
   const role = computed(() => user.value?.role || 'guide')
@@ -33,24 +30,6 @@ export function useSession() {
     tenant.value = null
   }
 
-  function normalizeLocale(nextLocale?: string) {
-    return SUPPORTED_LOCALES.find((supportedLocale) => supportedLocale === nextLocale) || null
-  }
-
-  async function applyUserLocale(nextUser: User) {
-    const nextLocale = normalizeLocale(nextUser.locale)
-
-    if (!nextLocale || nextLocale === locale.value) {
-      return
-    }
-
-    try {
-      await setLocale(nextLocale)
-    } catch (localeError) {
-      console.warn('No pudimos cambiar el idioma del usuario.', localeError)
-    }
-  }
-
   async function login(email: string, password: string) {
     const response = await request<{ token: string; user: User; tenants?: { data?: Tenant[] } | Tenant[] }>('/auth/login', {
       method: 'POST',
@@ -59,7 +38,6 @@ export function useSession() {
 
     token.value = response.token
     user.value = response.user
-    await applyUserLocale(response.user)
 
     const tenants = Array.isArray(response.tenants) ? response.tenants : response.tenants?.data
     if (tenants?.[0]) {
@@ -79,7 +57,6 @@ export function useSession() {
 
     token.value = response.token
     user.value = response.user
-    await applyUserLocale(response.user)
     const createdTenant = 'data' in response.tenant ? response.tenant.data : response.tenant
     tenant.value = createdTenant
     tenantId.value = String(createdTenant.id)
@@ -92,7 +69,6 @@ export function useSession() {
 
     const response = await request<{ user: User; tenant?: { data?: Tenant } | Tenant | null }>('/me')
     user.value = response.user
-    await applyUserLocale(response.user)
     const currentTenant = response.tenant && 'data' in response.tenant ? response.tenant.data : response.tenant
     tenant.value = currentTenant || tenant.value
   }
