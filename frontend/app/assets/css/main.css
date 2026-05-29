@@ -1195,6 +1195,21 @@ select {
   line-height: 1.6;
 }
 
+.billing-status {
+  max-width: 620px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #eef7f5;
+  font-weight: 800;
+}
+
+.billing-status span {
+  display: block;
+  margin-top: 6px;
+  color: var(--mint-dark);
+}
+
 .billing-price,
 .billing-card,
 .return-card,

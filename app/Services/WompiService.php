@@ -18,7 +18,8 @@ class WompiService
         $reference = 'nidoquest-'.$tenant->id.'-'.Str::uuid();
         $expirationTime = Carbon::now('UTC')->addHours(2)->format('Y-m-d\TH:i:s.v\Z');
         $signature = $this->checkoutIntegritySignature($reference, $amount, $currency, $expirationTime);
-        $redirectUrl = rtrim((string) config('app.url'), '/').'/billing/return';
+        $redirectBase = config('services.frontend.url') ?: config('app.url');
+        $redirectUrl = rtrim((string) $redirectBase, '/').'/billing/return';
         $checkoutUrl = $this->checkoutUrl([
             'public-key' => config('services.wompi.public_key'),
             'currency' => $currency,

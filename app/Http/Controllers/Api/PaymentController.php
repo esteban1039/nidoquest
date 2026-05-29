@@ -50,27 +50,35 @@ class PaymentController extends Controller
         return response()->json(['received' => true]);
     }
 
-    public function subscriptionStatus(TenantContext $tenantContext)
+    public function subscriptionStatus(TenantContext $tenantContext, \App\Services\SubscriptionAccessService $subscriptions)
     {
         $tenant = $tenantContext->get();
 
         return response()->json([
-            'data' => $tenant?->subscription()->latest()->first(),
+            'data' => [
+                'subscription' => $tenant?->subscription()->latest()->first(),
+                'access' => $subscriptions->statusForTenant($tenant),
+            ],
         ]);
     }
 
-    public function transactionStatus(string $transactionId, WompiService $wompi)
+    public function transactionStatus(string $transactionId, WompiService $wompi, SubscriptionService $subscriptions)
     {
         $transaction = $wompi->fetchTransaction($transactionId);
         $reference = data_get($transaction, 'reference');
         $payment = $reference ? Payment::where('provider_reference', $reference)->first() : null;
+        $status = data_get($transaction, 'status');
 
         if ($payment) {
             $payment->update([
-                'status' => data_get($transaction, 'status', $payment->status),
+                'status' => $status ?: $payment->status,
                 'payload' => array_merge($payment->payload ?? [], ['transaction' => $transaction]),
-                'paid_at' => data_get($transaction, 'status') === 'APPROVED' ? now() : $payment->paid_at,
+                'paid_at' => $status === 'APPROVED' ? now() : $payment->paid_at,
             ]);
+
+            if ($status === 'APPROVED') {
+                $subscriptions->activateAnnual($payment->tenant, $payment);
+            }
         }
 
         return response()->json(['data' => $transaction]);

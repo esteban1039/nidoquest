@@ -20,5 +20,6 @@ return [
         'events_secret' => env('WOMPI_EVENTS_SECRET'),
         'integrity_secret' => env('WOMPI_INTEGRITY_SECRET'),
         'annual_price_cop' => (int) env('WOMPI_ANNUAL_PRICE_COP', 15000000),
+        'trial_days' => (int) env('WOMPI_TRIAL_DAYS', 7),
     ],
 ];

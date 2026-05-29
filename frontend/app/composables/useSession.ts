@@ -11,6 +11,13 @@ type Tenant = {
   id: number
   name: string
   status: string
+  subscription?: {
+    state: string
+    allowed: boolean
+    message: string
+    trial_ends_at?: string | null
+    trial_days_remaining?: number
+  }
 }
 
 export function useSession() {

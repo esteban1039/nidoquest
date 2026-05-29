@@ -18,6 +18,24 @@ type CheckoutResponse = {
   }
 }
 
+type SubscriptionStatusResponse = {
+  data: {
+    subscription?: {
+      id: number
+      status: string
+      trial_ends_at?: string | null
+      ends_at?: string | null
+    } | null
+    access: {
+      state: string
+      allowed: boolean
+      message: string
+      trial_ends_at?: string | null
+      trial_days_remaining?: number
+    }
+  }
+}
+
 export function useBilling() {
   const { request } = useApi()
   const loading = ref(false)
@@ -44,7 +62,7 @@ export function useBilling() {
   }
 
   async function subscriptionStatus() {
-    return await request('/subscription/status')
+    return await request<SubscriptionStatusResponse>('/subscription/status')
   }
 
   async function transactionStatus(id: string) {

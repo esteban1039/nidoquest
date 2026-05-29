@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware(async (to) => {
-  const { isAuthenticated, fetchMe, token, user, clearSession } = useSession()
+  const { isAuthenticated, fetchMe, token, user, tenant, clearSession } = useSession()
 
   if (token.value === 'demo-token') {
     clearSession()
@@ -25,6 +25,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return navigateTo('/profile')
   }
 
+  if (tenant.value?.subscription && !tenant.value.subscription.allowed && !to.path.startsWith('/billing') && to.path !== '/profile') {
+    return navigateTo('/billing')
+  }
+
   const role = user.value?.role
   const dashboardByRole = role === 'super_admin'
     ? '/dashboard/admin'
@@ -44,7 +48,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return navigateTo(dashboardByRole)
   }
 
-  if (to.path.startsWith('/billing') && role !== 'guide') {
+  if (to.path.startsWith('/billing') && role !== 'guide' && tenant.value?.subscription?.allowed) {
     return navigateTo(dashboardByRole)
   }
 })

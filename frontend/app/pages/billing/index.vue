@@ -2,8 +2,18 @@
 definePageMeta({ middleware: 'auth', layout: false })
 
 const { t } = useI18n()
-const { checkout, loading, createCheckout, openCheckout } = useBilling()
+const { checkout, loading, createCheckout, openCheckout, subscriptionStatus } = useBilling()
 const error = ref('')
+const subscription = ref<Awaited<ReturnType<typeof subscriptionStatus>>['data'] | null>(null)
+
+onMounted(async () => {
+  try {
+    const response = await subscriptionStatus()
+    subscription.value = response.data
+  } catch {
+    subscription.value = null
+  }
+})
 
 async function prepareCheckout() {
   error.value = ''
@@ -23,6 +33,12 @@ async function prepareCheckout() {
         <p class="eyebrow">{{ t('billing.eyebrow') }}</p>
         <h1>{{ t('billing.title') }}</h1>
         <p>{{ t('billing.subtitle') }}</p>
+        <p v-if="subscription?.access" class="billing-status">
+          {{ subscription.access.message }}
+          <span v-if="subscription.access.state === 'trial'">
+            {{ t('billing.trialDays', { days: subscription.access.trial_days_remaining || 0 }) }}
+          </span>
+        </p>
         <div class="billing-price">
           <span>{{ t('landing.priceTitle') }}</span>
           <strong>{{ t('landing.price') }}</strong>

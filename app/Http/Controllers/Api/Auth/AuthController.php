@@ -66,9 +66,9 @@ class AuthController extends Controller
                 'tenant_id' => $tenant->id,
                 'plan' => 'annual',
                 'status' => 'trial',
-                'price_cents' => (int) env('WOMPI_ANNUAL_PRICE_COP', 15000000),
+                'price_cents' => (int) config('services.wompi.annual_price_cop'),
                 'currency' => 'COP',
-                'trial_ends_at' => now()->addDays(14),
+                'trial_ends_at' => now()->addDays((int) config('services.wompi.trial_days', 7)),
             ]);
 
             return compact('user', 'tenant');

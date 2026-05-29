@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\EnsureTenantAccess;
+use App\Http\Middleware\EnsureSubscriptionAccess;
 use App\Http\Middleware\RecordAuditLog;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -20,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'tenant' => EnsureTenantAccess::class,
+            'subscription' => EnsureSubscriptionAccess::class,
             'audit' => RecordAuditLog::class,
         ]);
     })
