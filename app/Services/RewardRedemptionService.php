@@ -19,7 +19,7 @@ class RewardRedemptionService
     {
         $reservedStars = RewardRedemption::query()
             ->where('explorer_id', $explorer->id)
-            ->whereIn('status', ['requested', 'approved'])
+            ->where('status', 'requested')
             ->sum('stars_cost');
 
         if (($this->stars->balance($explorer) - $reservedStars) < $reward->stars_cost) {

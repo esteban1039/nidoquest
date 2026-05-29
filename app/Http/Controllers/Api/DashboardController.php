@@ -40,7 +40,7 @@ class DashboardController extends Controller
         $availableStars = $stars->balance($explorer);
         $reservedStars = RewardRedemption::query()
             ->where('explorer_id', $explorer->id)
-            ->whereIn('status', ['requested', 'approved'])
+            ->where('status', 'requested')
             ->sum('stars_cost');
         $redeemableStars = max(0, $availableStars - $reservedStars);
 
