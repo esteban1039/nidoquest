@@ -9,6 +9,7 @@ use App\Models\Explorer;
 use App\Models\Reward;
 use App\Services\RewardRedemptionService;
 use App\Services\TenantContext;
+use Illuminate\Validation\ValidationException;
 
 class RewardController extends Controller
 {
@@ -48,6 +49,12 @@ class RewardController extends Controller
     public function redeem(Reward $reward, RewardRedemptionService $redemptions)
     {
         $this->authorize('view', $reward);
+
+        if (! $reward->active) {
+            throw ValidationException::withMessages([
+                'reward_id' => 'Esta recompensa no esta activa.',
+            ]);
+        }
 
         $explorer = Explorer::where('tenant_id', $reward->tenant_id)
             ->when(request()->user()->role === 'explorer', fn ($query) => $query->where('user_id', request()->user()->id))

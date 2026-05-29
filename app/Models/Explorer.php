@@ -46,6 +46,11 @@ class Explorer extends Model
         return $this->hasMany(RewardRedemption::class);
     }
 
+    public function rewardRedemptions(): HasMany
+    {
+        return $this->hasMany(RewardRedemption::class);
+    }
+
     public function badges(): BelongsToMany
     {
         return $this->belongsToMany(Badge::class, 'explorer_badges')->withPivot('earned_at')->withTimestamps();

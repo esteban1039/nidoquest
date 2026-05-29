@@ -56,6 +56,18 @@ type Reward = {
   requires_approval?: boolean
 }
 
+type RewardRedemption = {
+  id: number
+  status: string
+  stars_cost: number
+  note?: string | null
+  created_at?: string
+  approved_at?: string | null
+  delivered_at?: string | null
+  reward?: { id: number; name: string } | null
+  explorer?: { id: number; name: string } | null
+}
+
 type Guide = {
   id: number
   name: string
@@ -111,6 +123,7 @@ const editingMission = ref<number | null>(null)
 const editingReward = ref<number | null>(null)
 const editingGuide = ref<number | null>(null)
 const reviewingMission = ref<number | null>(null)
+const reviewingReward = ref<number | null>(null)
 
 const tabLabels: Record<'explorers' | 'missions' | 'rewards' | 'guides', string> = {
   explorers: 'Exploradores',
@@ -148,6 +161,13 @@ const rewardTypeLabels: Record<string, string> = {
   custom: 'Personalizada',
 }
 
+const redemptionStatusLabels: Record<string, string> = {
+  requested: 'Solicitada',
+  approved: 'Aprobada',
+  rejected: 'Rechazada',
+  delivered: 'Entregada',
+}
+
 const { data: dashboard, refresh: refreshDashboard } = await useAsyncData('guide-dashboard', () => request<GuideDashboard>('/dashboard/guide'))
 const { data: explorers, refresh: refreshExplorers } = await useAsyncData('guide-explorers', async () => {
   const response = await request<{ data: Explorer[] | { data?: Explorer[] } }>('/explorers')
@@ -183,6 +203,11 @@ const { data: reviewMissions, refresh: refreshReviewMissions } = await useAsyncD
 })
 const { data: rewards, refresh: refreshRewards } = await useAsyncData('guide-rewards', async () => {
   const response = await request<{ data: Reward[] | { data?: Reward[] } }>('/rewards')
+
+  return Array.isArray(response.data) ? response.data : response.data.data || []
+})
+const { data: rewardRedemptions, refresh: refreshRewardRedemptions } = await useAsyncData('guide-reward-redemptions', async () => {
+  const response = await request<{ data: RewardRedemption[] | { data?: RewardRedemption[] } }>('/reward-redemptions')
 
   return Array.isArray(response.data) ? response.data : response.data.data || []
 })
@@ -233,7 +258,7 @@ function labelFrom(map: Record<string, string>, value?: string | null, fallback 
 }
 
 async function reloadWorkspace() {
-  await Promise.all([refreshDashboard(), refreshExplorers(), refreshMissions(), refreshReviewMissions(), refreshRewards(), refreshGuides()])
+  await Promise.all([refreshDashboard(), refreshExplorers(), refreshMissions(), refreshReviewMissions(), refreshRewards(), refreshRewardRedemptions(), refreshGuides()])
 }
 
 async function createExplorer() {
@@ -533,6 +558,35 @@ async function reviewMission(mission: Mission, action: 'approve' | 'reject') {
   }
 }
 
+async function reviewReward(redemption: RewardRedemption, action: 'approve' | 'reject' | 'deliver') {
+  reviewingReward.value = redemption.id
+  resetMessages()
+
+  try {
+    const pathByAction = {
+      approve: 'approve',
+      reject: 'reject',
+      deliver: 'deliver',
+    }
+
+    await request(`/reward-redemptions/${redemption.id}/${pathByAction[action]}`, {
+      method: 'POST',
+      body: {},
+    })
+
+    success.value = action === 'approve'
+      ? 'Recompensa aprobada. Las estrellas fueron descontadas.'
+      : action === 'deliver'
+        ? 'Recompensa marcada como entregada.'
+        : 'Solicitud rechazada.'
+    await reloadWorkspace()
+  } catch (reviewError) {
+    error.value = getApiErrorMessage(reviewError, 'No pudimos actualizar la solicitud.')
+  } finally {
+    reviewingReward.value = null
+  }
+}
+
 async function toggleExplorer(explorer: Explorer) {
   explorer.status = explorer.status === 'inactive' ? 'active' : 'inactive'
   await updateExplorer(explorer)
@@ -749,6 +803,40 @@ async function toggleGuide(guide: Guide) {
         </form>
 
         <div class="manager-list">
+          <div v-for="redemption in rewardRedemptions || []" :key="`redemption-${redemption.id}`" class="explorer-row">
+            <span>
+              {{ redemption.reward?.name || 'Recompensa' }}
+              <small>{{ redemption.explorer?.name || 'Explorador' }} - {{ labelFrom(redemptionStatusLabels, redemption.status) }} - {{ redemption.stars_cost }} {{ t('ui.stars') }}</small>
+            </span>
+            <strong>{{ redemption.created_at ? new Date(redemption.created_at).toLocaleDateString() : 'Solicitud' }}</strong>
+            <button
+              v-if="redemption.status === 'requested'"
+              class="button small primary"
+              type="button"
+              :disabled="reviewingReward === redemption.id"
+              @click="reviewReward(redemption, 'approve')"
+            >
+              Aprobar
+            </button>
+            <button
+              v-if="redemption.status === 'requested'"
+              class="button small"
+              type="button"
+              :disabled="reviewingReward === redemption.id"
+              @click="reviewReward(redemption, 'reject')"
+            >
+              Rechazar
+            </button>
+            <button
+              v-if="redemption.status === 'approved'"
+              class="button small primary"
+              type="button"
+              :disabled="reviewingReward === redemption.id"
+              @click="reviewReward(redemption, 'deliver')"
+            >
+              Entregar
+            </button>
+          </div>
           <div v-for="reward in rewards || []" :key="reward.id" class="explorer-row">
             <template v-if="editingReward === reward.id">
               <input v-model="reward.name" aria-label="Nombre de la recompensa">

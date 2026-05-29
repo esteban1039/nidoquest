@@ -37,8 +37,17 @@ class DashboardController extends Controller
     {
         $this->authorize('view', $explorer);
 
+        $availableStars = $stars->balance($explorer);
+        $reservedStars = RewardRedemption::query()
+            ->where('explorer_id', $explorer->id)
+            ->whereIn('status', ['requested', 'approved'])
+            ->sum('stars_cost');
+        $redeemableStars = max(0, $availableStars - $reservedStars);
+
         return response()->json([
-            'available_stars' => $stars->balance($explorer),
+            'available_stars' => $availableStars,
+            'reserved_stars' => $reservedStars,
+            'redeemable_stars' => $redeemableStars,
             'today_missions' => $explorer->missions()
                 ->where('active', true)
                 ->whereIn('status', ['pending', 'rejected'])
@@ -53,7 +62,31 @@ class DashboardController extends Controller
                 ->where('reviewed_at', '>=', now()->subWeek())
                 ->where('status', 'approved')
                 ->count(),
-            'available_rewards' => $explorer->tenant->rewards()->where('active', true)->get(),
+            'available_rewards' => $explorer->tenant->rewards()
+                ->where('active', true)
+                ->get()
+                ->map(fn ($reward) => [
+                    'id' => $reward->id,
+                    'name' => $reward->name,
+                    'description' => $reward->description,
+                    'stars_cost' => $reward->stars_cost,
+                    'type' => $reward->type,
+                    'can_redeem' => $redeemableStars >= $reward->stars_cost,
+                ]),
+            'reward_redemptions' => $explorer->rewardRedemptions()
+                ->with('reward')
+                ->latest()
+                ->limit(10)
+                ->get()
+                ->map(fn (RewardRedemption $redemption) => [
+                    'id' => $redemption->id,
+                    'reward_name' => $redemption->reward?->name,
+                    'status' => $redemption->status,
+                    'stars_cost' => $redemption->stars_cost,
+                    'created_at' => $redemption->created_at,
+                    'approved_at' => $redemption->approved_at,
+                    'delivered_at' => $redemption->delivered_at,
+                ]),
             'badges' => $explorer->badges,
             'daily_message' => 'Cada paso cuenta. Hoy puedes avanzar con calma y constancia.',
         ]);

@@ -7,6 +7,7 @@ use App\Models\Reward;
 use App\Models\RewardRedemption;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class RewardRedemptionService
 {
@@ -16,8 +17,15 @@ class RewardRedemptionService
 
     public function request(Explorer $explorer, Reward $reward, ?string $note = null): RewardRedemption
     {
-        if ($this->stars->balance($explorer) < $reward->stars_cost) {
-            abort(422, 'Todavía faltan algunas Estrellas para esta Recompensa.');
+        $reservedStars = RewardRedemption::query()
+            ->where('explorer_id', $explorer->id)
+            ->whereIn('status', ['requested', 'approved'])
+            ->sum('stars_cost');
+
+        if (($this->stars->balance($explorer) - $reservedStars) < $reward->stars_cost) {
+            throw ValidationException::withMessages([
+                'reward_id' => 'Todavia faltan algunas Estrellas disponibles para esta Recompensa.',
+            ]);
         }
 
         return RewardRedemption::create([
@@ -33,6 +41,12 @@ class RewardRedemptionService
     public function approve(RewardRedemption $redemption, User $guide): RewardRedemption
     {
         return DB::transaction(function () use ($redemption, $guide) {
+            if ($redemption->status !== 'requested') {
+                throw ValidationException::withMessages([
+                    'redemption_id' => 'Esta solicitud ya fue revisada.',
+                ]);
+            }
+
             $redemption->update([
                 'status' => 'approved',
                 'approved_by' => $guide->id,
