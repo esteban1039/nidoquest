@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\ExplorerController;
+use App\Http\Controllers\Api\GrowthAreaController;
 use App\Http\Controllers\Api\MissionController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\OnboardingController;
@@ -22,6 +23,7 @@ Route::middleware('throttle:api')->group(function (): void {
         Route::post('/auth/logout', [AuthController::class, 'logout']);
         Route::get('/me', [AuthController::class, 'me']);
         Route::post('/onboarding/starter', [OnboardingController::class, 'store']);
+        Route::get('/growth-areas', [GrowthAreaController::class, 'index']);
 
         Route::apiResource('nests', TenantController::class)->parameters(['nests' => 'nest'])->except(['destroy']);
         Route::apiResource('explorers', ExplorerController::class);

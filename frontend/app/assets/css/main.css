@@ -833,6 +833,31 @@ select {
   background: #fff6db;
 }
 
+.workspace-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.workspace-manager {
+  display: grid;
+  grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.manager-list {
+  display: grid;
+  gap: 10px;
+}
+
+.form-success {
+  margin: 0 0 12px;
+  color: var(--mint-dark);
+  font-weight: 800;
+}
+
 .plain-list {
   margin: 14px 0 0;
   padding-left: 18px;
@@ -1105,7 +1130,8 @@ select {
   .dashboard-columns,
   .step-grid,
   .benefit-grid,
-  .form-grid {
+  .form-grid,
+  .workspace-manager {
     grid-template-columns: 1fr;
   }
 

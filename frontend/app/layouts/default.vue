@@ -12,7 +12,7 @@ const availableLocales = computed(() => locales.value)
         <span>{{ t('app.name') }}</span>
       </NuxtLink>
 
-      <nav class="nav-links" aria-label="Primary">
+      <nav v-if="!isAuthenticated" class="nav-links" aria-label="Primary">
         <NuxtLink to="/#how">{{ t('nav.how') }}</NuxtLink>
         <NuxtLink to="/#pricing">{{ t('nav.pricing') }}</NuxtLink>
         <NuxtLink to="/#faq">{{ t('nav.faq') }}</NuxtLink>

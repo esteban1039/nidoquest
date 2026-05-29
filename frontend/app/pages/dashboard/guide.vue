@@ -15,7 +15,82 @@ type GuideDashboard = {
   consistency_indicator: number
 }
 
-const { data: dashboard } = await useAsyncData('guide-dashboard', () => request<GuideDashboard>('/dashboard/guide'))
+type Explorer = {
+  id: number
+  name: string
+  email?: string | null
+  available_stars: number
+}
+
+type GrowthArea = {
+  id: number
+  name: string
+}
+
+type Mission = {
+  id: number
+  title: string
+  stars: number
+  status: string
+  explorer_id: number
+}
+
+type Reward = {
+  id: number
+  name: string
+  stars_cost: number
+  type: string
+  active: boolean
+}
+
+const activeTab = ref<'explorers' | 'missions' | 'rewards'>('explorers')
+const saving = ref(false)
+const error = ref('')
+const success = ref('')
+
+const explorerForm = reactive({
+  name: '',
+  email: '',
+  password: '',
+})
+
+const missionForm = reactive({
+  title: '',
+  explorer_id: '',
+  growth_area_id: '',
+  stars: 5,
+  frequency: 'daily',
+  difficulty: 'easy',
+  evidence_type: 'none',
+})
+
+const rewardForm = reactive({
+  name: '',
+  stars_cost: 25,
+  type: 'family',
+})
+
+const { data: dashboard, refresh: refreshDashboard } = await useAsyncData('guide-dashboard', () => request<GuideDashboard>('/dashboard/guide'))
+const { data: explorers, refresh: refreshExplorers } = await useAsyncData('guide-explorers', async () => {
+  const response = await request<{ data: Explorer[] | { data?: Explorer[] } }>('/explorers')
+
+  return Array.isArray(response.data) ? response.data : response.data.data || []
+})
+const { data: growthAreas } = await useAsyncData('growth-areas', async () => {
+  const response = await request<{ data: GrowthArea[] }>('/growth-areas')
+
+  return response.data
+})
+const { data: missions, refresh: refreshMissions } = await useAsyncData('guide-missions', async () => {
+  const response = await request<{ data: Mission[] | { data?: Mission[] } }>('/missions')
+
+  return Array.isArray(response.data) ? response.data : response.data.data || []
+})
+const { data: rewards, refresh: refreshRewards } = await useAsyncData('guide-rewards', async () => {
+  const response = await request<{ data: Reward[] | { data?: Reward[] } }>('/rewards')
+
+  return Array.isArray(response.data) ? response.data : response.data.data || []
+})
 
 const stats = computed(() => [
   { key: 'pendingMissions', value: dashboard.value?.pending_missions ?? 0 },
@@ -31,6 +106,110 @@ const weeklyProgress = computed(() => {
 
   return [0, 0, 0, progress, consistency, progress + consistency, base].map((value) => Math.min(100, Math.round((value / base) * 100)))
 })
+
+watchEffect(() => {
+  if (!missionForm.explorer_id && explorers.value?.[0]) {
+    missionForm.explorer_id = String(explorers.value[0].id)
+  }
+
+  if (!missionForm.growth_area_id && growthAreas.value?.[0]) {
+    missionForm.growth_area_id = String(growthAreas.value[0].id)
+  }
+})
+
+function resetMessages() {
+  error.value = ''
+  success.value = ''
+}
+
+async function reloadWorkspace() {
+  await Promise.all([refreshDashboard(), refreshExplorers(), refreshMissions(), refreshRewards()])
+}
+
+async function createExplorer() {
+  saving.value = true
+  resetMessages()
+
+  try {
+    await request('/explorers', {
+      method: 'POST',
+      body: {
+        name: explorerForm.name,
+        email: explorerForm.email || undefined,
+        password: explorerForm.password || undefined,
+      },
+    })
+
+    success.value = explorerForm.email
+      ? 'Explorador creado. Ya puede ingresar con su correo y contrasena.'
+      : 'Explorador creado.'
+    explorerForm.name = ''
+    explorerForm.email = ''
+    explorerForm.password = ''
+    await reloadWorkspace()
+  } catch (createError) {
+    error.value = getApiErrorMessage(createError, 'No pudimos crear el explorador.')
+  } finally {
+    saving.value = false
+  }
+}
+
+async function createMission() {
+  saving.value = true
+  resetMessages()
+
+  try {
+    await request('/missions', {
+      method: 'POST',
+      body: {
+        title: missionForm.title,
+        explorer_id: Number(missionForm.explorer_id),
+        growth_area_id: Number(missionForm.growth_area_id),
+        stars: Number(missionForm.stars),
+        frequency: missionForm.frequency,
+        difficulty: missionForm.difficulty,
+        evidence_required: false,
+        evidence_type: missionForm.evidence_type,
+        active: true,
+      },
+    })
+
+    success.value = 'Mision creada.'
+    missionForm.title = ''
+    await reloadWorkspace()
+  } catch (createError) {
+    error.value = getApiErrorMessage(createError, 'No pudimos crear la mision.')
+  } finally {
+    saving.value = false
+  }
+}
+
+async function createReward() {
+  saving.value = true
+  resetMessages()
+
+  try {
+    await request('/rewards', {
+      method: 'POST',
+      body: {
+        name: rewardForm.name,
+        stars_cost: Number(rewardForm.stars_cost),
+        type: rewardForm.type,
+        requires_approval: true,
+        active: true,
+      },
+    })
+
+    success.value = 'Recompensa creada.'
+    rewardForm.name = ''
+    rewardForm.stars_cost = 25
+    await reloadWorkspace()
+  } catch (createError) {
+    error.value = getApiErrorMessage(createError, 'No pudimos crear la recompensa.')
+  } finally {
+    saving.value = false
+  }
+}
 </script>
 
 <template>
@@ -57,7 +236,7 @@ const weeklyProgress = computed(() => {
             <strong>{{ explorer.stars }} {{ t('ui.stars') }}</strong>
           </div>
           <div v-if="!dashboard?.stars_by_explorer?.length" class="explorer-row">
-            <span>Crea tu primer explorador en el inicio guiado</span>
+            <span>Crea tu primer explorador</span>
             <strong>0 {{ t('ui.stars') }}</strong>
           </div>
         </div>
@@ -72,27 +251,109 @@ const weeklyProgress = computed(() => {
       </article>
     </section>
 
-    <section class="dashboard-columns">
-      <article class="panel">
-        <h2>{{ t('dashboard.strongAreas') }}</h2>
-        <div class="tag-list">
-          <span>Estudio</span>
-          <span>Lectura</span>
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Operacion del Nido</h2>
+        <span>{{ activeTab }}</span>
+      </div>
+
+      <div class="workspace-tabs">
+        <button class="button small" :class="{ primary: activeTab === 'explorers' }" type="button" @click="activeTab = 'explorers'">Exploradores</button>
+        <button class="button small" :class="{ primary: activeTab === 'missions' }" type="button" @click="activeTab = 'missions'">Misiones</button>
+        <button class="button small" :class="{ primary: activeTab === 'rewards' }" type="button" @click="activeTab = 'rewards'">Recompensas</button>
+      </div>
+
+      <p v-if="error" class="form-error">{{ error }}</p>
+      <p v-if="success" class="form-success">{{ success }}</p>
+
+      <div v-if="activeTab === 'explorers'" class="workspace-manager">
+        <form class="form-stack" @submit.prevent="createExplorer">
+          <label>
+            <span>Nombre del explorador</span>
+            <input v-model="explorerForm.name" required>
+          </label>
+          <label>
+            <span>Correo para ingreso</span>
+            <input v-model="explorerForm.email" type="email" placeholder="explorador@familia.com">
+          </label>
+          <label>
+            <span>Contrasena inicial</span>
+            <input v-model="explorerForm.password" type="password" minlength="8" placeholder="Minimo 8 caracteres">
+          </label>
+          <button class="button primary full" type="submit" :disabled="saving">Crear explorador</button>
+        </form>
+
+        <div class="manager-list">
+          <div v-for="explorer in explorers || []" :key="explorer.id" class="explorer-row">
+            <span>{{ explorer.name }}</span>
+            <strong>{{ explorer.available_stars }} {{ t('ui.stars') }}</strong>
+          </div>
         </div>
-      </article>
-      <article class="panel">
-        <h2>{{ t('dashboard.areasToSupport') }}</h2>
-        <div class="tag-list support">
-          <span>Hogar</span>
-          <span>Bienestar</span>
+      </div>
+
+      <div v-if="activeTab === 'missions'" class="workspace-manager">
+        <form class="form-stack" @submit.prevent="createMission">
+          <label>
+            <span>Titulo de la mision</span>
+            <input v-model="missionForm.title" required>
+          </label>
+          <label>
+            <span>Explorador</span>
+            <select v-model="missionForm.explorer_id" required>
+              <option v-for="explorer in explorers || []" :key="explorer.id" :value="explorer.id">{{ explorer.name }}</option>
+            </select>
+          </label>
+          <label>
+            <span>Area</span>
+            <select v-model="missionForm.growth_area_id" required>
+              <option v-for="area in growthAreas || []" :key="area.id" :value="area.id">{{ area.name }}</option>
+            </select>
+          </label>
+          <label>
+            <span>Estrellas</span>
+            <input v-model.number="missionForm.stars" type="number" min="1" max="100" required>
+          </label>
+          <button class="button primary full" type="submit" :disabled="saving || !explorers?.length">Crear mision</button>
+        </form>
+
+        <div class="manager-list">
+          <div v-for="mission in missions || []" :key="mission.id" class="explorer-row">
+            <span>{{ mission.title }}</span>
+            <strong>{{ mission.stars }} {{ t('ui.stars') }}</strong>
+          </div>
         </div>
-      </article>
-      <article class="panel">
-        <h2>{{ t('dashboard.usedRewards') }}</h2>
-        <ul class="plain-list">
-          <li>Plan familiar especial</li>
-        </ul>
-      </article>
+      </div>
+
+      <div v-if="activeTab === 'rewards'" class="workspace-manager">
+        <form class="form-stack" @submit.prevent="createReward">
+          <label>
+            <span>Nombre de la recompensa</span>
+            <input v-model="rewardForm.name" required>
+          </label>
+          <label>
+            <span>Costo en estrellas</span>
+            <input v-model.number="rewardForm.stars_cost" type="number" min="1" required>
+          </label>
+          <label>
+            <span>Tipo</span>
+            <select v-model="rewardForm.type">
+              <option value="family">Familia</option>
+              <option value="experience">Experiencia</option>
+              <option value="screen_time">Tiempo de pantalla</option>
+              <option value="gift">Regalo</option>
+              <option value="custom">Personalizada</option>
+            </select>
+          </label>
+          <button class="button primary full" type="submit" :disabled="saving">Crear recompensa</button>
+        </form>
+
+        <div class="manager-list">
+          <div v-for="reward in rewards || []" :key="reward.id" class="explorer-row">
+            <span>{{ reward.name }}</span>
+            <strong>{{ reward.stars_cost }} {{ t('ui.stars') }}</strong>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="billing-banner">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n()
-const { login, token, clearSession } = useSession()
+const { login, token, clearSession, role } = useSession()
 const loading = ref(false)
 const form = reactive({ email: 'guia@nidoquest.test', password: 'Password123!' })
 const error = ref('')
@@ -15,7 +15,7 @@ async function submit() {
 
   try {
     await login(form.email, form.password)
-    await navigateTo('/dashboard/guide')
+    await navigateTo(role.value === 'super_admin' ? '/dashboard/admin' : role.value === 'explorer' ? '/dashboard/explorer' : '/dashboard/guide')
   } catch (loginError) {
     error.value = getApiErrorMessage(loginError, 'No pudimos iniciar sesión. Revisa el correo, la contraseña y que el backend esté encendido.')
   } finally {
