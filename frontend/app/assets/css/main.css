@@ -852,6 +852,39 @@ select {
   gap: 10px;
 }
 
+.tenant-table {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.tenant-row {
+  display: grid;
+  grid-template-columns: 1.25fr 1.35fr 1.1fr 0.7fr 0.7fr;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f6fbf9;
+}
+
+.tenant-heading {
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.tenant-row small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+}
+
+.profile-form {
+  max-width: 520px;
+  margin-top: 18px;
+}
+
 .form-success {
   margin: 0 0 12px;
   color: var(--mint-dark);
@@ -1131,7 +1164,8 @@ select {
   .step-grid,
   .benefit-grid,
   .form-grid,
-  .workspace-manager {
+  .workspace-manager,
+  .tenant-row {
     grid-template-columns: 1fr;
   }
 

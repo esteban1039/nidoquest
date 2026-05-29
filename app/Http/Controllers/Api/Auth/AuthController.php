@@ -15,6 +15,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
@@ -82,6 +83,7 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', $request->email)->firstOrFail();
+        $user->forceFill(['last_login_at' => now()])->save();
 
         return response()->json([
             'user' => $user,
@@ -103,5 +105,24 @@ class AuthController extends Controller
             'user' => $request->user(),
             'tenant' => $tenantContext->get() ? TenantResource::make($tenantContext->get()) : null,
         ]);
+    }
+
+    public function changePassword(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'current_password' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:10', 'confirmed'],
+        ]);
+
+        if (! Hash::check($data['current_password'], $request->user()->password)) {
+            return response()->json(['message' => 'La contrasena actual no es correcta.'], 422);
+        }
+
+        $request->user()->forceFill([
+            'password' => $data['password'],
+            'must_change_password' => false,
+        ])->save();
+
+        return response()->json(['message' => 'Contrasena actualizada.']);
     }
 }

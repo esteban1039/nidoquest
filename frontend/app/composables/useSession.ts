@@ -3,6 +3,7 @@ type User = {
   name: string
   email: string
   role: 'super_admin' | 'guide' | 'explorer'
+  must_change_password?: boolean
 }
 
 type Tenant = {

@@ -22,6 +22,7 @@ Route::middleware('throttle:api')->group(function (): void {
     Route::middleware(['auth:sanctum', 'tenant', 'audit'])->group(function (): void {
         Route::post('/auth/logout', [AuthController::class, 'logout']);
         Route::get('/me', [AuthController::class, 'me']);
+        Route::post('/me/password', [AuthController::class, 'changePassword']);
         Route::post('/onboarding/starter', [OnboardingController::class, 'store']);
         Route::get('/growth-areas', [GrowthAreaController::class, 'index']);
 

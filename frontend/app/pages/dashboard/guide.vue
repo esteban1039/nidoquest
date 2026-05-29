@@ -1,7 +1,8 @@
 <script setup lang="ts">
-definePageMeta({ middleware: 'auth' })
+definePageMeta({ middleware: 'auth', layout: false })
 
 const { t } = useI18n()
+const route = useRoute()
 const { request } = useApi()
 const tones = ['mint', 'blue', 'yellow', 'coral'] as const
 
@@ -43,7 +44,14 @@ type Reward = {
   active: boolean
 }
 
-const activeTab = ref<'explorers' | 'missions' | 'rewards'>('explorers')
+const activeTab = computed<'explorers' | 'missions' | 'rewards'>({
+  get() {
+    return ['explorers', 'missions', 'rewards'].includes(String(route.query.tab)) ? String(route.query.tab) as 'explorers' | 'missions' | 'rewards' : 'explorers'
+  },
+  set(tab) {
+    navigateTo({ path: '/dashboard/guide', query: { tab } })
+  },
+})
 const saving = ref(false)
 const error = ref('')
 const success = ref('')

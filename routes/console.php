@@ -16,6 +16,7 @@ Artisan::command('nidoquest:create-super-admin {email} {password} {name=Super Ad
             'role' => User::ROLE_SUPER_ADMIN,
             'locale' => 'es-LATAM',
             'active' => true,
+            'must_change_password' => true,
         ],
     );
 

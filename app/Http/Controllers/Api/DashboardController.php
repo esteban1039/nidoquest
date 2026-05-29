@@ -49,12 +49,31 @@ class DashboardController extends Controller
     {
         abort_unless(request()->user()->isSuperAdmin(), 403);
 
+        $tenants = Tenant::with('owner')
+            ->withCount(['explorers', 'missions', 'rewards'])
+            ->latest()
+            ->get()
+            ->map(fn (Tenant $tenant) => [
+                'id' => $tenant->id,
+                'name' => $tenant->name,
+                'status' => $tenant->status,
+                'owner_name' => $tenant->owner?->name,
+                'owner_email' => $tenant->owner?->email,
+                'owner_last_login_at' => $tenant->owner?->last_login_at,
+                'explorers_count' => $tenant->explorers_count,
+                'missions_count' => $tenant->missions_count,
+                'rewards_count' => $tenant->rewards_count,
+                'created_at' => $tenant->created_at,
+            ]);
+
         return response()->json([
             'tenants' => Tenant::count(),
             'active_tenants' => Tenant::where('status', 'active')->count(),
             'trial_tenants' => Tenant::where('status', 'trial')->count(),
             'explorers' => Explorer::count(),
+            'missions' => Mission::count(),
             'missions_approved' => Mission::where('status', 'approved')->count(),
+            'tenant_rows' => $tenants,
         ]);
     }
 }
