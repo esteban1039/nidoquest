@@ -9,6 +9,7 @@ const tones = ['mint', 'blue', 'yellow', 'coral'] as const
 type GuideDashboard = {
   stars_by_explorer: { explorer_id: number; name: string; stars: number }[]
   pending_missions: number
+  submitted_missions: number
   completed_missions: number
   expired_missions: number
   requested_rewards: number
@@ -34,6 +35,12 @@ type Mission = {
   stars: number
   status: string
   explorer_id: number
+  growth_area_id: number
+  frequency: string
+  difficulty: string
+  evidence_type: string
+  due_date?: string | null
+  active: boolean
 }
 
 type Reward = {
@@ -42,11 +49,19 @@ type Reward = {
   stars_cost: number
   type: string
   active: boolean
+  requires_approval?: boolean
 }
 
-const activeTab = computed<'explorers' | 'missions' | 'rewards'>({
+type Guide = {
+  id: number
+  name: string
+  email: string
+  last_login_at?: string | null
+}
+
+const activeTab = computed<'explorers' | 'missions' | 'rewards' | 'guides'>({
   get() {
-    return ['explorers', 'missions', 'rewards'].includes(String(route.query.tab)) ? String(route.query.tab) as 'explorers' | 'missions' | 'rewards' : 'explorers'
+    return ['explorers', 'missions', 'rewards', 'guides'].includes(String(route.query.tab)) ? String(route.query.tab) as 'explorers' | 'missions' | 'rewards' | 'guides' : 'explorers'
   },
   set(tab) {
     navigateTo({ path: '/dashboard/guide', query: { tab } })
@@ -78,6 +93,15 @@ const rewardForm = reactive({
   stars_cost: 25,
   type: 'family',
 })
+const guideForm = reactive({
+  name: '',
+  email: '',
+  password: '',
+})
+const editingExplorer = ref<number | null>(null)
+const editingMission = ref<number | null>(null)
+const editingReward = ref<number | null>(null)
+const reviewingMission = ref<number | null>(null)
 
 const { data: dashboard, refresh: refreshDashboard } = await useAsyncData('guide-dashboard', () => request<GuideDashboard>('/dashboard/guide'))
 const { data: explorers, refresh: refreshExplorers } = await useAsyncData('guide-explorers', async () => {
@@ -92,21 +116,32 @@ const { data: growthAreas } = await useAsyncData('growth-areas', async () => {
 })
 const { data: missions, refresh: refreshMissions } = await useAsyncData('guide-missions', async () => {
   const response = await request<{ data: Mission[] | { data?: Mission[] } }>('/missions')
+  const items = Array.isArray(response.data) ? response.data : response.data.data || []
 
-  return Array.isArray(response.data) ? response.data : response.data.data || []
+  return items.map((mission) => ({
+    ...mission,
+    due_date: mission.due_date ? String(mission.due_date).slice(0, 10) : '',
+  }))
 })
 const { data: rewards, refresh: refreshRewards } = await useAsyncData('guide-rewards', async () => {
   const response = await request<{ data: Reward[] | { data?: Reward[] } }>('/rewards')
 
   return Array.isArray(response.data) ? response.data : response.data.data || []
 })
+const { data: guides, refresh: refreshGuides } = await useAsyncData('guide-users', async () => {
+  const response = await request<{ data: Guide[] }>('/guides')
+
+  return response.data
+})
 
 const stats = computed(() => [
   { key: 'pendingMissions', value: dashboard.value?.pending_missions ?? 0 },
+  { key: 'submittedMissions', label: 'Por revisar', value: dashboard.value?.submitted_missions ?? 0 },
   { key: 'completedMissions', value: dashboard.value?.completed_missions ?? 0 },
-  { key: 'expiredMissions', value: dashboard.value?.expired_missions ?? 0 },
   { key: 'requestedRewards', value: dashboard.value?.requested_rewards ?? 0 },
 ])
+
+const submittedMissions = computed(() => (missions.value || []).filter((mission) => mission.status === 'submitted'))
 
 const weeklyProgress = computed(() => {
   const progress = dashboard.value?.weekly_progress ?? 0
@@ -132,7 +167,7 @@ function resetMessages() {
 }
 
 async function reloadWorkspace() {
-  await Promise.all([refreshDashboard(), refreshExplorers(), refreshMissions(), refreshRewards()])
+  await Promise.all([refreshDashboard(), refreshExplorers(), refreshMissions(), refreshRewards(), refreshGuides()])
 }
 
 async function createExplorer() {
@@ -220,6 +255,127 @@ async function createReward() {
     saving.value = false
   }
 }
+
+async function createGuide() {
+  saving.value = true
+  resetMessages()
+
+  try {
+    await request('/guides', {
+      method: 'POST',
+      body: guideForm,
+    })
+
+    success.value = 'Formador creado.'
+    guideForm.name = ''
+    guideForm.email = ''
+    guideForm.password = ''
+    await reloadWorkspace()
+  } catch (createError) {
+    error.value = getApiErrorMessage(createError, 'No pudimos crear el formador.')
+  } finally {
+    saving.value = false
+  }
+}
+
+async function updateExplorer(explorer: Explorer) {
+  saving.value = true
+  resetMessages()
+
+  try {
+    await request(`/explorers/${explorer.id}`, {
+      method: 'PUT',
+      body: {
+        name: explorer.name,
+        email: explorer.email || undefined,
+      },
+    })
+
+    editingExplorer.value = null
+    success.value = 'Explorador actualizado.'
+    await reloadWorkspace()
+  } catch (updateError) {
+    error.value = getApiErrorMessage(updateError, 'No pudimos actualizar el explorador.')
+  } finally {
+    saving.value = false
+  }
+}
+
+async function updateMission(mission: Mission) {
+  saving.value = true
+  resetMessages()
+
+  try {
+    await request(`/missions/${mission.id}`, {
+      method: 'PUT',
+      body: {
+        title: mission.title,
+        explorer_id: mission.explorer_id,
+        growth_area_id: mission.growth_area_id,
+        stars: Number(mission.stars),
+        frequency: mission.frequency || 'daily',
+        due_date: mission.due_date || undefined,
+        difficulty: mission.difficulty || 'easy',
+        evidence_required: false,
+        evidence_type: mission.evidence_type || 'none',
+        active: mission.active,
+      },
+    })
+
+    editingMission.value = null
+    success.value = 'Mision actualizada.'
+    await reloadWorkspace()
+  } catch (updateError) {
+    error.value = getApiErrorMessage(updateError, 'No pudimos actualizar la mision.')
+  } finally {
+    saving.value = false
+  }
+}
+
+async function updateReward(reward: Reward) {
+  saving.value = true
+  resetMessages()
+
+  try {
+    await request(`/rewards/${reward.id}`, {
+      method: 'PUT',
+      body: {
+        name: reward.name,
+        stars_cost: Number(reward.stars_cost),
+        type: reward.type,
+        requires_approval: reward.requires_approval ?? true,
+        active: reward.active,
+      },
+    })
+
+    editingReward.value = null
+    success.value = 'Recompensa actualizada.'
+    await reloadWorkspace()
+  } catch (updateError) {
+    error.value = getApiErrorMessage(updateError, 'No pudimos actualizar la recompensa.')
+  } finally {
+    saving.value = false
+  }
+}
+
+async function reviewMission(mission: Mission, action: 'approve' | 'reject') {
+  reviewingMission.value = mission.id
+  resetMessages()
+
+  try {
+    await request(`/missions/${mission.id}/${action}`, {
+      method: 'POST',
+      body: {},
+    })
+
+    success.value = action === 'approve' ? 'Mision aprobada. Estrellas acumuladas.' : 'Mision rechazada.'
+    await reloadWorkspace()
+  } catch (reviewError) {
+    error.value = getApiErrorMessage(reviewError, 'No pudimos revisar la mision.')
+  } finally {
+    reviewingMission.value = null
+  }
+}
 </script>
 
 <template>
@@ -228,7 +384,7 @@ async function createReward() {
       <MetricCard
         v-for="(stat, index) in stats"
         :key="stat.key"
-        :label="t(`dashboard.${stat.key}`)"
+        :label="'label' in stat ? stat.label : t(`dashboard.${stat.key}`)"
         :value="stat.value"
         :tone="tones[index]"
       />
@@ -271,6 +427,7 @@ async function createReward() {
         <button class="button small" :class="{ primary: activeTab === 'explorers' }" type="button" @click="activeTab = 'explorers'">Exploradores</button>
         <button class="button small" :class="{ primary: activeTab === 'missions' }" type="button" @click="activeTab = 'missions'">Misiones</button>
         <button class="button small" :class="{ primary: activeTab === 'rewards' }" type="button" @click="activeTab = 'rewards'">Recompensas</button>
+        <button class="button small" :class="{ primary: activeTab === 'guides' }" type="button" @click="activeTab = 'guides'">Formadores</button>
       </div>
 
       <p v-if="error" class="form-error">{{ error }}</p>
@@ -295,8 +452,16 @@ async function createReward() {
 
         <div class="manager-list">
           <div v-for="explorer in explorers || []" :key="explorer.id" class="explorer-row">
-            <span>{{ explorer.name }}</span>
-            <strong>{{ explorer.available_stars }} {{ t('ui.stars') }}</strong>
+            <template v-if="editingExplorer === explorer.id">
+              <input v-model="explorer.name" aria-label="Nombre del explorador">
+              <input v-model="explorer.email" type="email" aria-label="Correo del explorador">
+              <button class="button small primary" type="button" :disabled="saving" @click="updateExplorer(explorer)">Guardar</button>
+            </template>
+            <template v-else>
+              <span>{{ explorer.name }}<small>{{ explorer.email || 'Sin ingreso propio' }}</small></span>
+              <strong>{{ explorer.available_stars }} {{ t('ui.stars') }}</strong>
+              <button class="button small" type="button" @click="editingExplorer = explorer.id">Editar</button>
+            </template>
           </div>
         </div>
       </div>
@@ -331,9 +496,24 @@ async function createReward() {
         </form>
 
         <div class="manager-list">
-          <div v-for="mission in missions || []" :key="mission.id" class="explorer-row">
-            <span>{{ mission.title }}</span>
+          <div v-for="mission in submittedMissions" :key="`review-${mission.id}`" class="explorer-row">
+            <span>{{ mission.title }}<small>Terminada por el explorador. Pendiente de revision.</small></span>
             <strong>{{ mission.stars }} {{ t('ui.stars') }}</strong>
+            <button class="button small primary" type="button" :disabled="reviewingMission === mission.id" @click="reviewMission(mission, 'approve')">Aprobar</button>
+            <button class="button small" type="button" :disabled="reviewingMission === mission.id" @click="reviewMission(mission, 'reject')">Rechazar</button>
+          </div>
+          <div v-for="mission in missions || []" :key="mission.id" class="explorer-row">
+            <template v-if="editingMission === mission.id">
+              <input v-model="mission.title" aria-label="Titulo de la mision">
+              <input v-model.number="mission.stars" type="number" min="1" max="100" aria-label="Estrellas">
+              <input v-model="mission.due_date" type="date" aria-label="Fecha">
+              <button class="button small primary" type="button" :disabled="saving" @click="updateMission(mission)">Guardar</button>
+            </template>
+            <template v-else>
+              <span>{{ mission.title }}<small>{{ mission.status }}</small></span>
+              <strong>{{ mission.stars }} {{ t('ui.stars') }}</strong>
+              <button class="button small" type="button" @click="editingMission = mission.id">Editar</button>
+            </template>
           </div>
         </div>
       </div>
@@ -363,8 +543,41 @@ async function createReward() {
 
         <div class="manager-list">
           <div v-for="reward in rewards || []" :key="reward.id" class="explorer-row">
-            <span>{{ reward.name }}</span>
-            <strong>{{ reward.stars_cost }} {{ t('ui.stars') }}</strong>
+            <template v-if="editingReward === reward.id">
+              <input v-model="reward.name" aria-label="Nombre de la recompensa">
+              <input v-model.number="reward.stars_cost" type="number" min="1" aria-label="Costo">
+              <button class="button small primary" type="button" :disabled="saving" @click="updateReward(reward)">Guardar</button>
+            </template>
+            <template v-else>
+              <span>{{ reward.name }}<small>{{ reward.type }}</small></span>
+              <strong>{{ reward.stars_cost }} {{ t('ui.stars') }}</strong>
+              <button class="button small" type="button" @click="editingReward = reward.id">Editar</button>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="activeTab === 'guides'" class="workspace-manager">
+        <form class="form-stack" @submit.prevent="createGuide">
+          <label>
+            <span>Nombre del formador</span>
+            <input v-model="guideForm.name" required>
+          </label>
+          <label>
+            <span>Correo</span>
+            <input v-model="guideForm.email" type="email" required>
+          </label>
+          <label>
+            <span>Contrasena inicial</span>
+            <input v-model="guideForm.password" type="password" minlength="8" required>
+          </label>
+          <button class="button primary full" type="submit" :disabled="saving">Crear formador</button>
+        </form>
+
+        <div class="manager-list">
+          <div v-for="guide in guides || []" :key="guide.id" class="explorer-row">
+            <span>{{ guide.name }}<small>{{ guide.email }}</small></span>
+            <strong>{{ guide.last_login_at ? new Date(guide.last_login_at).toLocaleDateString() : 'Sin ingreso' }}</strong>
           </div>
         </div>
       </div>

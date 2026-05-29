@@ -14,7 +14,7 @@ class ExplorerController extends Controller
 {
     public function index(TenantContext $tenantContext)
     {
-        $query = Explorer::forTenant($tenantContext->id())->latest();
+        $query = Explorer::forTenant($tenantContext->id())->with('user')->latest();
 
         if (request()->user()->role === User::ROLE_EXPLORER) {
             $query->where('user_id', request()->user()->id);
@@ -66,7 +66,24 @@ class ExplorerController extends Controller
     public function update(StoreExplorerRequest $request, Explorer $explorer)
     {
         $this->authorize('manage', $explorer);
-        $explorer->update($request->validated());
+        $data = $request->validated();
+
+        DB::transaction(function () use ($data, $explorer): void {
+            $explorer->update([
+                'name' => $data['name'],
+                'birthdate' => $data['birthdate'] ?? $explorer->birthdate,
+                'avatar' => $data['avatar'] ?? $explorer->avatar,
+                'preferences' => $data['preferences'] ?? $explorer->preferences,
+            ]);
+
+            if ($explorer->user && ! empty($data['email'])) {
+                $explorer->user->update([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    ...(! empty($data['password']) ? ['password' => $data['password']] : []),
+                ]);
+            }
+        });
 
         return ExplorerResource::make($explorer);
     }

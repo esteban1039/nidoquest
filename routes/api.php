@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\ExplorerController;
+use App\Http\Controllers\Api\GuideController;
 use App\Http\Controllers\Api\GrowthAreaController;
 use App\Http\Controllers\Api\MissionController;
 use App\Http\Controllers\Api\NotificationController;
@@ -25,6 +26,8 @@ Route::middleware('throttle:api')->group(function (): void {
         Route::post('/me/password', [AuthController::class, 'changePassword']);
         Route::post('/onboarding/starter', [OnboardingController::class, 'store']);
         Route::get('/growth-areas', [GrowthAreaController::class, 'index']);
+        Route::get('/guides', [GuideController::class, 'index']);
+        Route::post('/guides', [GuideController::class, 'store']);
 
         Route::apiResource('nests', TenantController::class)->parameters(['nests' => 'nest'])->except(['destroy']);
         Route::apiResource('explorers', ExplorerController::class);

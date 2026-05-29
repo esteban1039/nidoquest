@@ -12,7 +12,9 @@ class ExplorerResource extends JsonResource
         return [
             'id' => $this->id,
             'tenant_id' => $this->tenant_id,
+            'user_id' => $this->user_id,
             'name' => $this->name,
+            'email' => $this->user?->email,
             'birthdate' => $this->birthdate,
             'avatar' => $this->avatar,
             'status' => $this->status,

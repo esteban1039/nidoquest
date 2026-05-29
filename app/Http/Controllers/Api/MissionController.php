@@ -54,6 +54,7 @@ class MissionController extends Controller
     public function submit(SubmitMissionRequest $request, Mission $mission)
     {
         $this->authorize('view', $mission);
+        abort_unless(in_array($mission->status, ['pending', 'rejected'], true), 422, 'La mision no esta disponible para enviar.');
 
         $submission = MissionSubmission::create($request->validated() + [
             'tenant_id' => $mission->tenant_id,
@@ -71,6 +72,7 @@ class MissionController extends Controller
     public function approve(Mission $mission, StarService $stars)
     {
         $this->authorize('manage', $mission);
+        abort_unless($mission->status === 'submitted', 422, 'La mision debe estar enviada para aprobarla.');
 
         $mission->update(['status' => 'approved']);
         $movement = $stars->earn($mission->explorer, $mission, request()->user());
@@ -87,6 +89,7 @@ class MissionController extends Controller
     public function reject(Mission $mission)
     {
         $this->authorize('manage', $mission);
+        abort_unless($mission->status === 'submitted', 422, 'La mision debe estar enviada para rechazarla.');
 
         $mission->update(['status' => 'rejected']);
         $mission->submissions()->latest()->first()?->update([

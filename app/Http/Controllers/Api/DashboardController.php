@@ -23,6 +23,7 @@ class DashboardController extends Controller
                 'stars' => $explorer->availableStars(),
             ]),
             'pending_missions' => Mission::forTenant($tenantId)->where('status', 'pending')->count(),
+            'submitted_missions' => Mission::forTenant($tenantId)->where('status', 'submitted')->count(),
             'completed_missions' => Mission::forTenant($tenantId)->where('status', 'approved')->count(),
             'expired_missions' => Mission::forTenant($tenantId)->where('status', 'expired')->count(),
             'requested_rewards' => RewardRedemption::forTenant($tenantId)->where('status', 'requested')->count(),
