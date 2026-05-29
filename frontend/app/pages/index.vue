@@ -10,14 +10,16 @@ const faqs = ['parenting', 'children', 'customRewards', 'mobile', 'languages']
 <template>
   <div class="landing">
     <section class="hero-section">
-      <div class="hero-content">
+      <div class="hero-copy">
         <p class="eyebrow">{{ t('app.tagline') }}</p>
         <h1>{{ t('landing.heroTitle') }}</h1>
         <p>{{ t('landing.heroSubtitle') }}</p>
+
         <div class="hero-actions">
           <NuxtLink class="button primary large" to="/auth/register">{{ t('landing.primaryCta') }}</NuxtLink>
           <NuxtLink class="button ghost large" to="/#how">{{ t('landing.secondaryCta') }}</NuxtLink>
         </div>
+
         <div class="hero-proof">
           <span>{{ t('landing.proof.habits') }}</span>
           <span>{{ t('landing.proof.rewards') }}</span>
@@ -25,47 +27,48 @@ const faqs = ['parenting', 'children', 'customRewards', 'mobile', 'languages']
         </div>
       </div>
 
-      <div class="hero-product" aria-hidden="true">
-        <div class="product-window">
-          <div class="product-bar">
-            <span>NidoQuest</span>
-            <strong>{{ t('landing.product.status') }}</strong>
+      <div class="product-window" aria-hidden="true">
+        <div class="product-bar">
+          <span>NidoQuest</span>
+          <strong>{{ t('landing.product.status') }}</strong>
+        </div>
+
+        <div class="product-hero">
+          <div>
+            <small>{{ t('landing.product.nest') }}</small>
+            <strong>{{ t('landing.product.family') }}</strong>
           </div>
-          <div class="product-hero">
-            <div>
-              <small>{{ t('landing.product.nest') }}</small>
-              <strong>{{ t('landing.product.family') }}</strong>
-            </div>
-            <span>84 {{ t('ui.stars') }}</span>
+          <span>84 {{ t('ui.stars') }}</span>
+        </div>
+
+        <div class="product-grid">
+          <article class="product-card">
+            <small>{{ t('ui.missions') }}</small>
+            <strong>8</strong>
+            <span>{{ t('landing.product.today') }}</span>
+          </article>
+          <article class="product-card blue">
+            <small>{{ t('ui.progress') }}</small>
+            <strong>78%</strong>
+            <span>{{ t('landing.product.week') }}</span>
+          </article>
+          <article class="product-card yellow">
+            <small>{{ t('ui.rewards') }}</small>
+            <strong>3</strong>
+            <span>{{ t('landing.product.ready') }}</span>
+          </article>
+        </div>
+
+        <div class="product-list">
+          <div>
+            <span />
+            <p>{{ t('landing.product.missionOne') }}</p>
+            <strong>+10</strong>
           </div>
-          <div class="product-grid">
-            <article class="product-card">
-              <small>{{ t('ui.missions') }}</small>
-              <strong>8</strong>
-              <span>{{ t('landing.product.today') }}</span>
-            </article>
-            <article class="product-card blue">
-              <small>{{ t('ui.progress') }}</small>
-              <strong>78%</strong>
-              <span>{{ t('landing.product.week') }}</span>
-            </article>
-            <article class="product-card yellow">
-              <small>{{ t('ui.rewards') }}</small>
-              <strong>3</strong>
-              <span>{{ t('landing.product.ready') }}</span>
-            </article>
-          </div>
-          <div class="product-list">
-            <div>
-              <span />
-              <p>{{ t('landing.product.missionOne') }}</p>
-              <strong>+10</strong>
-            </div>
-            <div>
-              <span />
-              <p>{{ t('landing.product.missionTwo') }}</p>
-              <strong>+6</strong>
-            </div>
+          <div>
+            <span />
+            <p>{{ t('landing.product.missionTwo') }}</p>
+            <strong>+6</strong>
           </div>
         </div>
       </div>
