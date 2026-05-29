@@ -112,6 +112,42 @@ const editingReward = ref<number | null>(null)
 const editingGuide = ref<number | null>(null)
 const reviewingMission = ref<number | null>(null)
 
+const tabLabels: Record<'explorers' | 'missions' | 'rewards' | 'guides', string> = {
+  explorers: 'Exploradores',
+  missions: 'Misiones',
+  rewards: 'Recompensas',
+  guides: 'Formadores',
+}
+
+const statusLabels: Record<string, string> = {
+  active: 'Activo',
+  inactive: 'Inactivo',
+  pending: 'Pendiente',
+  submitted: 'Por revisar',
+  approved: 'Aprobada',
+  rejected: 'Rechazada',
+  completed: 'Completada',
+  expired: 'Vencida',
+  requested: 'Solicitada',
+  delivered: 'Entregada',
+}
+
+const frequencyLabels: Record<string, string> = {
+  once: 'Una sola vez',
+  daily: 'Diaria',
+  weekly: 'Semanal',
+  monthly: 'Mensual',
+  custom: 'Por rango de fechas',
+}
+
+const rewardTypeLabels: Record<string, string> = {
+  family: 'Familia',
+  experience: 'Experiencia',
+  screen_time: 'Tiempo de pantalla',
+  gift: 'Regalo',
+  custom: 'Personalizada',
+}
+
 const { data: dashboard, refresh: refreshDashboard } = await useAsyncData('guide-dashboard', () => request<GuideDashboard>('/dashboard/guide'))
 const { data: explorers, refresh: refreshExplorers } = await useAsyncData('guide-explorers', async () => {
   const response = await request<{ data: Explorer[] | { data?: Explorer[] } }>('/explorers')
@@ -186,6 +222,14 @@ watchEffect(() => {
 function resetMessages() {
   error.value = ''
   success.value = ''
+}
+
+function labelFrom(map: Record<string, string>, value?: string | null, fallback = 'Sin definir') {
+  if (!value) {
+    return fallback
+  }
+
+  return map[value] || value
 }
 
 async function reloadWorkspace() {
@@ -552,7 +596,7 @@ async function toggleGuide(guide: Guide) {
     <section class="panel">
       <div class="panel-header">
         <h2>Operacion del Nido</h2>
-        <span>{{ activeTab }}</span>
+        <span>{{ tabLabels[activeTab] }}</span>
       </div>
 
       <div class="workspace-tabs">
@@ -591,7 +635,7 @@ async function toggleGuide(guide: Guide) {
               <button class="button small primary" type="button" :disabled="saving" @click="updateExplorer(explorer)">Guardar</button>
             </template>
             <template v-else>
-              <span>{{ explorer.name }}<small>{{ explorer.email || 'Sin ingreso propio' }} - {{ explorer.status || 'active' }}</small></span>
+              <span>{{ explorer.name }}<small>{{ explorer.email || 'Sin ingreso propio' }} - {{ labelFrom(statusLabels, explorer.status || 'active') }}</small></span>
               <strong>{{ explorer.available_stars }} {{ t('ui.stars') }}</strong>
               <button class="button small" type="button" @click="editingExplorer = explorer.id">Editar</button>
               <button class="button small" type="button" @click="toggleExplorer(explorer)">{{ explorer.status === 'inactive' ? 'Activar' : 'Inactivar' }}</button>
@@ -671,7 +715,7 @@ async function toggleGuide(guide: Guide) {
               <button class="button small primary" type="button" :disabled="saving" @click="updateMission(mission)">Guardar</button>
             </template>
             <template v-else>
-              <span>{{ mission.title }}<small>{{ mission.status }} - {{ mission.frequency }}</small></span>
+              <span>{{ mission.title }}<small>{{ labelFrom(statusLabels, mission.status) }} - {{ labelFrom(frequencyLabels, mission.frequency) }}</small></span>
               <strong>{{ mission.stars }} {{ t('ui.stars') }}</strong>
               <button class="button small" type="button" @click="editingMission = mission.id">Editar</button>
               <button class="button small" type="button" @click="toggleMission(mission)">{{ mission.active ? 'Inactivar' : 'Activar' }}</button>
@@ -712,7 +756,7 @@ async function toggleGuide(guide: Guide) {
               <button class="button small primary" type="button" :disabled="saving" @click="updateReward(reward)">Guardar</button>
             </template>
             <template v-else>
-              <span>{{ reward.name }}<small>{{ reward.type }}</small></span>
+              <span>{{ reward.name }}<small>{{ labelFrom(rewardTypeLabels, reward.type) }} - {{ reward.active ? 'Activa' : 'Inactiva' }}</small></span>
               <strong>{{ reward.stars_cost }} {{ t('ui.stars') }}</strong>
               <button class="button small" type="button" @click="editingReward = reward.id">Editar</button>
               <button class="button small" type="button" @click="toggleReward(reward)">{{ reward.active ? 'Inactivar' : 'Activar' }}</button>
