@@ -13,6 +13,8 @@ type Tenant = {
   status: string
 }
 
+const SUPPORTED_LOCALES = ['es-LATAM', 'en', 'fr'] as const
+
 export function useSession() {
   const token = useCookie<string | null>('nidoquest_token', { sameSite: 'lax' })
   const tenantId = useCookie<string | null>('nidoquest_tenant_id', { sameSite: 'lax' })
@@ -31,15 +33,21 @@ export function useSession() {
     tenant.value = null
   }
 
+  function normalizeLocale(nextLocale?: string) {
+    return SUPPORTED_LOCALES.find((supportedLocale) => supportedLocale === nextLocale) || null
+  }
+
   async function applyUserLocale(nextUser: User) {
-    if (!nextUser.locale || nextUser.locale === locale.value) {
+    const nextLocale = normalizeLocale(nextUser.locale)
+
+    if (!nextLocale || nextLocale === locale.value) {
       return
     }
 
     try {
-      await setLocale(nextUser.locale)
-    } catch {
-      locale.value = nextUser.locale
+      await setLocale(nextLocale)
+    } catch (localeError) {
+      console.warn('No pudimos cambiar el idioma del usuario.', localeError)
     }
   }
 
