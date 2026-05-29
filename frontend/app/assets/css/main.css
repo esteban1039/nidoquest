@@ -1022,6 +1022,25 @@ select {
   gap: 10px;
 }
 
+.manager-list .explorer-row {
+  flex-wrap: wrap;
+}
+
+.manager-list .explorer-row > span {
+  min-width: 0;
+  flex: 1 1 220px;
+  overflow-wrap: anywhere;
+}
+
+.manager-list .explorer-row > strong {
+  flex: 0 1 auto;
+  white-space: nowrap;
+}
+
+.manager-list .explorer-row > .button {
+  flex: 0 0 auto;
+}
+
 .tenant-table {
   display: grid;
   gap: 8px;
@@ -1490,6 +1509,14 @@ select {
 
   .panel.wide {
     grid-column: span 2;
+  }
+
+  .workspace-manager {
+    grid-template-columns: 1fr;
+  }
+
+  .manager-list .explorer-row {
+    align-items: flex-start;
   }
 }
 
