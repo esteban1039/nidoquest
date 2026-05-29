@@ -14,7 +14,6 @@ use App\Services\MailgunEmailService;
 use App\Services\TenantContext;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -86,11 +85,11 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request): JsonResponse
     {
-        if (! Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Credenciales no válidas.'], 422);
-        }
+        $user = User::where('email', $request->email)->first();
 
-        $user = User::where('email', $request->email)->firstOrFail();
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Credenciales no validas.'], 422);
+        }
 
         if (! $user->active) {
             return response()->json(['message' => 'Este usuario esta inactivo.'], 403);
