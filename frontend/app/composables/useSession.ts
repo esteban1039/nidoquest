@@ -3,6 +3,7 @@ type User = {
   name: string
   email: string
   role: 'super_admin' | 'guide' | 'explorer'
+  locale?: string
   must_change_password?: boolean
 }
 
@@ -18,6 +19,7 @@ export function useSession() {
   const user = useState<User | null>('nidoquest_user', () => null)
   const tenant = useState<Tenant | null>('nidoquest_tenant', () => null)
   const { request } = useApi()
+  const { setLocale } = useI18n()
 
   const isAuthenticated = computed(() => Boolean(token.value && token.value !== 'demo-token'))
   const role = computed(() => user.value?.role || 'guide')
@@ -29,6 +31,12 @@ export function useSession() {
     tenant.value = null
   }
 
+  async function applyUserLocale(nextUser: User) {
+    if (nextUser.locale) {
+      await setLocale(nextUser.locale)
+    }
+  }
+
   async function login(email: string, password: string) {
     const response = await request<{ token: string; user: User; tenants?: { data?: Tenant[] } | Tenant[] }>('/auth/login', {
       method: 'POST',
@@ -37,6 +45,7 @@ export function useSession() {
 
     token.value = response.token
     user.value = response.user
+    await applyUserLocale(response.user)
 
     const tenants = Array.isArray(response.tenants) ? response.tenants : response.tenants?.data
     if (tenants?.[0]) {
@@ -56,6 +65,7 @@ export function useSession() {
 
     token.value = response.token
     user.value = response.user
+    await applyUserLocale(response.user)
     const createdTenant = 'data' in response.tenant ? response.tenant.data : response.tenant
     tenant.value = createdTenant
     tenantId.value = String(createdTenant.id)
@@ -68,6 +78,7 @@ export function useSession() {
 
     const response = await request<{ user: User; tenant?: { data?: Tenant } | Tenant | null }>('/me')
     user.value = response.user
+    await applyUserLocale(response.user)
     const currentTenant = response.tenant && 'data' in response.tenant ? response.tenant.data : response.tenant
     tenant.value = currentTenant || tenant.value
   }

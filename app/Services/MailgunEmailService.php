@@ -11,7 +11,7 @@ class MailgunEmailService
 {
     public function sendPasswordReset(User $user, string $token): void
     {
-        $url = rtrim((string) config('services.frontend.url'), '/')
+        $url = $this->passwordResetBaseUrl()
             .'/auth/reset-password?token='.urlencode($token)
             .'&email='.urlencode($user->email);
 
@@ -24,7 +24,7 @@ class MailgunEmailService
 
     public function sendWelcome(User $user, ?string $plainPassword = null): void
     {
-        $url = rtrim((string) config('services.frontend.url'), '/').'/auth/login';
+        $url = $this->publicBaseUrl().'/auth/login';
         $passwordLine = $plainPassword ? "\nContrasena inicial: {$plainPassword}\n" : '';
 
         $this->send(
@@ -32,6 +32,21 @@ class MailgunEmailService
             'Bienvenido a NidoQuest',
             "Hola {$user->name},\n\nTu acceso a NidoQuest esta listo.\n{$passwordLine}\nIngresa aqui:\n{$url}\n\nDesde tu Nido podras acompanhar misiones, estrellas y recompensas."
         );
+    }
+
+    private function passwordResetBaseUrl(): string
+    {
+        return $this->publicBaseUrl();
+    }
+
+    private function publicBaseUrl(): string
+    {
+        return $this->frontendBaseUrl() ?: rtrim((string) config('app.url'), '/');
+    }
+
+    private function frontendBaseUrl(): string
+    {
+        return rtrim((string) config('services.frontend.url'), '/');
     }
 
     private function send(string $to, string $subject, string $text): void

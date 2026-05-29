@@ -17,7 +17,13 @@ class MissionController extends Controller
 {
     public function index(TenantContext $tenantContext)
     {
-        return MissionResource::collection(Mission::forTenant($tenantContext->id())->with(['explorer', 'growthArea', 'schedule'])->latest()->paginate());
+        $perPage = min(max((int) request('per_page', 50), 1), 100);
+        $missions = Mission::forTenant($tenantContext->id())
+            ->with(['explorer', 'growthArea', 'schedule'])
+            ->when(request('status'), fn ($query, string $status) => $query->where('status', $status))
+            ->latest();
+
+        return MissionResource::collection($missions->paginate($perPage));
     }
 
     public function store(StoreMissionRequest $request, TenantContext $tenantContext)

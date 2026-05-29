@@ -10,7 +10,7 @@ return [
     ],
 
     'frontend' => [
-        'url' => env('FRONTEND_URL', env('APP_URL', 'http://localhost:3000')),
+        'url' => env('FRONTEND_URL', ''),
     ],
 
     'wompi' => [

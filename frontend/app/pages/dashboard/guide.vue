@@ -134,6 +134,17 @@ const { data: missions, refresh: refreshMissions } = await useAsyncData('guide-m
     ends_at: mission.ends_at ? String(mission.ends_at).slice(0, 10) : '',
   }))
 })
+const { data: reviewMissions, refresh: refreshReviewMissions } = await useAsyncData('guide-review-missions', async () => {
+  const response = await request<{ data: Mission[] | { data?: Mission[] } }>('/missions?status=submitted&per_page=100')
+  const items = Array.isArray(response.data) ? response.data : response.data.data || []
+
+  return items.map((mission) => ({
+    ...mission,
+    due_date: mission.due_date ? String(mission.due_date).slice(0, 10) : '',
+    starts_at: mission.starts_at ? String(mission.starts_at).slice(0, 10) : '',
+    ends_at: mission.ends_at ? String(mission.ends_at).slice(0, 10) : '',
+  }))
+})
 const { data: rewards, refresh: refreshRewards } = await useAsyncData('guide-rewards', async () => {
   const response = await request<{ data: Reward[] | { data?: Reward[] } }>('/rewards')
 
@@ -152,7 +163,7 @@ const stats = computed(() => [
   { key: 'requestedRewards', value: dashboard.value?.requested_rewards ?? 0 },
 ])
 
-const submittedMissions = computed(() => (missions.value || []).filter((mission) => mission.status === 'submitted'))
+const submittedMissions = computed(() => reviewMissions.value || [])
 
 const weeklyProgress = computed(() => {
   const progress = dashboard.value?.weekly_progress ?? 0
@@ -178,7 +189,7 @@ function resetMessages() {
 }
 
 async function reloadWorkspace() {
-  await Promise.all([refreshDashboard(), refreshExplorers(), refreshMissions(), refreshRewards(), refreshGuides()])
+  await Promise.all([refreshDashboard(), refreshExplorers(), refreshMissions(), refreshReviewMissions(), refreshRewards(), refreshGuides()])
 }
 
 async function createExplorer() {

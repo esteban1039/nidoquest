@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { register, clearSession } = useSession()
 const loading = ref(false)
 const error = ref('')
@@ -18,7 +18,7 @@ async function submit() {
   error.value = ''
 
   try {
-    await register(form)
+    await register({ ...form, locale: locale.value })
     await navigateTo('/onboarding')
   } catch (registerError) {
     error.value = getApiErrorMessage(registerError, 'No pudimos crear el Nido. Revisa los datos y que el backend esté encendido.')
