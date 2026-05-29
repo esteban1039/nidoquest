@@ -31,6 +31,7 @@ Route::middleware('throttle:api')->group(function (): void {
         Route::get('/guides', [GuideController::class, 'index']);
         Route::post('/guides', [GuideController::class, 'store']);
         Route::put('/guides/{guide}', [GuideController::class, 'update']);
+        Route::delete('/guides/{guide}', [GuideController::class, 'destroy']);
 
         Route::apiResource('nests', TenantController::class)->parameters(['nests' => 'nest'])->except(['destroy']);
         Route::apiResource('explorers', ExplorerController::class);

@@ -21,6 +21,8 @@ class StoreMissionRequest extends FormRequest
             'stars' => ['required', 'integer', 'min:1', 'max:100'],
             'frequency' => ['required', 'in:once,daily,weekly,monthly,custom'],
             'due_date' => ['nullable', 'date'],
+            'starts_at' => ['nullable', 'date'],
+            'ends_at' => ['nullable', 'date', 'after_or_equal:starts_at'],
             'suggested_time' => ['nullable', 'date_format:H:i'],
             'evidence_required' => ['boolean'],
             'evidence_type' => ['required', 'in:none,text,photo,guide_confirmation'],

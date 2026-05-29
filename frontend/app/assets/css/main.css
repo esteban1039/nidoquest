@@ -953,6 +953,21 @@ select {
   background: #f7fbf8;
 }
 
+.explorer-row small,
+.mission-action small,
+.reward-button small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.button.danger {
+  border-color: #f4b4a8;
+  color: #8e2f23;
+}
+
 .progress-bars {
   display: grid;
   grid-template-columns: repeat(7, 1fr);

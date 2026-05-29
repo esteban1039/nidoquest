@@ -42,6 +42,8 @@ type Mission = {
   difficulty: string
   evidence_type: string
   due_date?: string | null
+  starts_at?: string | null
+  ends_at?: string | null
   active: boolean
 }
 
@@ -90,6 +92,8 @@ const missionForm = reactive({
   difficulty: 'easy',
   evidence_type: 'none',
   due_date: new Date().toISOString().slice(0, 10),
+  starts_at: new Date().toISOString().slice(0, 10),
+  ends_at: '',
 })
 
 const rewardForm = reactive({
@@ -126,6 +130,8 @@ const { data: missions, refresh: refreshMissions } = await useAsyncData('guide-m
   return items.map((mission) => ({
     ...mission,
     due_date: mission.due_date ? String(mission.due_date).slice(0, 10) : '',
+    starts_at: mission.starts_at ? String(mission.starts_at).slice(0, 10) : '',
+    ends_at: mission.ends_at ? String(mission.ends_at).slice(0, 10) : '',
   }))
 })
 const { data: rewards, refresh: refreshRewards } = await useAsyncData('guide-rewards', async () => {
@@ -217,6 +223,8 @@ async function createMission() {
         stars: Number(missionForm.stars),
         frequency: missionForm.frequency,
         due_date: missionForm.due_date || undefined,
+        starts_at: missionForm.starts_at || missionForm.due_date || undefined,
+        ends_at: missionForm.ends_at || undefined,
         difficulty: missionForm.difficulty,
         evidence_required: false,
         evidence_type: missionForm.evidence_type,
@@ -226,6 +234,7 @@ async function createMission() {
 
     success.value = 'Mision creada.'
     missionForm.title = ''
+    missionForm.ends_at = ''
     await reloadWorkspace()
   } catch (createError) {
     error.value = getApiErrorMessage(createError, 'No pudimos crear la mision.')
@@ -348,6 +357,8 @@ async function updateMission(mission: Mission) {
         stars: Number(mission.stars),
         frequency: mission.frequency || 'daily',
         due_date: mission.due_date || undefined,
+        starts_at: mission.starts_at || mission.due_date || undefined,
+        ends_at: mission.ends_at || undefined,
         difficulty: mission.difficulty || 'easy',
         evidence_required: false,
         evidence_type: mission.evidence_type || 'none',
@@ -386,6 +397,63 @@ async function updateReward(reward: Reward) {
     await reloadWorkspace()
   } catch (updateError) {
     error.value = getApiErrorMessage(updateError, 'No pudimos actualizar la recompensa.')
+  } finally {
+    saving.value = false
+  }
+}
+
+async function deleteMission(mission: Mission) {
+  if (!confirm(`Borrar la mision "${mission.title}"?`)) {
+    return
+  }
+
+  saving.value = true
+  resetMessages()
+
+  try {
+    await request(`/missions/${mission.id}`, { method: 'DELETE' })
+    success.value = 'Mision borrada.'
+    await reloadWorkspace()
+  } catch (deleteError) {
+    error.value = getApiErrorMessage(deleteError, 'No pudimos borrar la mision.')
+  } finally {
+    saving.value = false
+  }
+}
+
+async function deleteReward(reward: Reward) {
+  if (!confirm(`Borrar la recompensa "${reward.name}"?`)) {
+    return
+  }
+
+  saving.value = true
+  resetMessages()
+
+  try {
+    await request(`/rewards/${reward.id}`, { method: 'DELETE' })
+    success.value = 'Recompensa borrada.'
+    await reloadWorkspace()
+  } catch (deleteError) {
+    error.value = getApiErrorMessage(deleteError, 'No pudimos borrar la recompensa.')
+  } finally {
+    saving.value = false
+  }
+}
+
+async function deleteGuide(guide: Guide) {
+  if (!confirm(`Borrar el formador "${guide.name}"?`)) {
+    return
+  }
+
+  saving.value = true
+  resetMessages()
+
+  try {
+    await request(`/guides/${guide.id}`, { method: 'DELETE' })
+    success.value = 'Formador borrado.'
+    await reloadWorkspace()
+  } catch (deleteError) {
+    error.value = getApiErrorMessage(deleteError, 'No pudimos borrar el formador.')
   } finally {
     saving.value = false
   }
@@ -512,7 +580,7 @@ async function toggleGuide(guide: Guide) {
               <button class="button small primary" type="button" :disabled="saving" @click="updateExplorer(explorer)">Guardar</button>
             </template>
             <template v-else>
-              <span>{{ explorer.name }}<small>{{ explorer.email || 'Sin ingreso propio' }} · {{ explorer.status || 'active' }}</small></span>
+              <span>{{ explorer.name }}<small>{{ explorer.email || 'Sin ingreso propio' }} - {{ explorer.status || 'active' }}</small></span>
               <strong>{{ explorer.available_stars }} {{ t('ui.stars') }}</strong>
               <button class="button small" type="button" @click="editingExplorer = explorer.id">Editar</button>
               <button class="button small" type="button" @click="toggleExplorer(explorer)">{{ explorer.status === 'inactive' ? 'Activar' : 'Inactivar' }}</button>
@@ -544,8 +612,26 @@ async function toggleGuide(guide: Guide) {
             <input v-model.number="missionForm.stars" type="number" min="1" max="100" required>
           </label>
           <label>
-            <span>Fecha para mostrarla</span>
+            <span>Repeticion</span>
+            <select v-model="missionForm.frequency">
+              <option value="once">Una sola vez</option>
+              <option value="daily">Diaria</option>
+              <option value="weekly">Semanal</option>
+              <option value="monthly">Mensual</option>
+              <option value="custom">Por rango de fechas</option>
+            </select>
+          </label>
+          <label>
+            <span>Fecha inicial</span>
             <input v-model="missionForm.due_date" type="date">
+          </label>
+          <label v-if="missionForm.frequency !== 'once'">
+            <span>Repetir desde</span>
+            <input v-model="missionForm.starts_at" type="date">
+          </label>
+          <label v-if="missionForm.frequency !== 'once'">
+            <span>Repetir hasta</span>
+            <input v-model="missionForm.ends_at" type="date">
           </label>
           <button class="button primary full" type="submit" :disabled="saving || !explorers?.length">Crear mision</button>
         </form>
@@ -561,14 +647,24 @@ async function toggleGuide(guide: Guide) {
             <template v-if="editingMission === mission.id">
               <input v-model="mission.title" aria-label="Titulo de la mision">
               <input v-model.number="mission.stars" type="number" min="1" max="100" aria-label="Estrellas">
+              <select v-model="mission.frequency" aria-label="Repeticion">
+                <option value="once">Una sola vez</option>
+                <option value="daily">Diaria</option>
+                <option value="weekly">Semanal</option>
+                <option value="monthly">Mensual</option>
+                <option value="custom">Por rango</option>
+              </select>
               <input v-model="mission.due_date" type="date" aria-label="Fecha">
+              <input v-model="mission.starts_at" type="date" aria-label="Inicio">
+              <input v-model="mission.ends_at" type="date" aria-label="Fin">
               <button class="button small primary" type="button" :disabled="saving" @click="updateMission(mission)">Guardar</button>
             </template>
             <template v-else>
-              <span>{{ mission.title }}<small>{{ mission.status }}</small></span>
+              <span>{{ mission.title }}<small>{{ mission.status }} - {{ mission.frequency }}</small></span>
               <strong>{{ mission.stars }} {{ t('ui.stars') }}</strong>
               <button class="button small" type="button" @click="editingMission = mission.id">Editar</button>
               <button class="button small" type="button" @click="toggleMission(mission)">{{ mission.active ? 'Inactivar' : 'Activar' }}</button>
+              <button class="button small danger" type="button" :disabled="saving" @click="deleteMission(mission)">Borrar</button>
             </template>
           </div>
         </div>
@@ -609,6 +705,7 @@ async function toggleGuide(guide: Guide) {
               <strong>{{ reward.stars_cost }} {{ t('ui.stars') }}</strong>
               <button class="button small" type="button" @click="editingReward = reward.id">Editar</button>
               <button class="button small" type="button" @click="toggleReward(reward)">{{ reward.active ? 'Inactivar' : 'Activar' }}</button>
+              <button class="button small danger" type="button" :disabled="saving" @click="deleteReward(reward)">Borrar</button>
             </template>
           </div>
         </div>
@@ -640,10 +737,11 @@ async function toggleGuide(guide: Guide) {
               <button class="button small primary" type="button" :disabled="saving" @click="updateGuide(guide)">Guardar</button>
             </template>
             <template v-else>
-              <span>{{ guide.name }}<small>{{ guide.email }} · {{ guide.active ? 'Activo' : 'Inactivo' }}</small></span>
+              <span>{{ guide.name }}<small>{{ guide.email }} - {{ guide.active ? 'Activo' : 'Inactivo' }}</small></span>
               <strong>{{ guide.last_login_at ? new Date(guide.last_login_at).toLocaleDateString() : 'Sin ingreso' }}</strong>
               <button class="button small" type="button" @click="editingGuide = guide.id">Editar</button>
               <button class="button small" type="button" @click="toggleGuide(guide)">{{ guide.active ? 'Inactivar' : 'Activar' }}</button>
+              <button class="button small danger" type="button" :disabled="saving" @click="deleteGuide(guide)">Borrar</button>
             </template>
           </div>
         </div>

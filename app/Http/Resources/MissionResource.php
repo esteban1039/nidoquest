@@ -19,6 +19,8 @@ class MissionResource extends JsonResource
             'stars' => $this->stars,
             'frequency' => $this->frequency,
             'due_date' => $this->due_date,
+            'starts_at' => $this->schedule?->starts_at,
+            'ends_at' => $this->schedule?->ends_at,
             'suggested_time' => $this->suggested_time,
             'evidence_required' => $this->evidence_required,
             'evidence_type' => $this->evidence_type,

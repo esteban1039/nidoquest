@@ -72,4 +72,20 @@ class GuideController extends Controller
 
         return response()->json(['data' => $guide->only(['id', 'name', 'email', 'last_login_at', 'active'])]);
     }
+
+    public function destroy(User $guide, TenantContext $tenantContext)
+    {
+        abort_unless(in_array(request()->user()?->role, [User::ROLE_SUPER_ADMIN, User::ROLE_GUIDE], true), 403);
+        abort_unless($guide->role === User::ROLE_GUIDE && $guide->belongsToTenant($tenantContext->id()), 404);
+        abort_if($guide->is(request()->user()), 422, 'No puedes borrar tu propio usuario.');
+        abort_if($guide->ownedTenants()->whereKey($tenantContext->id())->exists(), 422, 'No puedes borrar el propietario del Nido.');
+
+        $guide->tenants()->detach($tenantContext->id());
+
+        if (! $guide->tenants()->exists() && ! $guide->ownedTenants()->exists()) {
+            $guide->delete();
+        }
+
+        return response()->noContent();
+    }
 }

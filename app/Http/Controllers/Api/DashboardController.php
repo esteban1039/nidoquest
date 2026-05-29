@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Explorer;
 use App\Models\Mission;
+use App\Models\MissionSubmission;
 use App\Models\RewardRedemption;
 use App\Models\Tenant;
 use App\Services\StarService;
@@ -24,10 +25,10 @@ class DashboardController extends Controller
             ]),
             'pending_missions' => Mission::forTenant($tenantId)->where('status', 'pending')->count(),
             'submitted_missions' => Mission::forTenant($tenantId)->where('status', 'submitted')->count(),
-            'completed_missions' => Mission::forTenant($tenantId)->where('status', 'approved')->count(),
+            'completed_missions' => MissionSubmission::forTenant($tenantId)->where('status', 'approved')->count(),
             'expired_missions' => Mission::forTenant($tenantId)->where('status', 'expired')->count(),
             'requested_rewards' => RewardRedemption::forTenant($tenantId)->where('status', 'requested')->count(),
-            'weekly_progress' => Mission::forTenant($tenantId)->where('updated_at', '>=', now()->subWeek())->where('status', 'approved')->count(),
+            'weekly_progress' => MissionSubmission::forTenant($tenantId)->where('reviewed_at', '>=', now()->subWeek())->where('status', 'approved')->count(),
             'consistency_indicator' => Mission::forTenant($tenantId)->where('created_at', '>=', now()->subWeek())->count(),
         ]);
     }
@@ -47,7 +48,11 @@ class DashboardController extends Controller
                 })
                 ->latest()
                 ->get(),
-            'weekly_progress' => $explorer->missions()->where('updated_at', '>=', now()->subWeek())->where('status', 'approved')->count(),
+            'weekly_progress' => MissionSubmission::query()
+                ->where('explorer_id', $explorer->id)
+                ->where('reviewed_at', '>=', now()->subWeek())
+                ->where('status', 'approved')
+                ->count(),
             'available_rewards' => $explorer->tenant->rewards()->where('active', true)->get(),
             'badges' => $explorer->badges,
             'daily_message' => 'Cada paso cuenta. Hoy puedes avanzar con calma y constancia.',
@@ -81,7 +86,7 @@ class DashboardController extends Controller
             'trial_tenants' => Tenant::where('status', 'trial')->count(),
             'explorers' => Explorer::count(),
             'missions' => Mission::count(),
-            'missions_approved' => Mission::where('status', 'approved')->count(),
+            'missions_approved' => MissionSubmission::where('status', 'approved')->count(),
             'tenant_rows' => $tenants,
         ]);
     }
