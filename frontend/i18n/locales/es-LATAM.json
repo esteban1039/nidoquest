@@ -5,7 +5,7 @@
   },
   "nav": {
     "home": "Inicio",
-    "how": "Cómo funciona",
+    "how": "Como funciona",
     "pricing": "Precio",
     "faq": "Preguntas",
     "login": "Ingresar",
@@ -14,15 +14,39 @@
     "logout": "Salir"
   },
   "landing": {
-    "heroTitle": "Convierte los hábitos de casa en misiones motivadoras",
-    "heroSubtitle": "NidoQuest ayuda a padres, tutores y familias a formar hábitos positivos en niños y jóvenes usando misiones, estrellas y recompensas sanas.",
+    "heroTitle": "Haz que tus hijos quieran cumplir sus rutinas, sin convertir cada dia en una pelea",
+    "heroSubtitle": "NidoQuest convierte responsabilidades reales en misiones, estrellas y recompensas sanas para que las familias formen habitos con claridad, motivacion y seguimiento.",
     "primaryCta": "Crear mi Nido",
-    "secondaryCta": "Ver cómo funciona",
+    "secondaryCta": "Ver como funciona",
+    "proof": {
+      "habits": "Rutinas visibles",
+      "rewards": "Recompensas bajo control",
+      "progress": "Progreso para cada explorador"
+    },
+    "product": {
+      "status": "Nido activo",
+      "nest": "Panel familiar",
+      "family": "Familia Castano",
+      "today": "para hoy",
+      "week": "esta semana",
+      "ready": "listas para redimir",
+      "missionOne": "Leer 20 minutos antes de dormir",
+      "missionTwo": "Organizar habitacion sin recordatorio"
+    },
+    "outcomes": {
+      "argumentsTitle": "Menos desgaste",
+      "argumentsText": "La tarea deja de ser un regano repetido y se vuelve un acuerdo visible.",
+      "routineTitle": "Mas constancia",
+      "routineText": "Cada explorador sabe que debe hacer, cuanto vale y como avanza.",
+      "screensTitle": "Mejores premios",
+      "screensText": "Tu eliges recompensas sanas: tiempo en familia, planes, permisos o experiencias."
+    },
     "problemTitle": "El reto diario",
-    "problemText": "Sabemos que repetir todos los días las mismas tareas puede ser agotador: estudiar, organizar la habitación, limitar pantallas, cumplir rutinas y mantener buenos hábitos.",
+    "problemText": "Sabemos que repetir todos los dias las mismas tareas puede ser agotador: estudiar, organizar la habitacion, limitar pantallas, cumplir rutinas y mantener buenos habitos.",
     "solutionTitle": "Una forma clara y positiva",
-    "solutionText": "Con NidoQuest, cada responsabilidad se convierte en una misión clara, medible y motivadora.",
-    "howTitle": "Cómo funciona",
+    "solutionText": "Con NidoQuest, cada responsabilidad se convierte en una mision clara, medible y motivadora.",
+    "howTitle": "Como funciona",
+    "howHeadline": "En pocos minutos tienes un sistema familiar listo para crear exploradores, misiones y recompensas.",
     "steps": {
       "nest": "Crea tu Nido",
       "explorers": "Agrega tus Exploradores",
@@ -31,28 +55,34 @@
       "rewards": "Redime Recompensas"
     },
     "benefitsTitle": "Beneficios",
+    "benefitsHeadline": "Pensado para vender tranquilidad: estructura para los padres y motivacion para los hijos.",
     "benefits": {
       "talks": "Menos discusiones en casa",
-      "motivation": "Más motivación",
-      "habits": "Hábitos visibles",
+      "motivation": "Mas motivacion",
+      "habits": "Habitos visibles",
       "controlledRewards": "Recompensas controladas",
       "progress": "Progreso medible",
-      "support": "Acompañamiento positivo"
+      "support": "Acompanamiento positivo"
     },
+    "trustEyebrow": "Por que enamora",
+    "trustTitle": "No es otra app de tareas. Es un sistema para recuperar calma en casa.",
+    "trustQuote": "Cuando el nino ve sus misiones y sus estrellas, la conversacion cambia: ya no es solo obedecer, es avanzar.",
     "priceTitle": "Plan anual",
-    "price": "COP $150.000 / año por Nido",
+    "price": "COP $150.000 / ano por Nido",
+    "priceText": "Un valor simple para empezar a organizar habitos, recompensas y seguimiento familiar durante todo el ano.",
     "faqTitle": "Preguntas frecuentes",
+    "faqHeadline": "Respuestas claras antes de crear tu Nido",
     "faq": {
-      "parentingQ": "¿Esto reemplaza la crianza?",
-      "parentingA": "No. Es una herramienta de apoyo para acompañar hábitos y responsabilidades.",
-      "childrenQ": "¿Puedo usarlo con más de un hijo?",
-      "childrenA": "Sí. Cada Nido puede tener varios Exploradores.",
-      "customRewardsQ": "¿Puedo crear mis propias recompensas?",
-      "customRewardsA": "Sí.",
-      "mobileQ": "¿Funciona en celular?",
-      "mobileA": "Sí. Es una PWA instalable.",
-      "languagesQ": "¿Tiene varios idiomas?",
-      "languagesA": "Sí. Español Latino, Inglés y Francés."
+      "parentingQ": "Esto reemplaza la crianza?",
+      "parentingA": "No. Es una herramienta de apoyo para acompanar habitos y responsabilidades.",
+      "childrenQ": "Puedo usarlo con mas de un hijo?",
+      "childrenA": "Si. Cada Nido puede tener varios Exploradores.",
+      "customRewardsQ": "Puedo crear mis propias recompensas?",
+      "customRewardsA": "Si. Tu defines recompensas familiares, permisos, experiencias o beneficios sanos.",
+      "mobileQ": "Funciona en celular?",
+      "mobileA": "Si. Es una PWA instalable.",
+      "languagesQ": "Tiene varios idiomas?",
+      "languagesA": "Si. Espanol Latino, Ingles y Frances."
     }
   },
   "auth": {
@@ -60,8 +90,8 @@
     "create": "Crea tu Nido",
     "name": "Nombre",
     "email": "Correo",
-    "password": "Contraseña",
-    "confirmPassword": "Confirmar contraseña",
+    "password": "Contrasena",
+    "confirmPassword": "Confirmar contrasena",
     "tenantName": "Nombre del Nido",
     "login": "Ingresar",
     "register": "Crear cuenta",
@@ -72,11 +102,11 @@
   },
   "onboarding": {
     "title": "Prepara tu Nido",
-    "subtitle": "Empieza con una estructura simple y positiva para acompañar hábitos.",
+    "subtitle": "Empieza con una estructura simple y positiva para acompanar habitos.",
     "nestName": "Nombre del Nido",
     "explorerName": "Primer Explorador",
-    "focusArea": "Área inicial",
-    "mission": "Primera misión",
+    "focusArea": "Area inicial",
+    "mission": "Primera mision",
     "continue": "Entrar al panel",
     "areas": {
       "study": "Estudio",
@@ -86,7 +116,7 @@
     }
   },
   "dashboard": {
-    "guideTitle": "Panel del Guía",
+    "guideTitle": "Panel del Guia",
     "explorerTitle": "Panel del Explorador",
     "adminTitle": "Administrador SaaS",
     "starsByExplorer": "Estrellas por Explorador",
@@ -95,24 +125,24 @@
     "expiredMissions": "Misiones vencidas",
     "requestedRewards": "Recompensas solicitadas",
     "weeklyProgress": "Progreso semanal",
-    "strongAreas": "Áreas fuertes",
-    "areasToSupport": "Áreas por reforzar",
+    "strongAreas": "Areas fuertes",
+    "areasToSupport": "Areas por reforzar",
     "consistency": "Constancia",
-    "usedRewards": "Recompensas más usadas",
+    "usedRewards": "Recompensas mas usadas",
     "screenTime": "Tiempo de pantalla redimido",
     "availableStars": "Estrellas disponibles",
     "todayMissions": "Misiones de hoy",
-    "nextGoal": "Próxima meta",
+    "nextGoal": "Proxima meta",
     "availableRewards": "Recompensas disponibles",
     "badges": "Insignias",
-    "dailyMessage": "Mensaje del día",
+    "dailyMessage": "Mensaje del dia",
     "markDone": "Marcar realizada",
     "redeem": "Solicitar recompensa",
     "tenants": "Nidos",
     "users": "Usuarios",
     "plans": "Planes",
     "payments": "Pagos",
-    "globalMetrics": "Métricas globales"
+    "globalMetrics": "Metricas globales"
   },
   "ui": {
     "stars": "Estrellas",
@@ -123,8 +153,8 @@
     "trial": "Prueba",
     "calmProgress": "Avance tranquilo",
     "save": "Guardar",
-    "offlineTitle": "Estás sin conexión",
-    "offlineText": "Puedes volver cuando tengas internet. Tu Nido estará esperándote."
+    "offlineTitle": "Estas sin conexion",
+    "offlineText": "Puedes volver cuando tengas internet. Tu Nido estara esperandote."
   },
   "pwa": {
     "title": "Lleva tu Nido contigo",
@@ -136,31 +166,31 @@
   "notifications": {
     "title": "Notificaciones",
     "close": "Cerrar",
-    "markRead": "Marcar leída"
+    "markRead": "Marcar leida"
   },
   "billing": {
-    "eyebrow": "Suscripción",
-    "title": "Activa tu Nido por un año",
-    "subtitle": "Un plan sencillo para acompañar hábitos en familia sin anuncios ni rankings tóxicos.",
+    "eyebrow": "Suscripcion",
+    "title": "Activa tu Nido por un ano",
+    "subtitle": "Un plan sencillo para acompanar habitos en familia sin anuncios ni rankings toxicos.",
     "checkoutTitle": "Pago seguro con Wompi",
     "checkoutText": "Generamos la firma en el backend para proteger el monto, la referencia y la moneda antes de enviarte al checkout.",
     "prepare": "Preparar pago",
     "pay": "Pagar con Wompi",
     "reference": "Referencia",
     "expires": "Expira",
-    "checkoutFallback": "No pudimos preparar el checkout ahora. Revisa que el backend esté activo y las llaves Wompi estén configuradas.",
-    "bannerTitle": "Mantén activo el plan anual del Nido",
+    "checkoutFallback": "No pudimos preparar el checkout ahora. Revisa que el backend este activo y las llaves Wompi esten configuradas.",
+    "bannerTitle": "Manten activo el plan anual del Nido",
     "manage": "Gestionar plan",
     "returnEyebrow": "Pago",
     "verifying": "Verificando pago",
     "returnTitle": "Gracias por cuidar este Nido",
-    "returnText": "Estamos esperando la confirmación de Wompi.",
+    "returnText": "Estamos esperando la confirmacion de Wompi.",
     "status": {
-      "approved": "Pago aprobado. Tu suscripción anual queda activa.",
+      "approved": "Pago aprobado. Tu suscripcion anual queda activa.",
       "declined": "El pago no fue aprobado. Puedes intentarlo nuevamente con calma.",
       "voided": "El pago fue anulado.",
-      "error": "Wompi reportó un error. Revisa el método de pago o intenta más tarde.",
-      "pending": "El pago sigue en revisión."
+      "error": "Wompi reporto un error. Revisa el metodo de pago o intenta mas tarde.",
+      "pending": "El pago sigue en revision."
     }
   }
 }
