@@ -70,6 +70,7 @@ const missionForm = reactive({
   frequency: 'daily',
   difficulty: 'easy',
   evidence_type: 'none',
+  due_date: new Date().toISOString().slice(0, 10),
 })
 
 const rewardForm = reactive({
@@ -175,6 +176,7 @@ async function createMission() {
         growth_area_id: Number(missionForm.growth_area_id),
         stars: Number(missionForm.stars),
         frequency: missionForm.frequency,
+        due_date: missionForm.due_date || undefined,
         difficulty: missionForm.difficulty,
         evidence_required: false,
         evidence_type: missionForm.evidence_type,
@@ -320,6 +322,10 @@ async function createReward() {
           <label>
             <span>Estrellas</span>
             <input v-model.number="missionForm.stars" type="number" min="1" max="100" required>
+          </label>
+          <label>
+            <span>Fecha para mostrarla</span>
+            <input v-model="missionForm.due_date" type="date">
           </label>
           <button class="button primary full" type="submit" :disabled="saving || !explorers?.length">Crear mision</button>
         </form>

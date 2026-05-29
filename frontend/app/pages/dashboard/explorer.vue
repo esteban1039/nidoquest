@@ -12,12 +12,15 @@ type Explorer = {
 
 type ExplorerDashboard = {
   available_stars: number
-  today_missions: { id: number; title: string }[]
+  today_missions: { id: number; title: string; stars?: number }[]
   available_rewards: { id: number; name: string }[]
   badges: { id: number; name: string }[]
   weekly_progress: number
   daily_message: string
 }
+
+const submittingMission = ref<number | null>(null)
+const error = ref('')
 
 const { data: explorers } = await useAsyncData('explorers', async () => {
   const response = await request<{ data: Explorer[] | { data?: Explorer[] } }>('/explorers')
@@ -34,6 +37,24 @@ const { data: explorer } = await useAsyncData(
     : Promise.resolve(null),
   { watch: [activeExplorer] }
 )
+
+async function submitMission(missionId: number) {
+  submittingMission.value = missionId
+  error.value = ''
+
+  try {
+    await request(`/missions/${missionId}/submit`, {
+      method: 'POST',
+      body: {},
+    })
+
+    await refreshNuxtData('explorer-dashboard')
+  } catch (submitError) {
+    error.value = getApiErrorMessage(submitError, 'No pudimos marcar la mision como realizada.')
+  } finally {
+    submittingMission.value = null
+  }
+}
 </script>
 
 <template>
@@ -52,10 +73,13 @@ const { data: explorer } = await useAsyncData(
           <h2>{{ t('dashboard.todayMissions') }}</h2>
           <span>{{ explorer?.weekly_progress || 0 }}%</span>
         </div>
+        <p v-if="error" class="form-error">{{ error }}</p>
         <div class="mission-list">
           <div v-for="mission in explorer?.today_missions || []" :key="mission.id" class="mission-action">
-            <span>{{ mission.title }}</span>
-            <button class="button small primary" type="button">{{ t('dashboard.markDone') }}</button>
+            <span>{{ mission.title }} <strong v-if="mission.stars">+{{ mission.stars }} {{ t('ui.stars') }}</strong></span>
+            <button class="button small primary" type="button" :disabled="submittingMission === mission.id" @click="submitMission(mission.id)">
+              {{ submittingMission === mission.id ? t('auth.loading') : t('dashboard.markDone') }}
+            </button>
           </div>
           <div v-if="!explorer?.today_missions?.length" class="mission-action">
             <span>Aun no hay misiones para hoy.</span>

@@ -37,7 +37,15 @@ class DashboardController extends Controller
 
         return response()->json([
             'available_stars' => $stars->balance($explorer),
-            'today_missions' => $explorer->missions()->whereDate('due_date', today())->where('active', true)->get(),
+            'today_missions' => $explorer->missions()
+                ->where('active', true)
+                ->whereIn('status', ['pending', 'rejected'])
+                ->where(function ($query): void {
+                    $query->whereNull('due_date')
+                        ->orWhereDate('due_date', '<=', today());
+                })
+                ->latest()
+                ->get(),
             'weekly_progress' => $explorer->missions()->where('updated_at', '>=', now()->subWeek())->where('status', 'approved')->count(),
             'available_rewards' => $explorer->tenant->rewards()->where('active', true)->get(),
             'badges' => $explorer->badges,

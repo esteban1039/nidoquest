@@ -14,7 +14,13 @@ class ExplorerController extends Controller
 {
     public function index(TenantContext $tenantContext)
     {
-        return ExplorerResource::collection(Explorer::forTenant($tenantContext->id())->latest()->paginate());
+        $query = Explorer::forTenant($tenantContext->id())->latest();
+
+        if (request()->user()->role === User::ROLE_EXPLORER) {
+            $query->where('user_id', request()->user()->id);
+        }
+
+        return ExplorerResource::collection($query->paginate());
     }
 
     public function store(StoreExplorerRequest $request, TenantContext $tenantContext)
