@@ -3,7 +3,7 @@ const { t } = useI18n()
 const { user, tenant, logout, role } = useSession()
 const route = useRoute()
 
-const guideTab = computed(() => String(route.query.tab || 'explorers'))
+const guideTab = computed(() => String(route.query.tab || 'overview'))
 const isProfile = computed(() => route.path === '/profile')
 const isBilling = computed(() => route.path.startsWith('/billing'))
 
@@ -22,6 +22,7 @@ defineProps<{
       </NuxtLink>
       <nav class="side-nav" aria-label="Dashboard">
         <template v-if="role === 'guide'">
+          <NuxtLink to="/dashboard/guide" :class="{ active: guideTab === 'overview' && route.path === '/dashboard/guide' }">Indicadores</NuxtLink>
           <NuxtLink to="/dashboard/guide?tab=explorers" :class="{ active: guideTab === 'explorers' && route.path === '/dashboard/guide' }">Exploradores</NuxtLink>
           <NuxtLink to="/dashboard/guide?tab=missions" :class="{ active: guideTab === 'missions' && route.path === '/dashboard/guide' }">Misiones</NuxtLink>
           <NuxtLink to="/dashboard/guide?tab=rewards" :class="{ active: guideTab === 'rewards' && route.path === '/dashboard/guide' }">Recompensas</NuxtLink>

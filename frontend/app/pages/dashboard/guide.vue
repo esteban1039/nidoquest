@@ -77,12 +77,14 @@ type Guide = {
   last_login_at?: string | null
 }
 
-const activeTab = computed<'explorers' | 'missions' | 'rewards' | 'guides'>({
+type GuideTab = 'overview' | 'explorers' | 'missions' | 'rewards' | 'guides'
+
+const activeTab = computed<GuideTab>({
   get() {
-    return ['explorers', 'missions', 'rewards', 'guides'].includes(String(route.query.tab)) ? String(route.query.tab) as 'explorers' | 'missions' | 'rewards' | 'guides' : 'explorers'
+    return ['explorers', 'missions', 'rewards', 'guides'].includes(String(route.query.tab)) ? String(route.query.tab) as GuideTab : 'overview'
   },
-  set(tab) {
-    navigateTo({ path: '/dashboard/guide', query: { tab } })
+  set(tab: GuideTab) {
+    navigateTo(tab === 'overview' ? '/dashboard/guide' : { path: '/dashboard/guide', query: { tab } })
   },
 })
 const saving = ref(false)
@@ -125,7 +127,8 @@ const editingGuide = ref<number | null>(null)
 const reviewingMission = ref<number | null>(null)
 const reviewingReward = ref<number | null>(null)
 
-const tabLabels: Record<'explorers' | 'missions' | 'rewards' | 'guides', string> = {
+const tabLabels: Record<GuideTab, string> = {
+  overview: 'Indicadores',
   explorers: 'Exploradores',
   missions: 'Misiones',
   rewards: 'Recompensas',
@@ -647,7 +650,20 @@ async function toggleGuide(guide: Guide) {
       </article>
     </section>
 
-    <section class="panel">
+    <section v-if="activeTab === 'overview'" class="panel">
+      <div class="panel-header">
+        <h2>Acciones del Nido</h2>
+        <span>Selecciona una opcion</span>
+      </div>
+      <div class="workspace-tabs">
+        <button class="button small" type="button" @click="activeTab = 'explorers'">Exploradores</button>
+        <button class="button small" type="button" @click="activeTab = 'missions'">Misiones</button>
+        <button class="button small" type="button" @click="activeTab = 'rewards'">Recompensas</button>
+        <button class="button small" type="button" @click="activeTab = 'guides'">Formadores</button>
+      </div>
+    </section>
+
+    <section v-if="activeTab !== 'overview'" class="panel">
       <div class="panel-header">
         <h2>Operacion del Nido</h2>
         <span>{{ tabLabels[activeTab] }}</span>
