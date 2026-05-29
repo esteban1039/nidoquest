@@ -1537,3 +1537,347 @@ select {
     flex-direction: column;
   }
 }
+
+/* Stronger sales landing pass */
+.landing {
+  background:
+    linear-gradient(180deg, #f4fbf8 0, #f7fbf8 34%, #ffffff 34%, #ffffff 52%, #eef7f5 52%, #eef7f5 68%, #f7fbf8 68%);
+}
+
+.landing .hero-section {
+  position: relative;
+  width: min(1500px, calc(100% - 80px));
+  min-height: calc(100vh - 72px);
+  grid-template-columns: minmax(560px, 1fr) minmax(560px, 690px);
+  gap: clamp(56px, 7vw, 110px);
+  padding: clamp(64px, 8vw, 112px) 0 clamp(44px, 6vw, 78px);
+}
+
+.landing .hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 34px -34px auto auto;
+  width: min(760px, 50vw);
+  height: min(760px, 50vw);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(121, 199, 197, 0.32), rgba(244, 201, 93, 0.24));
+  transform: rotate(3deg);
+  z-index: 0;
+}
+
+.landing .hero-copy,
+.landing .product-window {
+  position: relative;
+  z-index: 1;
+}
+
+.landing .hero-copy {
+  max-width: 760px;
+}
+
+.landing .hero-copy .eyebrow {
+  margin-bottom: 16px;
+  color: var(--mint-dark);
+  font-size: 14px;
+}
+
+.landing .hero-copy h1 {
+  max-width: 780px;
+  font-size: clamp(58px, 5.8vw, 104px);
+  line-height: 0.95;
+}
+
+.landing .hero-copy p:not(.eyebrow):not(.hero-note) {
+  max-width: 690px;
+  margin-top: 26px;
+  font-size: clamp(20px, 1.45vw, 25px);
+  line-height: 1.55;
+}
+
+.landing .hero-actions {
+  gap: 14px;
+  margin-top: 34px;
+}
+
+.landing .button.large {
+  min-height: 58px;
+  padding: 0 24px;
+  font-size: 15px;
+}
+
+.hero-note {
+  max-width: 660px;
+  margin: 18px 0 0;
+  color: var(--mint-dark);
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.landing .hero-proof {
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.landing .hero-proof span {
+  min-height: 44px;
+  padding: 12px 14px;
+  font-size: 14px;
+}
+
+.landing .product-window {
+  padding: 22px;
+  border: 1px solid rgba(32, 58, 56, 0.14);
+  box-shadow: 0 34px 90px rgba(31, 75, 72, 0.18);
+}
+
+.landing .product-bar {
+  min-height: 52px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+.landing .product-hero {
+  min-height: 170px;
+  margin-top: 16px;
+  padding: 30px;
+}
+
+.landing .product-hero strong {
+  font-size: clamp(38px, 3.2vw, 56px);
+}
+
+.landing .product-hero span {
+  font-size: clamp(34px, 2.8vw, 48px);
+}
+
+.landing .product-grid {
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.landing .product-card {
+  min-height: 150px;
+  padding: 20px;
+}
+
+.landing .product-card strong {
+  margin-top: 18px;
+  font-size: 44px;
+}
+
+.landing .product-card span {
+  font-size: 14px;
+}
+
+.landing .product-list {
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.landing .product-list div {
+  min-height: 68px;
+  padding: 14px;
+}
+
+.landing .product-list p {
+  font-size: 15px;
+}
+
+.landing .outcome-strip,
+.landing .split-section,
+.landing .band-section,
+.landing .social-proof-section,
+.landing .faq-section {
+  width: min(1380px, calc(100% - 80px));
+}
+
+.landing .outcome-strip {
+  gap: 18px;
+  padding-bottom: clamp(54px, 7vw, 92px);
+}
+
+.landing .outcome-strip article {
+  min-height: 160px;
+  padding: 28px;
+}
+
+.landing .outcome-strip strong {
+  font-size: clamp(28px, 2.4vw, 40px);
+}
+
+.landing .outcome-strip span {
+  max-width: 360px;
+  font-size: 16px;
+}
+
+.landing .split-section {
+  gap: 26px;
+  padding-top: clamp(66px, 8vw, 110px);
+  padding-bottom: clamp(66px, 8vw, 110px);
+}
+
+.landing .split-section article {
+  min-height: 320px;
+  padding: clamp(34px, 4vw, 56px);
+}
+
+.landing .split-section h2 {
+  font-size: clamp(38px, 3.6vw, 62px);
+}
+
+.landing .band-section {
+  padding-top: clamp(58px, 7vw, 96px);
+  padding-bottom: clamp(58px, 7vw, 96px);
+}
+
+.landing .section-heading {
+  max-width: 920px;
+  margin-bottom: 34px;
+}
+
+.landing .section-heading h2 {
+  font-size: clamp(36px, 3.5vw, 58px);
+}
+
+.landing .step-grid {
+  gap: 16px;
+}
+
+.landing .step-card {
+  min-height: 170px;
+  padding: 24px;
+}
+
+.landing .step-card h3 {
+  font-size: 22px;
+}
+
+.landing .benefit-section {
+  padding-top: clamp(62px, 8vw, 104px);
+  padding-bottom: clamp(62px, 8vw, 104px);
+  padding-inline: max(40px, calc((100% - 1380px) / 2));
+}
+
+.landing .benefit-grid {
+  gap: 16px;
+}
+
+.landing .benefit-item {
+  min-height: 118px;
+  padding: 24px;
+}
+
+.landing .benefit-item p {
+  font-size: 17px;
+}
+
+.landing .social-proof-section {
+  min-height: 330px;
+  margin-top: clamp(70px, 8vw, 116px);
+  margin-bottom: clamp(70px, 8vw, 116px);
+  padding: clamp(42px, 5vw, 72px);
+  background: var(--ink);
+  color: #fff;
+}
+
+.landing .social-proof-section .eyebrow {
+  color: var(--yellow);
+}
+
+.landing .social-proof-section h2 {
+  max-width: 520px;
+  color: #fff;
+  font-size: clamp(42px, 4vw, 68px);
+}
+
+.landing .social-proof-section blockquote {
+  color: #fff;
+  font-size: clamp(28px, 3vw, 44px);
+}
+
+.landing .pricing-section {
+  padding-top: clamp(58px, 7vw, 92px);
+  padding-bottom: clamp(58px, 7vw, 92px);
+  padding-inline: max(40px, calc((100% - 1380px) / 2));
+}
+
+.landing .pricing-section h2 {
+  font-size: clamp(42px, 4vw, 68px);
+}
+
+.landing .pricing-section p:not(.eyebrow) {
+  font-size: 20px;
+}
+
+.landing .faq-section {
+  padding-top: clamp(64px, 8vw, 110px);
+  padding-bottom: clamp(72px, 8vw, 120px);
+}
+
+.landing .faq-list {
+  max-width: 1040px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.landing details {
+  padding: 24px;
+}
+
+.landing summary {
+  font-size: 18px;
+}
+
+@media (max-width: 1180px) {
+  .landing .hero-section {
+    width: min(980px, calc(100% - 40px));
+    grid-template-columns: 1fr;
+  }
+
+  .landing .hero-section::before {
+    inset: auto -24px 24px auto;
+    width: 520px;
+    height: 520px;
+  }
+}
+
+@media (max-width: 760px) {
+  .landing .hero-section,
+  .landing .outcome-strip,
+  .landing .split-section,
+  .landing .band-section,
+  .landing .social-proof-section,
+  .landing .faq-section {
+    width: min(100% - 28px, 560px);
+  }
+
+  .landing .hero-copy h1 {
+    font-size: clamp(42px, 14vw, 60px);
+  }
+
+  .landing .hero-copy p:not(.eyebrow):not(.hero-note) {
+    font-size: 18px;
+  }
+
+  .landing .product-hero,
+  .landing .product-list div,
+  .landing .pricing-section,
+  .landing .social-proof-section {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .landing .product-grid,
+  .landing .outcome-strip,
+  .landing .split-section,
+  .landing .step-grid,
+  .landing .benefit-grid,
+  .landing .faq-list {
+    grid-template-columns: 1fr;
+  }
+
+  .landing .benefit-section,
+  .landing .pricing-section {
+    padding-inline: 14px;
+  }
+}

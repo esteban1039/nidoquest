@@ -19,6 +19,7 @@ const faqs = ['parenting', 'children', 'customRewards', 'mobile', 'languages']
           <NuxtLink class="button primary large" to="/auth/register">{{ t('landing.primaryCta') }}</NuxtLink>
           <NuxtLink class="button ghost large" to="/#how">{{ t('landing.secondaryCta') }}</NuxtLink>
         </div>
+        <p class="hero-note">{{ t('landing.price') }}. {{ t('landing.priceText') }}</p>
 
         <div class="hero-proof">
           <span>{{ t('landing.proof.habits') }}</span>
