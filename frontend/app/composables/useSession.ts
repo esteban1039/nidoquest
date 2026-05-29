@@ -42,6 +42,9 @@ export function useSession() {
     if (tenants?.[0]) {
       tenant.value = tenants[0]
       tenantId.value = String(tenants[0].id)
+    } else {
+      tenant.value = null
+      tenantId.value = null
     }
   }
 
