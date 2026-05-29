@@ -44,6 +44,7 @@ export default defineNuxtConfig({
     ]
   },
   nitro: {
+    preset: 'cloudflare_pages',
     routeRules: {
       '/pwa/**': { headers: { 'cache-control': 'public, max-age=3600' } },
       '/icons/**': { headers: { 'cache-control': 'public, max-age=86400' } }
