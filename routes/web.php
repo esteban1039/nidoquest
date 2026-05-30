@@ -12,6 +12,18 @@ Route::get('/auth/login', function () {
     return redirect()->away($frontendUrl.'/auth/login');
 });
 
+Route::get('/billing/return', function (Request $request) {
+    $frontendUrl = rtrim((string) config('services.frontend.url'), '/');
+    $appUrl = rtrim((string) config('app.url'), '/');
+
+    abort_if($frontendUrl === '' || $frontendUrl === $appUrl, 404);
+
+    $query = $request->query();
+    $target = $frontendUrl.'/billing/return'.($query ? '?'.http_build_query($query) : '');
+
+    return redirect()->away($target);
+});
+
 Route::get('/auth/reset-password', function (Request $request) {
     $frontendUrl = rtrim((string) config('services.frontend.url'), '/');
     $appUrl = rtrim((string) config('app.url'), '/');
