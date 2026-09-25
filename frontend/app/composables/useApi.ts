@@ -64,6 +64,14 @@ export function useApi() {
       return '/api'
     }
 
+    if (configuredBase && configuredBase !== '/api') {
+      return configuredBase
+    }
+
+    if (typeof window !== 'undefined' && window.location.hostname.includes('pages.dev')) {
+      return 'https://nidoquest-qvqr9l45.on-forge.com/api'
+    }
+
     return configuredBase || '/api'
   }
 
