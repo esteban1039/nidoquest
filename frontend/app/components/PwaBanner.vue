@@ -35,11 +35,11 @@ async function onEnablePush() {
         <span>📲</span>
       </div>
       <div class="pwa-banner-text">
-        <strong>{{ canInstall ? '¡Instala NidoQuest en tu pantalla de inicio!' : '🔔 Activa las notificaciones de tu Nido' }}</strong>
+        <strong>{{ canInstall ? '¡Instala NidoQuest en tu celular!' : '🔔 Activa las notificaciones de tu Nido' }}</strong>
         <p>
           {{ canInstall
-            ? 'Accede en 1 toque y recibe avisos de misiones, premios y rachas sin abrir el navegador.'
-            : 'Recibe alertas instantáneas en tu celular cuando haya misiones listas o recompensas aprobadas.'
+            ? 'Accede en 1 toque y recibe avisos de misiones, premios y rachas.'
+            : 'Recibe alertas instantáneas cuando haya misiones listas o recompensas.'
           }}
         </p>
       </div>
@@ -83,58 +83,67 @@ async function onEnablePush() {
   background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
   color: #ffffff;
   border-radius: var(--radius-lg);
-  padding: 14px 18px;
-  margin-bottom: 20px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
+  gap: 14px;
   box-shadow: 0 4px 16px rgba(15, 118, 110, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.15);
   animation: slideDown 0.3s ease-out;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .pwa-banner-left {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   flex: 1;
-  min-width: 240px;
+  min-width: 0;
 }
 
 .pwa-app-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   background: rgba(255, 255, 255, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   flex-shrink: 0;
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.pwa-banner-text {
+  min-width: 0;
+  flex: 1;
+}
+
 .pwa-banner-text strong {
   display: block;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 800;
   margin-bottom: 2px;
+  line-height: 1.2;
 }
 
 .pwa-banner-text p {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   color: #ccfbf1;
   margin: 0;
-  line-height: 1.35;
+  line-height: 1.3;
 }
 
 .pwa-banner-buttons {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .pwa-btn-highlight {
@@ -143,12 +152,14 @@ async function onEnablePush() {
   font-weight: 800;
   border: none !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
 }
 
 .pwa-banner-buttons .button.secondary {
   background: rgba(255, 255, 255, 0.15) !important;
   color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  white-space: nowrap;
 }
 
 .pwa-banner-dismiss {
@@ -157,9 +168,10 @@ async function onEnablePush() {
   color: rgba(255, 255, 255, 0.7);
   font-size: 1.1rem;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 4px 6px;
   border-radius: 4px;
   transition: all 0.15s ease;
+  line-height: 1;
 }
 
 .pwa-banner-dismiss:hover {
@@ -170,5 +182,24 @@ async function onEnablePush() {
 @keyframes slideDown {
   0% { transform: translateY(-10px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .pwa-action-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px 14px;
+  }
+
+  .pwa-banner-buttons {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .pwa-banner-buttons .button {
+    flex: 1;
+  }
 }
 </style>
