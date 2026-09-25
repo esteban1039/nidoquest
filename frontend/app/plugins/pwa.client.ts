@@ -1,4 +1,6 @@
 export default defineNuxtPlugin(() => {
-  const { setupInstallPrompt } = usePwa()
-  setupInstallPrompt()
+  if (import.meta.client) {
+    const { setupInstallPrompt } = usePwa()
+    setupInstallPrompt()
+  }
 })

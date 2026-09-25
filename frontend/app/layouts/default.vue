@@ -1,7 +1,10 @@
 <script setup lang="ts">
 const { t, locale, locales, setLocale } = useI18n()
 const { isAuthenticated, logout, role } = useSession()
-const availableLocales = computed(() => locales.value)
+const availableLocales = computed(() => {
+  const list = unref(locales)
+  return Array.isArray(list) ? list : []
+})
 </script>
 
 <template>

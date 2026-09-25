@@ -32,10 +32,6 @@ export function usePwa() {
     })
   }
 
-  onMounted(() => {
-    setupInstallPrompt()
-  })
-
   async function installApp(): Promise<boolean> {
     if (!deferredPrompt.value) return false
 
