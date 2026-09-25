@@ -26,7 +26,8 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'manifest', href: '/manifest.webmanifest' },
-        { rel: 'icon', href: '/icons/icon.svg', type: 'image/svg+xml' }
+        { rel: 'icon', href: '/icons/icon.svg', type: 'image/svg+xml' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }
       ],
       script: [{ src: '/pwa/register-sw.js', defer: true }]
     }
