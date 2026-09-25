@@ -2152,7 +2152,7 @@ async function toggleGuide(guide: Guide) {
                     :key="mission.id"
                     :class="{ 'is-inactive': !mission.active }"
                   >
-                    <td>
+                    <td class="col-status">
                       <button
                         type="button"
                         class="inline-switch-btn"
@@ -2163,23 +2163,23 @@ async function toggleGuide(guide: Guide) {
                         <span>{{ mission.active ? '● Activa' : '○ Pausada' }}</span>
                       </button>
                     </td>
-                    <td>
+                    <td class="col-title">
                       <div class="missions-table-title" :class="{ 'inactive-title': !mission.active }">
                         {{ mission.title }}
                       </div>
                     </td>
-                    <td>
+                    <td class="col-area">
                       <span class="workspace-meta-pill area">{{ getGrowthAreaName(mission.growth_area_id) }}</span>
                     </td>
-                    <td>
+                    <td class="col-freq">
                       <span class="workspace-meta-pill">{{ labelFrom(frequencyLabels, mission.frequency) }}</span>
                     </td>
-                    <td>
+                    <td class="col-stars">
                       <span class="workspace-item-stars" style="font-size: 0.8rem; padding: 2px 7px;">
                         ⭐ {{ mission.stars }}
                       </span>
                     </td>
-                    <td>
+                    <td class="col-actions">
                       <div class="inline-action-btns">
                         <button class="button small secondary" type="button" @click="startEditMission(mission)">
                           Editar
@@ -2197,7 +2197,7 @@ async function toggleGuide(guide: Guide) {
                   </tr>
 
                   <!-- Empty state for explorer without missions -->
-                  <tr v-if="!group.missions.length">
+                  <tr v-if="!group.missions.length" class="empty-table-row">
                     <td colspan="6" style="text-align: center; padding: 24px; color: var(--muted); background: var(--surface-hover);">
                       <p style="font-size: 0.92rem; font-weight: 600; color: var(--text); margin-bottom: 6px;">
                         {{ group.explorer.name }} no tiene misiones registradas todavía
@@ -2310,7 +2310,7 @@ async function toggleGuide(guide: Guide) {
                     :key="mission.id"
                     :class="{ 'is-inactive': !mission.active }"
                   >
-                    <td>
+                    <td class="col-status">
                       <button
                         type="button"
                         class="inline-switch-btn"
@@ -2320,23 +2320,23 @@ async function toggleGuide(guide: Guide) {
                         <span>{{ mission.active ? '● Activa' : '○ Pausada' }}</span>
                       </button>
                     </td>
-                    <td>
+                    <td class="col-title">
                       <div class="missions-table-title" :class="{ 'inactive-title': !mission.active }">
                         {{ mission.title }}
                       </div>
                     </td>
-                    <td>
+                    <td class="col-explorer">
                       <span class="workspace-meta-pill explorer">{{ getExplorerName(mission.explorer_id) }}</span>
                     </td>
-                    <td>
+                    <td class="col-area">
                       <span class="workspace-meta-pill area">{{ getGrowthAreaName(mission.growth_area_id) }}</span>
                     </td>
-                    <td>
+                    <td class="col-stars">
                       <span class="workspace-item-stars" style="font-size: 0.8rem; padding: 2px 7px;">
                         ⭐ {{ mission.stars }}
                       </span>
                     </td>
-                    <td>
+                    <td class="col-actions">
                       <div class="inline-action-btns">
                         <button class="button small secondary" type="button" @click="startEditMission(mission)">
                           Editar
@@ -2404,7 +2404,7 @@ async function toggleGuide(guide: Guide) {
         <!-- ═══ MODE 3: FLAT LIST ═══ -->
         <template v-else-if="missionsFilter !== 'pending_review'">
           <!-- Flat Table View -->
-          <div v-if="missionViewMode === 'table'" class="missions-table-wrap" style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius-md);">
+          <div v-if="missionViewMode === 'table'" class="missions-table-wrap missions-flat-table-wrap">
             <table class="missions-compact-table">
               <thead>
                 <tr>
@@ -2423,7 +2423,7 @@ async function toggleGuide(guide: Guide) {
                   :key="mission.id"
                   :class="{ 'is-inactive': !mission.active }"
                 >
-                  <td>
+                  <td class="col-status">
                     <button
                       type="button"
                       class="inline-switch-btn"
@@ -2433,26 +2433,26 @@ async function toggleGuide(guide: Guide) {
                       <span>{{ mission.active ? '● Activa' : '○ Pausada' }}</span>
                     </button>
                   </td>
-                  <td>
+                  <td class="col-title">
                     <div class="missions-table-title" :class="{ 'inactive-title': !mission.active }">
                       {{ mission.title }}
                     </div>
                   </td>
-                  <td>
+                  <td class="col-explorer">
                     <span class="workspace-meta-pill explorer">{{ getExplorerName(mission.explorer_id) }}</span>
                   </td>
-                  <td>
+                  <td class="col-area">
                     <span class="workspace-meta-pill area">{{ getGrowthAreaName(mission.growth_area_id) }}</span>
                   </td>
-                  <td>
+                  <td class="col-freq">
                     <span class="workspace-meta-pill">{{ labelFrom(frequencyLabels, mission.frequency) }}</span>
                   </td>
-                  <td>
+                  <td class="col-stars">
                     <span class="workspace-item-stars" style="font-size: 0.8rem; padding: 2px 7px;">
                       ⭐ {{ mission.stars }}
                     </span>
                   </td>
-                  <td>
+                  <td class="col-actions">
                     <div class="inline-action-btns">
                       <button class="button small secondary" type="button" @click="startEditMission(mission)">
                         Editar
