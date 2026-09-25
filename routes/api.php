@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\ExplorerController;
+use App\Http\Controllers\Api\GamificationController;
 use App\Http\Controllers\Api\GuideController;
 use App\Http\Controllers\Api\GrowthAreaController;
 use App\Http\Controllers\Api\MissionController;
@@ -28,6 +29,7 @@ Route::middleware('throttle:api')->group(function (): void {
         Route::post('/me/password', [AuthController::class, 'changePassword']);
         Route::post('/payments/wompi/checkout', [PaymentController::class, 'checkout']);
         Route::get('/payments/wompi/transactions/{transactionId}', [PaymentController::class, 'transactionStatus']);
+        Route::get('/payments/history', [PaymentController::class, 'history']);
         Route::get('/subscription/status', [PaymentController::class, 'subscriptionStatus']);
 
         Route::middleware('subscription')->group(function (): void {
@@ -49,6 +51,8 @@ Route::middleware('throttle:api')->group(function (): void {
             Route::get('/explorers/{explorer}/stars', [StarController::class, 'balance']);
             Route::get('/explorers/{explorer}/star-movements', [StarController::class, 'movements']);
             Route::post('/explorers/{explorer}/adjust-stars', [StarController::class, 'adjust']);
+            Route::get('/explorers/{explorer}/gamification', [GamificationController::class, 'profile']);
+            Route::post('/explorers/{explorer}/spin', [GamificationController::class, 'spin']);
 
             Route::apiResource('rewards', RewardController::class);
             Route::post('/rewards/{reward}/redeem', [RewardController::class, 'redeem']);

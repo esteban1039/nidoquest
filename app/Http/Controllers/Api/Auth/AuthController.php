@@ -88,7 +88,10 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request): JsonResponse
     {
-        $user = User::where('email', $request->email)->first();
+        $identifier = trim($request->input('email', ''));
+        $user = User::where('email', $identifier)
+            ->orWhere('email', Str::slug($identifier).'@nidoquest.local')
+            ->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Credenciales no validas.'], 422);

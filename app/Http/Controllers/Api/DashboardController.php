@@ -10,12 +10,13 @@ use App\Models\RewardRedemption;
 use App\Models\Setting;
 use App\Models\StarMovement;
 use App\Models\Tenant;
+use App\Services\GamificationService;
 use App\Services\StarService;
 use App\Services\TenantContext;
 
 class DashboardController extends Controller
 {
-    public function guide(TenantContext $tenantContext)
+    public function guide(TenantContext $tenantContext, GamificationService $gamification)
     {
         $tenantId = $tenantContext->id();
 
@@ -30,12 +31,56 @@ class DashboardController extends Controller
 
         $familyGoal = (int) (Setting::forTenant($tenantId)->where('key', 'family_weekly_goal')->first()?->value['stars'] ?? 0);
 
+        $explorers = Explorer::forTenant($tenantId)->get();
+        $totalStarsBalance = $explorers->sum(fn (Explorer $e) => $e->availableStars());
+
+        // 7-day daily activity breakdown
+        $dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+        $dailyActivity = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $dayCarbon = now()->subDays($i);
+            $dateStr = $dayCarbon->toDateString();
+            $dayOfWeek = $dayCarbon->dayOfWeek;
+
+            $missionsCount = MissionSubmission::forTenant($tenantId)
+                ->where('status', 'approved')
+                ->whereDate('reviewed_at', $dateStr)
+                ->count();
+
+            $starsCount = (int) StarMovement::forTenant($tenantId)
+                ->where('type', StarMovement::EARNED)
+                ->whereDate('created_at', $dateStr)
+                ->sum('amount');
+
+            $dailyActivity[] = [
+                'day' => $dayNames[$dayOfWeek],
+                'date' => $dateStr,
+                'is_today' => $i === 0,
+                'missions_count' => $missionsCount,
+                'stars_count' => $starsCount,
+            ];
+        }
+
+        $allSubmissionsCount = MissionSubmission::forTenant($tenantId)->count();
+        $approvedSubmissionsCount = MissionSubmission::forTenant($tenantId)->where('status', 'approved')->count();
+        $completionRate = $allSubmissionsCount > 0 ? (int) round(($approvedSubmissionsCount / $allSubmissionsCount) * 100) : 100;
+
         return response()->json([
-            'stars_by_explorer' => Explorer::forTenant($tenantId)->get()->map(fn (Explorer $explorer) => [
-                'explorer_id' => $explorer->id,
-                'name' => $explorer->name,
-                'stars' => $explorer->availableStars(),
-            ]),
+            'stars_by_explorer' => $explorers->map(function (Explorer $explorer) use ($gamification) {
+                $streak = $gamification->calculateStreak($explorer);
+                return [
+                    'explorer_id' => $explorer->id,
+                    'name' => $explorer->name,
+                    'stars' => $explorer->availableStars(),
+                    'streak' => $streak['count'],
+                    'streak_active_today' => $streak['is_active_today'],
+                    'status' => $explorer->status ?? 'active',
+                    'age_group' => $explorer->age_group,
+                ];
+            }),
+            'total_stars_balance' => (int) $totalStarsBalance,
+            'completion_rate' => $completionRate,
+            'daily_activity' => $dailyActivity,
             'pending_missions' => Mission::forTenant($tenantId)->where('status', 'pending')->count(),
             'submitted_missions' => Mission::forTenant($tenantId)->where('status', 'submitted')->count(),
             'completed_missions' => MissionSubmission::forTenant($tenantId)->where('status', 'approved')->count(),
@@ -53,7 +98,7 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function explorer(Explorer $explorer, StarService $stars)
+    public function explorer(Explorer $explorer, StarService $stars, GamificationService $gamification)
     {
         $this->authorize('view', $explorer);
 
@@ -63,11 +108,14 @@ class DashboardController extends Controller
             ->where('status', 'requested')
             ->sum('stars_cost');
         $redeemableStars = max(0, $availableStars - $reservedStars);
+        $gamificationProfile = $gamification->getProfile($explorer);
 
         return response()->json([
             'available_stars' => $availableStars,
             'reserved_stars' => $reservedStars,
             'redeemable_stars' => $redeemableStars,
+            'streak' => $gamificationProfile['streak'],
+            'daily_spin' => $gamificationProfile['daily_spin'],
             'today_missions' => $explorer->missions()
                 ->where('active', true)
                 ->whereIn('status', ['pending', 'rejected'])

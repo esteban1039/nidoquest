@@ -27,8 +27,7 @@ defineProps<{
           <NuxtLink to="/dashboard/guide?tab=missions" :class="{ active: guideTab === 'missions' && route.path === '/dashboard/guide' }">Misiones</NuxtLink>
           <NuxtLink to="/dashboard/guide?tab=rewards" :class="{ active: guideTab === 'rewards' && route.path === '/dashboard/guide' }">Recompensas</NuxtLink>
           <NuxtLink to="/dashboard/guide?tab=guides" :class="{ active: guideTab === 'guides' && route.path === '/dashboard/guide' }">Formadores</NuxtLink>
-          <NuxtLink to="/billing" :class="{ active: isBilling }">Cobros</NuxtLink>
-          <NuxtLink to="/profile" :class="{ active: isProfile }">Mi perfil</NuxtLink>
+          <NuxtLink to="/profile" :class="{ active: isProfile || isBilling }">Mi perfil</NuxtLink>
         </template>
         <template v-else-if="role === 'explorer'">
           <NuxtLink to="/dashboard/explorer" :class="{ active: section === 'explorer' }">Mis misiones</NuxtLink>
@@ -64,8 +63,7 @@ defineProps<{
         <NuxtLink to="/dashboard/guide?tab=missions" :class="{ active: guideTab === 'missions' && route.path === '/dashboard/guide' }">Misiones</NuxtLink>
         <NuxtLink to="/dashboard/guide?tab=rewards" :class="{ active: guideTab === 'rewards' && route.path === '/dashboard/guide' }">Recompensas</NuxtLink>
         <NuxtLink to="/dashboard/guide?tab=guides" :class="{ active: guideTab === 'guides' && route.path === '/dashboard/guide' }">Formadores</NuxtLink>
-        <NuxtLink to="/billing" :class="{ active: isBilling }">Cobros</NuxtLink>
-        <NuxtLink to="/profile" :class="{ active: isProfile }">Mi perfil</NuxtLink>
+        <NuxtLink to="/profile" :class="{ active: isProfile || isBilling }">Mi perfil</NuxtLink>
       </template>
       <template v-else-if="role === 'explorer'">
         <NuxtLink to="/dashboard/explorer" :class="{ active: section === 'explorer' }">Mis misiones</NuxtLink>

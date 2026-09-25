@@ -36,7 +36,7 @@ onMounted(async () => {
         <p class="eyebrow">{{ t('billing.returnEyebrow') }}</p>
         <h1>{{ loading ? t('billing.verifying') : t('billing.returnTitle') }}</h1>
         <p>{{ status ? t(`billing.status.${status.toLowerCase()}`) : t('billing.returnText') }}</p>
-        <NuxtLink class="button primary" :to="status === 'APPROVED' ? '/dashboard/guide' : '/billing'">{{ status === 'APPROVED' ? t('nav.dashboard') : t('billing.retry') }}</NuxtLink>
+        <NuxtLink class="button primary" :to="status === 'APPROVED' ? '/dashboard/guide' : '/profile?tab=billing'">{{ status === 'APPROVED' ? t('nav.dashboard') : t('billing.retry') }}</NuxtLink>
       </div>
     </section>
   </AppShell>

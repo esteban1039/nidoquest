@@ -19,7 +19,7 @@ class StoreExplorerRequest extends FormRequest
 
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['nullable', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
+            'email' => ['nullable', 'string', 'max:255'],
             'password' => ['nullable', 'string', 'min:8'],
             'status' => ['nullable', 'in:active,inactive'],
             'birthdate' => ['nullable', 'date', 'before:today'],

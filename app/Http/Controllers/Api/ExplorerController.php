@@ -34,11 +34,13 @@ class ExplorerController extends Controller
 
         $explorer = DB::transaction(function () use ($data, $request, $tenantContext) {
             $user = null;
+            $rawIdentifier = ! empty($data['email']) ? trim($data['email']) : null;
+            $userEmail = $rawIdentifier ? (str_contains($rawIdentifier, '@') ? $rawIdentifier : \Illuminate\Support\Str::slug($rawIdentifier).'@nidoquest.local') : null;
 
-            if (! empty($data['email']) && ! empty($data['password'])) {
+            if ($userEmail && ! empty($data['password'])) {
                 $user = User::create([
                     'name' => $data['name'],
-                    'email' => $data['email'],
+                    'email' => $userEmail,
                     'password' => $data['password'],
                     'role' => User::ROLE_EXPLORER,
                     'locale' => $request->user()->locale,
@@ -58,7 +60,7 @@ class ExplorerController extends Controller
             ]);
         });
 
-        if ($explorer->user && ! empty($data['password'])) {
+        if ($explorer->user && ! empty($data['password']) && str_contains($explorer->user->email, '@') && ! str_ends_with($explorer->user->email, '@nidoquest.local')) {
             $this->mailgun->sendWelcome($explorer->user, $data['password']);
         }
 
@@ -77,7 +79,7 @@ class ExplorerController extends Controller
         $this->authorize('manage', $explorer);
         $data = $request->validated();
 
-        DB::transaction(function () use ($data, $explorer): void {
+        DB::transaction(function () use ($data, $explorer, $request): void {
             $explorer->update([
                 'name' => $data['name'],
                 'status' => $data['status'] ?? $explorer->status,
@@ -86,13 +88,28 @@ class ExplorerController extends Controller
                 'preferences' => $data['preferences'] ?? $explorer->preferences,
             ]);
 
-            if ($explorer->user && ! empty($data['email'])) {
-                $explorer->user->update([
-                    'name' => $data['name'],
-                    'email' => $data['email'],
-                    'active' => ($data['status'] ?? $explorer->status) === 'active',
-                    ...(! empty($data['password']) ? ['password' => $data['password']] : []),
-                ]);
+            if (! empty($data['email'])) {
+                $rawIdentifier = trim($data['email']);
+                $userEmail = str_contains($rawIdentifier, '@') ? $rawIdentifier : \Illuminate\Support\Str::slug($rawIdentifier).'@nidoquest.local';
+
+                if ($explorer->user) {
+                    $explorer->user->update([
+                        'name' => $data['name'],
+                        'email' => $userEmail,
+                        'active' => ($data['status'] ?? $explorer->status) === 'active',
+                        ...(! empty($data['password']) ? ['password' => $data['password']] : []),
+                    ]);
+                } elseif (! empty($data['password'])) {
+                    $user = User::create([
+                        'name' => $data['name'],
+                        'email' => $userEmail,
+                        'password' => $data['password'],
+                        'role' => User::ROLE_EXPLORER,
+                        'locale' => $request->user()->locale,
+                    ]);
+                    $user->tenants()->attach($explorer->tenant_id, ['role' => User::ROLE_EXPLORER]);
+                    $explorer->update(['user_id' => $user->id]);
+                }
             }
         });
 

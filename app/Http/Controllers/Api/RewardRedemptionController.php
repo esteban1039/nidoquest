@@ -21,9 +21,7 @@ class RewardRedemptionController extends Controller
             $query->whereHas('explorer', fn ($explorerQuery) => $explorerQuery->where('user_id', request()->user()->id));
         }
 
-        return response()->json([
-            'data' => $query->paginate(),
-        ]);
+        return response()->json($query->paginate());
     }
 
     public function approve(RewardRedemption $redemption, RewardRedemptionService $service)

@@ -30,10 +30,10 @@ type AdminDashboard = {
 const { data: admin } = await useAsyncData('admin-dashboard', () => request<AdminDashboard>('/dashboard/admin'))
 
 const stats = computed(() => [
-  { key: 'tenants', label: 'Nidos vendidos', value: admin.value?.tenants ?? 0 },
-  { key: 'explorers', label: 'Exploradores', value: admin.value?.explorers ?? 0 },
-  { key: 'missions', label: 'Misiones creadas', value: admin.value?.missions ?? 0 },
-  { key: 'trial', label: 'Nidos en prueba', value: admin.value?.trial_tenants ?? 0 },
+  { key: 'tenants', label: 'Nidos registrados', icon: '🏡', value: admin.value?.tenants ?? 0, hint: `${admin.value?.active_tenants ?? 0} con plan activo`, tone: 'mint' as const },
+  { key: 'explorers', label: 'Exploradores', icon: '👦', value: admin.value?.explorers ?? 0, hint: 'Hijos en seguimiento', tone: 'blue' as const },
+  { key: 'missions', label: 'Misiones creadas', icon: '🎯', value: admin.value?.missions ?? 0, hint: `${admin.value?.missions_approved ?? 0} aprobadas`, tone: 'yellow' as const },
+  { key: 'trial', label: 'En prueba gratuita', icon: '🌱', value: admin.value?.trial_tenants ?? 0, hint: 'Cuentas en onboarding', tone: 'coral' as const },
 ])
 </script>
 
@@ -41,11 +41,13 @@ const stats = computed(() => [
   <AppShell :title="t('dashboard.adminTitle')" section="admin">
     <section class="dashboard-grid">
       <MetricCard
-        v-for="(stat, index) in stats"
+        v-for="stat in stats"
         :key="stat.key"
         :label="stat.label"
         :value="stat.value"
-        :tone="tones[index]"
+        :icon="stat.icon"
+        :hint="stat.hint"
+        :tone="stat.tone"
       />
     </section>
 

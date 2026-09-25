@@ -11,6 +11,27 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
+    public function history(TenantContext $tenantContext)
+    {
+        $tenant = $tenantContext->get();
+        abort_unless($tenant, 422, 'Selecciona un Nido.');
+
+        $payments = Payment::where('tenant_id', $tenant->id)
+            ->orderByDesc('created_at')
+            ->get()
+            ->map(fn (Payment $p) => [
+                'id' => $p->id,
+                'reference' => $p->provider_reference,
+                'status' => $p->status,
+                'amount_cents' => $p->amount_cents,
+                'currency' => $p->currency,
+                'paid_at' => $p->paid_at?->toIso8601String(),
+                'created_at' => $p->created_at?->toIso8601String(),
+            ]);
+
+        return response()->json(['data' => $payments]);
+    }
+
     public function checkout(TenantContext $tenantContext, WompiService $wompi)
     {
         $tenant = $tenantContext->get();

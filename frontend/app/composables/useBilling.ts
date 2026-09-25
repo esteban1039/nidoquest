@@ -36,10 +36,23 @@ type SubscriptionStatusResponse = {
   }
 }
 
+export type PaymentHistoryItem = {
+  id: number
+  reference: string
+  status: string
+  amount_cents: number
+  currency: string
+  paid_at: string | null
+  created_at: string | null
+  payload?: any
+}
+
 export function useBilling() {
   const { request } = useApi()
   const loading = ref(false)
   const checkout = ref<CheckoutResponse['data'] | null>(null)
+  const history = ref<PaymentHistoryItem[]>([])
+  const historyLoading = ref(false)
 
   async function createCheckout() {
     loading.value = true
@@ -65,9 +78,23 @@ export function useBilling() {
     return await request<SubscriptionStatusResponse>('/subscription/status')
   }
 
+  async function fetchHistory() {
+    historyLoading.value = true
+    try {
+      const response = await request<{ data: PaymentHistoryItem[] }>('/payments/history')
+      history.value = response.data || []
+      return response.data
+    } catch {
+      history.value = []
+      return []
+    } finally {
+      historyLoading.value = false
+    }
+  }
+
   async function transactionStatus(id: string) {
     return await request(`/payments/wompi/transactions/${id}`)
   }
 
-  return { checkout, loading, createCheckout, openCheckout, subscriptionStatus, transactionStatus }
+  return { checkout, loading, history, historyLoading, createCheckout, openCheckout, subscriptionStatus, fetchHistory, transactionStatus }
 }
