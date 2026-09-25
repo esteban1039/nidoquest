@@ -1,39 +1,349 @@
 {
-  "app": { "name": "NidoQuest", "tagline": "Healthy missions, stars, and rewards" },
-  "nav": { "home": "Home", "how": "How it works", "pricing": "Pricing", "faq": "FAQ", "login": "Log in", "register": "Create my Nest", "dashboard": "Dashboard", "logout": "Log out" },
-  "landing": {
-    "heroTitle": "Help children want to complete routines without turning every day into a fight",
-    "heroSubtitle": "NidoQuest turns real responsibilities into missions, stars, and healthy rewards so families build habits with clarity, motivation, and follow-up.",
-    "primaryCta": "Create my Nest",
-    "secondaryCta": "See how it works",
-    "proof": { "habits": "Visible routines", "rewards": "Controlled rewards", "progress": "Progress for every explorer" },
-    "product": { "status": "Active Nest", "nest": "Family dashboard", "family": "Castano Family", "today": "for today", "week": "this week", "ready": "ready to redeem", "missionOne": "Read 20 minutes before bed", "missionTwo": "Organize room without reminder" },
-    "outcomes": { "argumentsTitle": "Less friction", "argumentsText": "The task stops being a repeated scolding and becomes a visible agreement.", "routineTitle": "More consistency", "routineText": "Each explorer knows what to do, what it is worth, and how they are progressing.", "screensTitle": "Better rewards", "screensText": "You choose healthy rewards: family time, plans, permissions, or experiences." },
-    "problemTitle": "The daily challenge",
-    "problemText": "Repeating the same tasks every day can be exhausting: studying, organizing rooms, limiting screens, routines, and good habits.",
-    "solutionTitle": "A clear and positive way",
-    "solutionText": "With NidoQuest, each responsibility becomes a clear, measurable, and motivating mission.",
-    "howTitle": "How it works",
-    "howHeadline": "In a few minutes you have a family system ready for explorers, missions, and rewards.",
-    "steps": { "nest": "Create your Nest", "explorers": "Add your Explorers", "missions": "Define Missions", "stars": "Give Stars", "rewards": "Redeem Rewards" },
-    "benefitsTitle": "Benefits",
-    "benefitsHeadline": "Built to sell calm: structure for parents and motivation for children.",
-    "benefits": { "talks": "Fewer arguments at home", "motivation": "More motivation", "habits": "Visible habits", "controlledRewards": "Controlled rewards", "progress": "Measurable progress", "support": "Positive support" },
-    "trustEyebrow": "Why it connects",
-    "trustTitle": "It is not another task app. It is a system to bring calm back home.",
-    "trustQuote": "When a child sees missions and stars, the conversation changes: it is no longer just obeying, it is moving forward.",
-    "priceTitle": "Annual plan",
-    "price": "COP $150,000 / year per Nest",
-    "priceText": "A simple price to organize habits, rewards, and family follow-up all year long.",
-    "faqTitle": "Frequently asked questions",
-    "faqHeadline": "Clear answers before creating your Nest",
-    "faq": { "parentingQ": "Does this replace parenting?", "parentingA": "No. It is a support tool for habits and responsibilities.", "childrenQ": "Can I use it with more than one child?", "childrenA": "Yes. Each Nest can have several Explorers.", "customRewardsQ": "Can I create my own rewards?", "customRewardsA": "Yes. You define family rewards, permissions, experiences, or healthy benefits.", "mobileQ": "Does it work on mobile?", "mobileA": "Yes. It is an installable PWA.", "languagesQ": "Does it support multiple languages?", "languagesA": "Yes. Latin American Spanish, English, and French." }
+  "app": {
+    "name": "NidoQuest",
+    "tagline": "Healthy missions, stars, and rewards"
   },
-  "auth": { "welcome": "Welcome back", "create": "Create your Nest", "name": "Name", "email": "Email", "password": "Password", "confirmPassword": "Confirm password", "tenantName": "Nest name", "login": "Log in", "register": "Create account", "loading": "Connecting", "demoHint": "Log in to continue with your Nest.", "noAccount": "Create a new Nest", "hasAccount": "I already have an account" },
-  "onboarding": { "title": "Set up your Nest", "subtitle": "Start with a simple, positive structure for habits.", "nestName": "Nest name", "explorerName": "First Explorer", "focusArea": "Initial area", "mission": "First mission", "continue": "Enter dashboard", "areas": { "study": "Study", "home": "Home", "wellbeing": "Wellbeing", "reading": "Reading" } },
-  "dashboard": { "guideTitle": "Guide Dashboard", "explorerTitle": "Explorer Dashboard", "adminTitle": "SaaS Admin", "starsByExplorer": "Stars by Explorer", "pendingMissions": "Pending Missions", "completedMissions": "Completed Missions", "expiredMissions": "Expired Missions", "requestedRewards": "Requested Rewards", "weeklyProgress": "Weekly Progress", "strongAreas": "Strong Areas", "areasToSupport": "Areas to Support", "consistency": "Consistency", "usedRewards": "Most Used Rewards", "screenTime": "Redeemed Screen Time", "availableStars": "Available Stars", "todayMissions": "Today Missions", "nextGoal": "Next Goal", "availableRewards": "Available Rewards", "badges": "Badges", "dailyMessage": "Daily Message", "markDone": "Mark done", "redeem": "Request reward", "tenants": "Nests", "users": "Users", "plans": "Plans", "payments": "Payments", "globalMetrics": "Global Metrics", "viewingAs": "Viewing", "noGoal": "Ask your guide to create a reward as your next goal." },
-  "ui": { "stars": "Stars", "missions": "Missions", "rewards": "Rewards", "progress": "Progress", "active": "Active", "trial": "Trial", "calmProgress": "Calm progress", "save": "Save", "confirmDeleteTap": "Tap again to delete", "moreOptions": "More options", "offlineTitle": "You are offline", "offlineText": "Come back when you have internet. Your Nest will be waiting.", "queuedAction": "Saved offline. It will send automatically when you are back online.", "pendingActions": "Actions to send: {count}", "syncing": "Sending…", "staleData": "Showing saved data.", "conflicted": "Your guide had already reviewed it. Showing the latest." },
-  "pwa": { "title": "Take your Nest with you", "text": "Install NidoQuest and enable calm alerts for missions, rewards, and payments.", "install": "Install", "notifications": "Enable alerts", "dismiss": "Close" },
-  "notifications": { "title": "Notifications", "close": "Close", "markRead": "Mark read" },
-  "billing": { "eyebrow": "Subscription", "title": "Activate your Nest for one year", "subtitle": "A simple plan to support family habits without ads or toxic rankings.", "checkoutTitle": "Secure payment with Wompi", "checkoutText": "The backend signs the amount, reference, and currency before sending you to checkout.", "prepare": "Prepare payment", "pay": "Pay with Wompi", "retry": "Try again", "reference": "Reference", "expires": "Expires", "trialDays": "You have {days} trial days left.", "checkoutFallback": "We could not prepare checkout right now. Check the backend and Wompi keys.", "bannerTitle": "Keep your Nest annual plan active", "manage": "Manage plan", "returnEyebrow": "Payment", "verifying": "Verifying payment", "returnTitle": "Thanks for caring for this Nest", "returnText": "We are waiting for Wompi confirmation.", "status": { "approved": "Payment approved. Your annual subscription is active.", "declined": "The payment was not approved. You can try again calmly.", "voided": "The payment was voided.", "error": "Wompi reported an error. Check the payment method or try later.", "pending": "The payment is still under review." } }
+  "nav": {
+    "home": "Home",
+    "how": "How it works",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "login": "Log in",
+    "register": "Create my Nest",
+    "dashboard": "Dashboard",
+    "logout": "Log out"
+  },
+  "landing": {
+    "urgencyBadge": "+1,400 families building habits without fighting",
+    "heroTitle": "Help your children want to follow their routines,",
+    "heroTitleHighlight": "without turning every day into a battle.",
+    "heroSubhead": "The family gamification system that replaces yelling and stress with clear missions, stars, flame streaks, and healthy rewards your children will love earning.",
+    "heroCtaPrimary": "🚀 Start 7 days free",
+    "heroCtaSubtext": "No credit card required • Cancel anytime",
+    "heroCtaSecondary": "🎮 Try interactive demo",
+    "trustFreeTrial": "7-day free trial",
+    "trustPwa": "Works on any phone (PWA)",
+    "trustPrivate": "100% private and secure",
+    "sim": {
+      "title": "✨ Live simulator: Your child's view",
+      "explorer": "Explorer",
+      "childName": "Mateo (8 years old)",
+      "stars": "Stars",
+      "streakDays": "{count} Day Streak",
+      "streakProtected": "✨ Streak protected today!",
+      "streakWarning": "⚠️ Complete 1 mission to save your streak",
+      "bonusMultiplier": "⚡ +10% bonus",
+      "wheelTitle": "Daily Lucky Wheel",
+      "wheelSubtext": "Spin today's free lucky wheel!",
+      "wheelPrize": "🎁 You won +10 ⭐ and 1 Streak Shield!",
+      "wheelBtnSpinning": "🎰 Spinning...",
+      "wheelBtnClaimed": "✅ Claimed",
+      "wheelBtnSpin": "🎲 Spin!",
+      "missionTitle": "🛏️ Make bed and tidy bedroom",
+      "missionReward": "Earn +10 ⭐ and protect your streak",
+      "missionBtnDone": "✅ Completed! (+10 ⭐)",
+      "missionBtnPending": "👉 Tap to complete",
+      "tip": "💡 Try tapping the buttons! This is how your children stay motivated every single day."
+    },
+    "stats": {
+      "satisfaction": "Parent satisfaction",
+      "reduction": "Less fighting over chores & screen time",
+      "habitsCompleted": "Household habits completed",
+      "parentTime": "Daily management time for parents",
+      "minutesPerDay": "3 minutes/day"
+    },
+    "transformation": {
+      "badge": "THE REAL TRANSFORMATION",
+      "title": "How does family dynamic change at home?",
+      "subtitle": "From repeated nagging to natural enthusiasm and autonomy.",
+      "beforeTitle": "❌ Without NidoQuest",
+      "beforeHeadline": "The daily struggle over every single routine",
+      "beforeItem1": "🗣️ Repeating 5 times: \"Turn off the tablet!\", \"Take a shower!\", \"Do your homework!\"",
+      "beforeItem2": "😫 Bedtime arguments and rushed, grumpy mornings.",
+      "beforeItem3": "📱 Punishments that create frustration and fail to build lasting habits.",
+      "beforeItem4": "🤷‍♂️ Demotivated children who view household responsibilities as a punishment.",
+      "afterTitle": "✨ With NidoQuest",
+      "afterHeadline": "Positive habits your kids actually want to do",
+      "afterItem1": "🎯 Clear visual missions: they know exactly what to do and what they will earn.",
+      "afterItem2": "🔥 They protect their day streaks like a game and proudly show you their achievements.",
+      "afterItem3": "⭐ They learn the value of effort, consistency, and healthy financial awareness.",
+      "afterItem4": "🤝 Fair family-agreed rewards (quality time, park trips, games, healthy treats)."
+    },
+    "engines": {
+      "badge": "SCIENTIFIC MOTIVATION",
+      "title": "The 4 gamification engines kids love",
+      "subtitle": "Inspired by principles of positive psychology and micro-rewards that actually work.",
+      "wheelTitle": "Daily Lucky Wheel",
+      "wheelText": "A surprise morning incentive that sparks their curiosity to start each day with optimism and energy.",
+      "streakTitle": "Flame Streaks & Shields",
+      "streakText": "The Duolingo-style streak mechanic that motivates them never to break their chain of daily habits.",
+      "starsTitle": "Star Economy",
+      "starsText": "A tangible reward system where every star earned represents consistency, teamwork, and responsibility.",
+      "rewardsTitle": "Healthy & Real Rewards",
+      "rewardsText": "They choose when to redeem their stars for family experiences, special outings, or controlled leisure time."
+    },
+    "ageGuide": {
+      "badge": "ADAPTED TO THEIR STAGE",
+      "title": "Customized for the exact age of your children",
+      "subtitle": "The system automatically tailors the difficulty and suggested star values.",
+      "tabPeques": "🐣 Little Ones (5 to 8 yrs)",
+      "tabMedios": "🎒 Juniors (9 to 13 yrs)",
+      "tabJovenes": "🚀 Teens (14+ yrs)",
+      "missionsHeading": "🎯 Suggested missions",
+      "rewardsHeading": "🎁 Suggested rewards",
+      "guides": {
+        "peques": {
+          "badge": "🐣 5 to 8 years (Little Ones)",
+          "title": "Daily habits, tidying up, and simple routines with fun",
+          "missions": [
+            { "title": "Make my bed upon waking up", "stars": 5, "icon": "🛏️" },
+            { "title": "Brush my teeth without being reminded", "stars": 4, "icon": "🪥" },
+            { "title": "Put away my toys after playing", "stars": 6, "icon": "🧸" },
+            { "title": "Read a story for 15 minutes", "stars": 8, "icon": "📖" }
+          ],
+          "rewards": [
+            { "name": "Choose the weekend dessert", "stars": 30, "icon": "🍦" },
+            { "name": "Afternoon at the park and playground", "stars": 50, "icon": "🌳" },
+            { "name": "30 mins of favorite cartoons", "stars": 25, "icon": "📺" }
+          ]
+        },
+        "medios": {
+          "badge": "🎒 9 to 13 years (Juniors)",
+          "title": "School autonomy, household teamwork, and screen balance",
+          "missions": [
+            { "title": "Finish homework before 6:00 PM", "stars": 10, "icon": "📚" },
+            { "title": "Organize backpack and clothes for tomorrow", "stars": 6, "icon": "🎒" },
+            { "title": "Help set and clear the dining table", "stars": 8, "icon": "🍽️" },
+            { "title": "Practice instrument or sport for 30 min", "stars": 12, "icon": "⚽" }
+          ],
+          "rewards": [
+            { "name": "1 extra hour of video games on the weekend", "stars": 60, "icon": "🎮" },
+            { "name": "Movie night at the cinema with popcorn", "stars": 100, "icon": "🍿" },
+            { "name": "Choose the family pizza dinner", "stars": 75, "icon": "🍕" }
+          ]
+        },
+        "jovenes": {
+          "badge": "🚀 14+ years (Teens)",
+          "title": "Personal goals, responsibility, and managing rewards",
+          "missions": [
+            { "title": "Focused study session (Pomodoro 45m)", "stars": 15, "icon": "🧠" },
+            { "title": "Keep bedroom tidy the entire week", "stars": 20, "icon": "✨" },
+            { "title": "Help with groceries or household chores", "stars": 12, "icon": "🛒" },
+            { "title": "Reading habit / personal project", "stars": 15, "icon": "💡" }
+          ],
+          "rewards": [
+            { "name": "Permission for a special outing with friends", "stars": 120, "icon": "🎟️" },
+            { "name": "Contribution towards a book or tech accessory", "stars": 200, "icon": "🎧" },
+            { "name": "Movie night with favorite snacks", "stars": 80, "icon": "🎬" }
+          ]
+        }
+      }
+    },
+    "testimonials": {
+      "badge": "HAPPY FAMILIES",
+      "title": "What parents who transformed their home are saying",
+      "subtitle": "Real results from the very first week of use.",
+      "items": [
+        {
+          "name": "Carolina Gómez",
+          "role": "Mom of Mateo (7) and Sofía (11)",
+          "city": "Medellín, Colombia",
+          "text": "We went from daily fights over shutting down the tablet to Mateo saying: \"Mom, I already read for 20 minutes, check out my stars for the movies!\". It completely transformed the mood at home."
+        },
+        {
+          "name": "Andrés Felipe Restrepo",
+          "role": "Dad of Santiago (9)",
+          "city": "Bogotá, Colombia",
+          "text": "The daily wheel and the flame streaks were game changers. Now my son excitedly gets up to make his bed before I even wake up so he won't lose his streak. It's truly amazing."
+        },
+        {
+          "name": "Valeria Martínez",
+          "role": "Mom of Lucas (6)",
+          "city": "Cali, Colombia",
+          "text": "The best part is that it doesn't reward with expensive material things, but with family quality time and clear privileges. Everything is transparent with zero arguments."
+        }
+      ]
+    },
+    "pricing": {
+      "badge": "FAMILY INVESTMENT",
+      "title": "Less than the cost of a coffee a week",
+      "subtitle": "A small investment for family harmony that is truly priceless.",
+      "monthlyTitle": "Monthly Plan",
+      "monthlySubtitle": "Maximum month-to-month flexibility",
+      "monthlyPrice": "$14.900",
+      "monthlyPeriod": "COP / mo",
+      "annualTitle": "Annual Family Plan",
+      "annualSubtitle": "12 months of calm and solid habits",
+      "annualPrice": "$119.000",
+      "annualPeriod": "COP / yr",
+      "annualEquivalent": "Equals only $9.900 COP / month",
+      "popularBadge": "⭐ MOST POPULAR • SAVE 35%",
+      "featureTrial": "7-Day Free Trial",
+      "featureExplorers": "Unlimited Children / Explorers",
+      "featureMissions": "Missions, habits & daily wheel",
+      "featurePwa": "PWA phone notifications",
+      "featureCancel": "1-click cancellation anytime",
+      "featureSaveMonths": "You save 2 months free",
+      "featureStreaks": "Multipliers and streak shields",
+      "featureSupport": "Priority support for families",
+      "ctaMonthly": "Start 7 days free",
+      "ctaAnnual": "🚀 Start with 7 days free",
+      "guaranteeNote": "🔒 100% secure payments powered by Wompi (Bancolombia, Nequi, PSE, Cards)"
+    },
+    "faq": {
+      "badge": "FREQUENTLY ASKED QUESTIONS",
+      "title": "Have questions? We have answers",
+      "items": [
+        {
+          "q": "What if my kids don't have their own phone?",
+          "a": "No problem! NidoQuest is designed to be used directly from the parents' phone or tablet. With 1 single tap you can switch between Guide Mode (parents) and Explorer Mode (kids) so they can check off their own missions."
+        },
+        {
+          "q": "How does the 7-day free trial work?",
+          "a": "You get 7 full days with access to all features: unlimited explorers, missions, daily wheel, notifications, and reward redemptions. No contracts and you can cancel anytime."
+        },
+        {
+          "q": "What ages is NidoQuest suitable for?",
+          "a": "NidoQuest includes tailored guidelines from age 5 to 16+: Little Ones (5-8), Juniors (9-13), and Teens (14+), with difficulty levels and star amounts matched to their maturity."
+        },
+        {
+          "q": "How does it help reduce screen time?",
+          "a": "Instead of abruptly banning screens and provoking conflict, NidoQuest turns screen time into a healthy reward that kids earn beforehand through positive habits (reading, tidying, homework)."
+        },
+        {
+          "q": "What payment methods are accepted?",
+          "a": "We process payments via Wompi's secure gateway (Bancolombia), accepting Nequi, PSE, and credit/debit cards from all major banks."
+        }
+      ]
+    },
+    "finalCta": {
+      "title": "Ready to transform your family's daily routine today?",
+      "subtitle": "Join over 1,400 families who replaced daily battles with cooperation and excitement.",
+      "button": "🚀 Start my 7-day free trial",
+      "note": "Takes less than 2 minutes to set up your Family Nest."
+    }
+  },
+  "auth": {
+    "welcome": "Welcome back!",
+    "welcomeSubtitle": "Log in to your Nest to accompany today's missions and habits",
+    "create": "Create your Family Nest",
+    "createSubtitle": "Start your 7-day free trial and transform your home routines",
+    "name": "Your Name (Guide / Parent)",
+    "email": "Email address",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "tenantName": "Nest / Family name",
+    "login": "Enter my Nest 🚀",
+    "register": "Create my Nest and Start Free ✨",
+    "loading": "Connecting...",
+    "demoHint": "Log in to continue with your Nest.",
+    "noAccount": "Create a new Nest (7 days free)",
+    "hasAccount": "I already have an account: Log in",
+    "forgotPassword": "Forgot your password?",
+    "rememberMe": "Remember me"
+  },
+  "onboarding": {
+    "title": "Set up your Nest",
+    "subtitle": "Start with a simple, positive structure for habits.",
+    "nestName": "Nest name",
+    "explorerName": "First Explorer",
+    "focusArea": "Initial area",
+    "mission": "First mission",
+    "continue": "Enter dashboard",
+    "areas": {
+      "study": "Study",
+      "home": "Home",
+      "wellbeing": "Wellbeing",
+      "reading": "Reading"
+    }
+  },
+  "dashboard": {
+    "guideTitle": "Guide Dashboard",
+    "explorerTitle": "Explorer Dashboard",
+    "adminTitle": "SaaS Admin",
+    "starsByExplorer": "Stars by Explorer",
+    "pendingMissions": "Pending Missions",
+    "completedMissions": "Completed Missions",
+    "expiredMissions": "Expired Missions",
+    "requestedRewards": "Requested Rewards",
+    "weeklyProgress": "Weekly Progress",
+    "strongAreas": "Strong Areas",
+    "areasToSupport": "Areas to Support",
+    "consistency": "Consistency",
+    "usedRewards": "Most Used Rewards",
+    "screenTime": "Redeemed Screen Time",
+    "availableStars": "Available Stars",
+    "todayMissions": "Today Missions",
+    "nextGoal": "Next Goal",
+    "availableRewards": "Available Rewards",
+    "badges": "Badges",
+    "dailyMessage": "Daily Message",
+    "markDone": "Mark done",
+    "redeem": "Request reward",
+    "tenants": "Nests",
+    "users": "Users",
+    "plans": "Plans",
+    "payments": "Payments",
+    "globalMetrics": "Global Metrics",
+    "viewingAs": "Viewing",
+    "noGoal": "Ask your guide to create a reward as your next goal."
+  },
+  "ui": {
+    "stars": "Stars",
+    "missions": "Missions",
+    "rewards": "Rewards",
+    "progress": "Progress",
+    "active": "Active",
+    "trial": "Trial",
+    "calmProgress": "Calm progress",
+    "save": "Save",
+    "confirmDeleteTap": "Tap again to delete",
+    "moreOptions": "More options",
+    "offlineTitle": "You are offline",
+    "offlineText": "Come back when you have internet. Your Nest will be waiting.",
+    "queuedAction": "Saved offline. It will send automatically when you are back online.",
+    "pendingActions": "Actions to send: {count}",
+    "syncing": "Sending…",
+    "staleData": "Showing saved data.",
+    "conflicted": "Your guide had already reviewed it. Showing the latest."
+  },
+  "pwa": {
+    "title": "Take your Nest with you",
+    "text": "Install NidoQuest and enable calm alerts for missions, rewards, and payments.",
+    "install": "Install",
+    "notifications": "Enable alerts",
+    "dismiss": "Close"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "close": "Close",
+    "markRead": "Mark read"
+  },
+  "billing": {
+    "eyebrow": "Subscription",
+    "title": "Activate your Nest for one year",
+    "subtitle": "A simple plan to support family habits without ads or toxic rankings.",
+    "checkoutTitle": "Secure payment with Wompi",
+    "checkoutText": "The backend signs the amount, reference, and currency before sending you to checkout.",
+    "prepare": "Prepare payment",
+    "pay": "Pay with Wompi",
+    "retry": "Try again",
+    "reference": "Reference",
+    "expires": "Expires",
+    "trialDays": "You have {days} trial days left.",
+    "checkoutFallback": "We could not prepare checkout right now. Check the backend and Wompi keys.",
+    "bannerTitle": "Keep your Nest annual plan active",
+    "manage": "Manage plan",
+    "returnEyebrow": "Payment",
+    "verifying": "Verifying payment",
+    "returnTitle": "Thanks for caring for this Nest",
+    "returnText": "We are waiting for Wompi confirmation.",
+    "status": {
+      "approved": "Payment approved. Your annual subscription is active.",
+      "declined": "The payment was not approved. You can try again calmly.",
+      "voided": "The payment was voided.",
+      "error": "Wompi reported an error. Check the payment method or try later.",
+      "pending": "The payment is still under review."
+    }
+  }
 }

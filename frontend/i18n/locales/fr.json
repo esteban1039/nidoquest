@@ -1,39 +1,349 @@
 {
-  "app": { "name": "NidoQuest", "tagline": "Missions, etoiles et recompenses saines" },
-  "nav": { "home": "Accueil", "how": "Fonctionnement", "pricing": "Prix", "faq": "FAQ", "login": "Connexion", "register": "Creer mon Nid", "dashboard": "Tableau", "logout": "Sortir" },
-  "landing": {
-    "heroTitle": "Aidez les enfants a accomplir leurs routines sans transformer chaque jour en conflit",
-    "heroSubtitle": "NidoQuest transforme les responsabilites reelles en missions, etoiles et recompenses saines pour construire des habitudes avec clarte, motivation et suivi.",
-    "primaryCta": "Creer mon Nid",
-    "secondaryCta": "Voir le fonctionnement",
-    "proof": { "habits": "Routines visibles", "rewards": "Recompenses controlees", "progress": "Progres pour chaque explorateur" },
-    "product": { "status": "Nid actif", "nest": "Tableau familial", "family": "Famille Castano", "today": "pour aujourd'hui", "week": "cette semaine", "ready": "pretes a echanger", "missionOne": "Lire 20 minutes avant de dormir", "missionTwo": "Ranger la chambre sans rappel" },
-    "outcomes": { "argumentsTitle": "Moins de tension", "argumentsText": "La tache cesse d'etre un rappel repete et devient un accord visible.", "routineTitle": "Plus de regularite", "routineText": "Chaque explorateur sait quoi faire, ce que cela vaut et comment il progresse.", "screensTitle": "De meilleures recompenses", "screensText": "Vous choisissez des recompenses saines : temps en famille, sorties, permissions ou experiences." },
-    "problemTitle": "Le defi quotidien",
-    "problemText": "Repeter les memes taches chaque jour peut etre fatigant : etudier, ranger, limiter les ecrans, suivre les routines et garder de bonnes habitudes.",
-    "solutionTitle": "Une voie claire et positive",
-    "solutionText": "Avec NidoQuest, chaque responsabilite devient une mission claire, mesurable et motivante.",
-    "howTitle": "Fonctionnement",
-    "howHeadline": "En quelques minutes, vous avez un systeme familial pret pour les explorateurs, missions et recompenses.",
-    "steps": { "nest": "Creez votre Nid", "explorers": "Ajoutez vos Explorateurs", "missions": "Definissez des Missions", "stars": "Donnez des Etoiles", "rewards": "Echangez des Recompenses" },
-    "benefitsTitle": "Benefices",
-    "benefitsHeadline": "Concu pour vendre de la tranquillite : structure pour les parents et motivation pour les enfants.",
-    "benefits": { "talks": "Moins de discussions a la maison", "motivation": "Plus de motivation", "habits": "Habitudes visibles", "controlledRewards": "Recompenses controlees", "progress": "Progres mesurable", "support": "Accompagnement positif" },
-    "trustEyebrow": "Pourquoi cela touche",
-    "trustTitle": "Ce n'est pas une autre app de taches. C'est un systeme pour ramener le calme a la maison.",
-    "trustQuote": "Quand l'enfant voit ses missions et ses etoiles, la conversation change : il ne s'agit plus seulement d'obeir, mais d'avancer.",
-    "priceTitle": "Plan annuel",
-    "price": "COP $150.000 / an par Nid",
-    "priceText": "Un prix simple pour organiser habitudes, recompenses et suivi familial toute l'annee.",
-    "faqTitle": "Questions frequentes",
-    "faqHeadline": "Des reponses claires avant de creer votre Nid",
-    "faq": { "parentingQ": "Cela remplace-t-il l'education ?", "parentingA": "Non. C'est un outil d'accompagnement pour les habitudes et responsabilites.", "childrenQ": "Puis-je l'utiliser avec plusieurs enfants ?", "childrenA": "Oui. Chaque Nid peut avoir plusieurs Explorateurs.", "customRewardsQ": "Puis-je creer mes propres recompenses ?", "customRewardsA": "Oui. Vous definissez les recompenses familiales, permissions, experiences ou avantages sains.", "mobileQ": "Fonctionne-t-il sur mobile ?", "mobileA": "Oui. C'est une PWA installable.", "languagesQ": "Y a-t-il plusieurs langues ?", "languagesA": "Oui. Espagnol latino-americain, anglais et francais." }
+  "app": {
+    "name": "NidoQuest",
+    "tagline": "Missions, étoiles et récompenses saines"
   },
-  "auth": { "welcome": "Bon retour", "create": "Creez votre Nid", "name": "Nom", "email": "E-mail", "password": "Mot de passe", "confirmPassword": "Confirmer le mot de passe", "tenantName": "Nom du Nid", "login": "Connexion", "register": "Creer un compte", "loading": "Connexion", "demoHint": "Connectez-vous pour continuer avec votre Nid.", "noAccount": "Creer un nouveau Nid", "hasAccount": "J'ai deja un compte" },
-  "onboarding": { "title": "Preparez votre Nid", "subtitle": "Commencez avec une structure simple et positive.", "nestName": "Nom du Nid", "explorerName": "Premier Explorateur", "focusArea": "Zone initiale", "mission": "Premiere mission", "continue": "Entrer au tableau", "areas": { "study": "Etude", "home": "Maison", "wellbeing": "Bien-etre", "reading": "Lecture" } },
-  "dashboard": { "guideTitle": "Tableau du Guide", "explorerTitle": "Tableau de l'Explorateur", "adminTitle": "Admin SaaS", "starsByExplorer": "Etoiles par Explorateur", "pendingMissions": "Missions en attente", "completedMissions": "Missions accomplies", "expiredMissions": "Missions expirees", "requestedRewards": "Recompenses demandees", "weeklyProgress": "Progres hebdomadaire", "strongAreas": "Zones fortes", "areasToSupport": "Zones a soutenir", "consistency": "Regularite", "usedRewards": "Recompenses les plus utilisees", "screenTime": "Temps d'ecran echange", "availableStars": "Etoiles disponibles", "todayMissions": "Missions du jour", "nextGoal": "Prochain objectif", "availableRewards": "Recompenses disponibles", "badges": "Badges", "dailyMessage": "Message du jour", "markDone": "Marquer fait", "redeem": "Demander recompense", "tenants": "Nids", "users": "Utilisateurs", "plans": "Plans", "payments": "Paiements", "globalMetrics": "Metriques globales", "viewingAs": "Voir", "noGoal": "Demande a ton guide de creer une recompense comme objectif." },
-  "ui": { "stars": "Etoiles", "missions": "Missions", "rewards": "Recompenses", "progress": "Progres", "active": "Actif", "trial": "Essai", "calmProgress": "Progres calme", "save": "Enregistrer", "confirmDeleteTap": "Touchez a nouveau pour supprimer", "moreOptions": "Plus d'options", "offlineTitle": "Vous etes hors ligne", "offlineText": "Revenez avec internet. Votre Nid vous attendra.", "queuedAction": "Enregistre hors ligne. Envoi automatique au retour d'internet.", "pendingActions": "Actions a envoyer : {count}", "syncing": "Envoi…", "staleData": "Donnees enregistrees affichees.", "conflicted": "Ton guide l'avait deja verifiee. Voici le dernier etat." },
-  "pwa": { "title": "Emportez votre Nid", "text": "Installez NidoQuest et activez des alertes calmes pour missions, recompenses et paiements.", "install": "Installer", "notifications": "Activer alertes", "dismiss": "Fermer" },
-  "notifications": { "title": "Notifications", "close": "Fermer", "markRead": "Marquer lue" },
-  "billing": { "eyebrow": "Abonnement", "title": "Activez votre Nid pour un an", "subtitle": "Un plan simple pour accompagner les habitudes familiales sans publicites ni classements toxiques.", "checkoutTitle": "Paiement securise avec Wompi", "checkoutText": "Le backend signe le montant, la reference et la devise avant le checkout.", "prepare": "Preparer le paiement", "pay": "Payer avec Wompi", "retry": "Reessayer", "reference": "Reference", "expires": "Expire", "trialDays": "Il vous reste {days} jours d'essai.", "checkoutFallback": "Impossible de preparer le checkout maintenant. Verifiez le backend et les cles Wompi.", "bannerTitle": "Gardez actif le plan annuel du Nid", "manage": "Gerer le plan", "returnEyebrow": "Paiement", "verifying": "Verification du paiement", "returnTitle": "Merci de prendre soin de ce Nid", "returnText": "Nous attendons la confirmation de Wompi.", "status": { "approved": "Paiement approuve. Votre abonnement annuel est actif.", "declined": "Le paiement n'a pas ete approuve. Vous pouvez reessayer calmement.", "voided": "Le paiement a ete annule.", "error": "Wompi a signale une erreur. Verifiez le moyen de paiement ou reessayez plus tard.", "pending": "Le paiement est encore en verification." } }
+  "nav": {
+    "home": "Accueil",
+    "how": "Comment ça marche",
+    "pricing": "Tarifs",
+    "faq": "FAQ",
+    "login": "Connexion",
+    "register": "Créer mon Nid",
+    "dashboard": "Tableau de bord",
+    "logout": "Déconnexion"
+  },
+  "landing": {
+    "urgencyBadge": "+1 400 familles développent de bonnes habitudes sans disputes",
+    "heroTitle": "Donnez envie à vos enfants de suivre leurs routines,",
+    "heroTitleHighlight": "sans transformer chaque jour en bataille.",
+    "heroSubhead": "Le système de gamification familiale qui remplace les cris et le stress par des missions claires, des étoiles, des séries de flammes et des récompenses saines que vos enfants adoreront gagner.",
+    "heroCtaPrimary": "🚀 Essai gratuit de 7 jours",
+    "heroCtaSubtext": "Sans carte bancaire obligatoire • Annulez à tout moment",
+    "heroCtaSecondary": "🎮 Essayer la démo interactive",
+    "trustFreeTrial": "7 jours d'essai gratuit",
+    "trustPwa": "Fonctionne sur tous les téléphones (PWA)",
+    "trustPrivate": "100% privé et sécurisé",
+    "sim": {
+      "title": "✨ Simulateur en direct : Vue de votre enfant",
+      "explorer": "Explorateur",
+      "childName": "Matéo (8 ans)",
+      "stars": "Étoiles",
+      "streakDays": "{count} Jours de Série",
+      "streakProtected": "✨ Série protégée aujourd'hui !",
+      "streakWarning": "⚠️ Complète 1 mission pour protéger ta série",
+      "bonusMultiplier": "⚡ Bonus +10%",
+      "wheelTitle": "Roue de la Chance Quotidienne",
+      "wheelSubtext": "Tourne ta roue gratuite du jour !",
+      "wheelPrize": "🎁 Tu as gagné +10 ⭐ et 1 Bouclier de Série !",
+      "wheelBtnSpinning": "🎰 En rotation...",
+      "wheelBtnClaimed": "✅ Récupéré",
+      "wheelBtnSpin": "🎲 Tourner !",
+      "missionTitle": "🛏️ Faire le lit et ranger la chambre",
+      "missionReward": "Gagne +10 ⭐ et protège ta série",
+      "missionBtnDone": "✅ Accomplie ! (+10 ⭐)",
+      "missionBtnPending": "👉 Touche pour accomplir",
+      "tip": "💡 Touchez les boutons pour tester ! C'est ainsi que vos enfants restent motivés chaque jour."
+    },
+    "stats": {
+      "satisfaction": "Satisfaction des parents",
+      "reduction": "Moins de conflits sur les devoirs et les écrans",
+      "habitsCompleted": "Habitudes accomplies à la maison",
+      "parentTime": "Temps de gestion quotidien des parents",
+      "minutesPerDay": "3 minutes/jour"
+    },
+    "transformation": {
+      "badge": "LE VRAI CHANGEMENT",
+      "title": "Comment la dynamique familiale se transforme-t-elle ?",
+      "subtitle": "Des ordres répétitifs à l'enthousiasme et l'autonomie naturelle.",
+      "beforeTitle": "❌ Sans NidoQuest",
+      "beforeHeadline": "La lutte quotidienne pour chaque routine",
+      "beforeItem1": "🗣️ Répéter 5 fois : \"Éteins la tablette !\", \"Va te doucher !\", \"Fais tes devoirs !\"",
+      "beforeItem2": "😫 Discussions sans fin avant de dormir et matins pressés de mauvaise humeur.",
+      "beforeItem3": "📱 Punitions qui créent de la frustration et n'enseignent aucune habitude durable.",
+      "beforeItem4": "🤷‍♂️ Enfants démotivés qui perçoivent les tâches ménagères comme une corvée.",
+      "afterTitle": "✨ Avec NidoQuest",
+      "afterHeadline": "Des habitudes positives que vos enfants ont envie de faire",
+      "afterItem1": "🎯 Missions visuelles claires : ils savent exactement quoi faire et ce qu'ils vont gagner.",
+      "afterItem2": "🔥 Ils protègent leurs séries de jours comme un jeu et vous montrent fièrement leurs réussites.",
+      "afterItem3": "⭐ Ils apprennent la valeur de l'effort, de la régularité et de la gestion saine.",
+      "afterItem4": "🤝 Récompenses équitables convenues en famille (temps de qualité, parc, jeux en famille)."
+    },
+    "engines": {
+      "badge": "MOTIVATION SCIENTIFIQUE",
+      "title": "Les 4 moteurs de gamification que les enfants adorent",
+      "subtitle": "Inspiré des principes de psychologie positive et de micro-récompenses éprouvées.",
+      "wheelTitle": "Roue Quotidienne de la Chance",
+      "wheelText": "Une surprise chaque matin qui éveille leur curiosité pour démarrer la journée avec énergie et optimisme.",
+      "streakTitle": "Séries de Flammes & Boucliers",
+      "streakText": "La mécanique de séries façon Duolingo qui les motive à ne jamais briser leur chaîne d'habitudes quotidiennes.",
+      "starsTitle": "Économie d'Étoiles",
+      "starsText": "Un système concret où chaque étoile gagnée représente la régularité, l'entraide et la responsabilité.",
+      "rewardsTitle": "Récompenses Saines et Réelles",
+      "rewardsText": "Ils choisissent quand échanger leurs étoiles contre des moments en famille, des sorties ou du temps de loisir encadré."
+    },
+    "ageGuide": {
+      "badge": "ADAPTÉ À LEUR ÂGE",
+      "title": "Personnalisé pour l'âge exact de vos enfants",
+      "subtitle": "Le système ajuste automatiquement la difficulté et le nombre d'étoiles suggéré.",
+      "tabPeques": "🐣 Petits (5 à 8 ans)",
+      "tabMedios": "🎒 Juniors (9 à 13 ans)",
+      "tabJovenes": "🚀 Ados (14+ ans)",
+      "missionsHeading": "🎯 Missions suggérées",
+      "rewardsHeading": "🎁 Récompenses suggérées",
+      "guides": {
+        "peques": {
+          "badge": "🐣 5 à 8 ans (Petits)",
+          "title": "Habitudes quotidiennes, rangement et routines simples en s'amusant",
+          "missions": [
+            { "title": "Faire mon lit au réveil", "stars": 5, "icon": "🛏️" },
+            { "title": "Me brosser les dents sans rappel", "stars": 4, "icon": "🪥" },
+            { "title": "Ranger mes jouets après avoir joué", "stars": 6, "icon": "🧸" },
+            { "title": "Lire une histoire pendant 15 minutes", "stars": 8, "icon": "📖" }
+          ],
+          "rewards": [
+            { "name": "Choisir le dessert du week-end", "stars": 30, "icon": "🍦" },
+            { "name": "Après-midi au parc et jeux", "stars": 50, "icon": "🌳" },
+            { "name": "30 mins de dessins animés", "stars": 25, "icon": "📺" }
+          ]
+        },
+        "medios": {
+          "badge": "🎒 9 à 13 ans (Juniors)",
+          "title": "Autonomie scolaire, entraide à la maison et équilibre des écrans",
+          "missions": [
+            { "title": "Finir les devoirs avant 18h00", "stars": 10, "icon": "📚" },
+            { "title": "Préparer mon cartable et mes vêtements pour demain", "stars": 6, "icon": "🎒" },
+            { "title": "Aider à mettre et débarrasser la table", "stars": 8, "icon": "🍽️" },
+            { "title": "Pratiquer mon instrument ou sport pendant 30 min", "stars": 12, "icon": "⚽" }
+          ],
+          "rewards": [
+            { "name": "1 heure supplémentaire de jeux vidéo le week-end", "stars": 60, "icon": "🎮" },
+            { "name": "Sortie au cinéma avec pop-corn", "stars": 100, "icon": "🍿" },
+            { "name": "Choisir la pizza pour le dîner en famille", "stars": 75, "icon": "🍕" }
+          ]
+        },
+        "jovenes": {
+          "badge": "🚀 14+ ans (Ados)",
+          "title": "Objectifs personnels, sens des responsabilités et gestion des récompenses",
+          "missions": [
+            { "title": "Session d'étude concentrée (Pomodoro 45m)", "stars": 15, "icon": "🧠" },
+            { "title": "Garder ma chambre rangée toute la semaine", "stars": 20, "icon": "✨" },
+            { "title": "Aider aux courses ou tâches ménagères", "stars": 12, "icon": "🛒" },
+            { "title": "Habitude de lecture / projet personnel", "stars": 15, "icon": "💡" }
+          ],
+          "rewards": [
+            { "name": "Autorisation pour une sortie spéciale entre amis", "stars": 120, "icon": "🎟️" },
+            { "name": "Contribution pour un livre ou accessoire high-tech", "stars": 200, "icon": "🎧" },
+            { "name": "Soirée cinéma avec snacks préférés", "stars": 80, "icon": "🎬" }
+          ]
+        }
+      }
+    },
+    "testimonials": {
+      "badge": "FAMILLES HEUREUSES",
+      "title": "Ce que disent les parents qui ont déjà transformé leur foyer",
+      "subtitle": "Des résultats concrets dès la première semaine d'utilisation.",
+      "items": [
+        {
+          "name": "Carolina Gómez",
+          "role": "Maman de Matéo (7 ans) et Sofia (11 ans)",
+          "city": "Medellín, Colombie",
+          "text": "Nous sommes passés des disputes quotidiennes pour éteindre la tablette à Matéo me disant : \"Maman, j'ai déjà lu 20 minutes, regarde mes étoiles pour le ciné !\". L'ambiance à la maison a totalement changé."
+        },
+        {
+          "name": "Andrés Felipe Restrepo",
+          "role": "Papa de Santiago (9 ans)",
+          "city": "Bogotá, Colombie",
+          "text": "La roue quotidienne et la série de flammes ont été le déclic. Maintenant, mon fils se lève avec enthousiasme pour faire son lit avant même mon réveil pour garder sa série. C'est formidable."
+        },
+        {
+          "name": "Valeria Martínez",
+          "role": "Maman de Lucas (6 ans)",
+          "city": "Cali, Colombie",
+          "text": "Le mieux est que les récompenses ne sont pas des objets coûteux, mais du temps de qualité en famille et des privilèges clairs. Tout est transparent et sans aucune dispute."
+        }
+      ]
+    },
+    "pricing": {
+      "badge": "INVESTISSEMENT FAMILIAL",
+      "title": "Moins cher qu'un café par semaine",
+      "subtitle": "Un petit investissement pour une harmonie familiale qui n'a pas de prix.",
+      "monthlyTitle": "Plan Mensuel",
+      "monthlySubtitle": "Flexibilité maximale mois par mois",
+      "monthlyPrice": "$14.900",
+      "monthlyPeriod": "COP / mois",
+      "annualTitle": "Plan Annuel Familial",
+      "annualSubtitle": "12 mois de sérénité et d'habitudes solides",
+      "annualPrice": "$119.000",
+      "annualPeriod": "COP / an",
+      "annualEquivalent": "Revient à seulement $9.900 COP / mois",
+      "popularBadge": "⭐ LE PLUS POPULAIRE • ÉCONOMISEZ 35%",
+      "featureTrial": "7 Jours d'Essai Gratuit",
+      "featureExplorers": "Enfants / Explorateurs illimités",
+      "featureMissions": "Missions, habitudes et roue quotidienne",
+      "featurePwa": "Notifications PWA sur mobile",
+      "featureCancel": "Annulation en 1 clic quand vous voulez",
+      "featureSaveMonths": "2 mois offerts gratuits",
+      "featureStreaks": "Multiplicateurs et boucliers de série",
+      "featureSupport": "Support prioritaire pour les familles",
+      "ctaMonthly": "Commencer 7 jours gratuits",
+      "ctaAnnual": "🚀 Commencer avec 7 jours gratuits",
+      "guaranteeNote": "🔒 Paiements 100% sécurisés traités par Wompi (Bancolombia, Nequi, PSE, Cartes bancaires)"
+    },
+    "faq": {
+      "badge": "QUESTIONS FRÉQUENTES",
+      "title": "Vous avez des questions ? Nous vous répondons",
+      "items": [
+        {
+          "q": "Et si mes enfants n'ont pas leur propre téléphone ?",
+          "a": "Aucun problème ! NidoQuest est conçu pour être utilisé depuis le téléphone ou la tablette des parents. En 1 clic, vous basculez entre le mode Guide (parents) et le mode Explorateur (enfants) pour qu'ils valident eux-mêmes leurs missions."
+        },
+        {
+          "q": "Comment fonctionne l'essai gratuit de 7 jours ?",
+          "a": "Vous disposez de 7 jours complets avec accès à toutes les fonctionnalités : explorateurs illimités, missions, roue quotidienne, notifications et récompenses. Sans engagement et annulable à tout moment."
+        },
+        {
+          "q": "Pour quels âges NidoQuest est-il adapté ?",
+          "a": "NidoQuest propose des guides adaptés de 5 à 16+ ans : Petits (5-8), Juniors (9-13) et Ados (14+), avec des niveaux de difficulté et des étoiles adaptés à leur maturité."
+        },
+        {
+          "q": "Comment cela aide-t-il à réduire le temps d'écran ?",
+          "a": "Au lieu d'interdire brusquement les écrans et de créer du conflit, NidoQuest transforme le temps d'écran en une récompense saine que les enfants gagnent avec de bonnes habitudes préalables (lecture, rangement, devoirs)."
+        },
+        {
+          "q": "Quels modes de paiement acceptez-vous ?",
+          "a": "Nous traitons les paiements via la passerelle sécurisée Wompi (Bancolombia), acceptant Nequi, PSE et les cartes de crédit/débit de toutes les banques."
+        }
+      ]
+    },
+    "finalCta": {
+      "title": "Prêt à transformer la routine de votre famille dès aujourd'hui ?",
+      "subtitle": "Rejoignez plus de 1 400 familles qui ont remplacé les disputes par la coopération et l'enthousiasme.",
+      "button": "🚀 Démarrer mon essai gratuit de 7 jours",
+      "note": "Moins de 2 minutes pour configurer votre Nid Familial."
+    }
+  },
+  "auth": {
+    "welcome": "Bon retour !",
+    "welcomeSubtitle": "Connectez-vous à votre Nid pour accompagner les missions d'aujourd'hui",
+    "create": "Créez votre Nid Familial",
+    "createSubtitle": "Commencez votre essai gratuit de 7 jours et transformez vos routines",
+    "name": "Votre Nom (Guide / Parent)",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "tenantName": "Nom de votre Nid / Famille",
+    "login": "Entrer dans mon Nid 🚀",
+    "register": "Créer mon Nid et Commencer Gratuitement ✨",
+    "loading": "Connexion...",
+    "demoHint": "Connectez-vous pour continuer avec votre Nid.",
+    "noAccount": "Créer un nouveau Nid (7 jours gratuits)",
+    "hasAccount": "J'ai déjà un compte : Se connecter",
+    "forgotPassword": "Mot de passe oublié ?",
+    "rememberMe": "Se souvenir de moi"
+  },
+  "onboarding": {
+    "title": "Configurez votre Nid",
+    "subtitle": "Commencez avec une structure simple et positive.",
+    "nestName": "Nom du Nid",
+    "explorerName": "Premier Explorateur",
+    "focusArea": "Zone initiale",
+    "mission": "Première mission",
+    "continue": "Entrer au tableau de bord",
+    "areas": {
+      "study": "Étude",
+      "home": "Maison",
+      "wellbeing": "Bien-être",
+      "reading": "Lecture"
+    }
+  },
+  "dashboard": {
+    "guideTitle": "Tableau du Guide",
+    "explorerTitle": "Tableau de l'Explorateur",
+    "adminTitle": "Admin SaaS",
+    "starsByExplorer": "Étoiles par Explorateur",
+    "pendingMissions": "Missions en attente",
+    "completedMissions": "Missions accomplies",
+    "expiredMissions": "Missions expirées",
+    "requestedRewards": "Récompenses demandées",
+    "weeklyProgress": "Progrès hebdomadaire",
+    "strongAreas": "Points forts",
+    "areasToSupport": "Points à renforcer",
+    "consistency": "Régularité",
+    "usedRewards": "Récompenses les plus utilisées",
+    "screenTime": "Temps d'écran échangé",
+    "availableStars": "Étoiles disponibles",
+    "todayMissions": "Missions du jour",
+    "nextGoal": "Prochain objectif",
+    "availableRewards": "Récompenses disponibles",
+    "badges": "Badges",
+    "dailyMessage": "Message du jour",
+    "markDone": "Marquer fait",
+    "redeem": "Demander récompense",
+    "tenants": "Nids",
+    "users": "Utilisateurs",
+    "plans": "Plans",
+    "payments": "Paiements",
+    "globalMetrics": "Métriques globales",
+    "viewingAs": "Voir",
+    "noGoal": "Demande à ton guide de créer une récompense comme objectif."
+  },
+  "ui": {
+    "stars": "Étoiles",
+    "missions": "Missions",
+    "rewards": "Récompenses",
+    "progress": "Progrès",
+    "active": "Actif",
+    "trial": "Essai",
+    "calmProgress": "Progrès calme",
+    "save": "Enregistrer",
+    "confirmDeleteTap": "Touchez à nouveau pour supprimer",
+    "moreOptions": "Plus d'options",
+    "offlineTitle": "Vous êtes hors ligne",
+    "offlineText": "Revenez avec internet. Votre Nid vous attendra.",
+    "queuedAction": "Enregistré hors ligne. Envoi automatique au retour d'internet.",
+    "pendingActions": "Actions à envoyer : {count}",
+    "syncing": "Envoi…",
+    "staleData": "Données enregistrées affichées.",
+    "conflicted": "Ton guide l'avait déjà vérifiée. Voici le dernier état."
+  },
+  "pwa": {
+    "title": "Emportez votre Nid",
+    "text": "Installez NidoQuest et activez des alertes calmes pour missions, récompenses et paiements.",
+    "install": "Installer",
+    "notifications": "Activer alertes",
+    "dismiss": "Fermer"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "close": "Fermer",
+    "markRead": "Marquer lue"
+  },
+  "billing": {
+    "eyebrow": "Abonnement",
+    "title": "Activez votre Nid pour un an",
+    "subtitle": "Un plan simple pour accompagner les habitudes familiales sans publicités ni classements toxiques.",
+    "checkoutTitle": "Paiement sécurisé avec Wompi",
+    "checkoutText": "Le backend signe le montant, la référence et la devise avant le checkout.",
+    "prepare": "Préparer le paiement",
+    "pay": "Payer avec Wompi",
+    "retry": "Réessayer",
+    "reference": "Référence",
+    "expires": "Expire",
+    "trialDays": "Il vous reste {days} jours d'essai.",
+    "checkoutFallback": "Impossible de préparer le checkout maintenant. Vérifiez le backend et les clés Wompi.",
+    "bannerTitle": "Gardez actif le plan annuel du Nid",
+    "manage": "Gérer le plan",
+    "returnEyebrow": "Paiement",
+    "verifying": "Vérification du paiement",
+    "returnTitle": "Merci de prendre soin de ce Nid",
+    "returnText": "Nous attendons la confirmation de Wompi.",
+    "status": {
+      "approved": "Paiement approuvé. Votre abonnement annuel est actif.",
+      "declined": "Le paiement n'a pas été approuvé. Vous pouvez réessayer calmement.",
+      "voided": "Le paiement a été annulé.",
+      "error": "Wompi a signalé une erreur. Vérifiez le moyen de paiement ou réessayez plus tard.",
+      "pending": "Le paiement est encore en vérification."
+    }
+  }
 }

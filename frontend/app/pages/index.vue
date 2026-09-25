@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { t } = useI18n()
+const { t, tm } = useI18n()
 
 // Interactive Demo State
 const demoStars = ref(84)
@@ -23,105 +23,27 @@ function spinDemoWheel() {
   demoSpinning.value = true
   setTimeout(() => {
     demoSpinning.value = false
-    demoSpinPrize.value = '🎁 ¡Ganaste +10 ⭐ y 1 Escudo de Racha!'
+    demoSpinPrize.value = t('landing.sim.wheelPrize')
     demoStars.value += 10
   }, 1800)
 }
 
-const ageGuides = {
-  peques: {
-    badge: '🐣 5 a 8 años (Peques)',
-    title: 'Hábitos diarios, orden y rutinas sencillas con diversión',
-    missions: [
-      { title: 'Tender mi cama al despertar', stars: 5, icon: '🛏️' },
-      { title: 'Cepillarme los dientes sin que me lo repitan', stars: 4, icon: '🪥' },
-      { title: 'Recoger mis juguetes después de jugar', stars: 6, icon: '🧸' },
-      { title: 'Leer 15 minutos un cuento', stars: 8, icon: '📖' },
-    ],
-    rewards: [
-      { name: 'Elegir el postre del fin de semana', stars: 30, icon: '🍦' },
-      { name: 'Tarde de parque y juegos', stars: 50, icon: '🌳' },
-      { name: '30 mins de dibujos animados', stars: 25, icon: '📺' },
-    ],
-  },
-  medios: {
-    badge: '🎒 9 a 13 años (Medios)',
-    title: 'Autonomía escolar, colaboración en el hogar y balance de pantallas',
-    missions: [
-      { title: 'Terminar tareas antes de las 6:00 PM', stars: 10, icon: '📚' },
-      { title: 'Organizar mi morral y uniforme para mañana', stars: 6, icon: '🎒' },
-      { title: 'Ayudar a poner y recoger la mesa', stars: 8, icon: '🍽️' },
-      { title: 'Practicar mi instrumento o deporte 30 min', stars: 12, icon: '⚽' },
-    ],
-    rewards: [
-      { name: '1 hora extra de videojuegos el fin de semana', stars: 60, icon: '🎮' },
-      { name: 'Salida al cine con palomitas', stars: 100, icon: '🍿' },
-      { name: 'Elegir la cena de pizza familiar', stars: 75, icon: '🍕' },
-    ],
-  },
-  jovenes: {
-    badge: '🚀 14+ años (Jóvenes)',
-    title: 'Metas personales, responsabilidad y administración de recompensas',
-    missions: [
-      { title: 'Sesión de estudio enfocado (Pomodoro 45m)', stars: 15, icon: '🧠' },
-      { title: 'Mantener cuarto ordenado toda la semana', stars: 20, icon: '✨' },
-      { title: 'Colaborar con compras o tareas del hogar', stars: 12, icon: '🛒' },
-      { title: 'Hábito de lectura / proyecto personal', stars: 15, icon: '💡' },
-    ],
-    rewards: [
-      { name: 'Permiso para salida especial con amigos', stars: 120, icon: '🎟️' },
-      { name: 'Aporte para libro o accesorio tecnológico', stars: 200, icon: '🎧' },
-      { name: 'Noche de películas y snacks favoritos', stars: 80, icon: '🎬' },
-    ],
-  },
-}
+const ageGuides = computed(() => {
+  const data = (tm('landing.ageGuide.guides') as Record<string, any>) || {}
+  return data
+})
 
-const testimonials = [
-  {
-    name: 'Carolina Gómez',
-    role: 'Mamá de Mateo (7 años) y Sofía (11 años)',
-    city: 'Medellín, Colombia',
-    stars: 5,
-    text: 'Pasamos de pelear todos los días por apagar la tablet a que Mateo me diga: "Mamá, ya leí 20 minutos, ¡mira mis estrellas para el cine!". Cambió la energía de la casa por completo.',
-  },
-  {
-    name: 'Andrés Felipe Restrepo',
-    role: 'Papá de Santiago (9 años)',
-    city: 'Bogotá, Colombia',
-    stars: 5,
-    text: 'La ruleta diaria y la racha de fuego fueron la clave. Ahora mi hijo se levanta entusiasmado a tender su cama antes de que yo me despierte para no perder su racha. Es increíble.',
-  },
-  {
-    name: 'Valeria Martínez',
-    role: 'Mamá de Lucas (6 años)',
-    city: 'Cali, Colombia',
-    stars: 5,
-    text: 'Lo mejor es que no premia con cosas materiales caras, sino con tiempo en familia y privilegios claros. Todo es transparente y cero discusiones.',
-  },
-]
+const currentAgeGuide = computed(() => {
+  return ageGuides.value[selectedAgeTab.value] || { badge: '', title: '', missions: [], rewards: [] }
+})
 
-const faqs = [
-  {
-    q: '¿Qué pasa si mis hijos no tienen celular propio?',
-    a: '¡No hay problema! NidoQuest está diseñado para usarse también desde el celular o tablet de los padres. Con 1 solo clic puedes alternar entre el modo Guía (padres) y el modo Explorador (hijos) para que ellos mismos marquen sus misiones.',
-  },
-  {
-    q: '¿Cómo funciona la prueba gratuita de 7 días?',
-    a: 'Tienes 7 días completos con acceso a todas las funcionalidades: exploradores ilimitados, misiones, ruleta diaria, notificaciones y canje de premios. No hay contratos y puedes cancelar cuando quieras.',
-  },
-  {
-    q: '¿Para qué edades es adecuado NidoQuest?',
-    a: 'NidoQuest cuenta con guías formativas adaptadas desde los 5 años hasta los 16+ años: Peques (5-8), Medios (9-13) y Jóvenes (14+), con dificultades y cantidades de estrellas acordes a su nivel de madurez.',
-  },
-  {
-    q: '¿Cómo ayuda a reducir el tiempo de pantallas?',
-    a: 'En lugar de prohibir las pantallas y generar conflicto, NidoQuest convierte el tiempo de pantalla en una recompensa saludable que ellos mismos deben ganar con hábitos positivos previos (lectura, orden, tareas).',
-  },
-  {
-    q: '¿Qué métodos de pago aceptan?',
-    a: 'Procesamos los pagos con la pasarela segura Wompi (Bancolombia), aceptando Nequi, PSE, tarjetas de crédito y débito de cualquier banco.',
-  },
-]
+const testimonials = computed(() => {
+  return (tm('landing.testimonials.items') as Array<{ name: string; role: string; city: string; text: string }>) || []
+})
+
+const faqs = computed(() => {
+  return (tm('landing.faq.items') as Array<{ q: string; a: string }>) || []
+})
 </script>
 
 <template>
@@ -133,31 +55,31 @@ const faqs = [
         <div class="landing-hero-content">
           <div class="hero-urgency-badge">
             <span>🔥</span>
-            <span>+1,400 familias formando hábitos sin peleas</span>
+            <span>{{ t('landing.urgencyBadge') }}</span>
           </div>
 
           <h1 class="landing-hero-headline">
-            Haz que tus hijos quieran cumplir sus rutinas, <span class="gradient-text">sin convertir cada día en una batalla.</span>
+            {{ t('landing.heroTitle') }} <span class="gradient-text">{{ t('landing.heroTitleHighlight') }}</span>
           </h1>
 
           <p class="landing-hero-subhead">
-            El sistema de gamificación familiar que reemplaza los gritos y el estrés por <strong>misiones claras, estrellas, rachas de fuego y recompensas sanas</strong> que tus hijos querrán ganar.
+            {{ t('landing.heroSubhead') }}
           </p>
 
           <div class="landing-hero-ctas">
             <NuxtLink class="landing-cta-primary pulse-glow" to="/auth/register">
-              <span>🚀 Comenzar 7 días gratis</span>
-              <small>Sin tarjeta obligatoria • Cancela cuando quieras</small>
+              <span>{{ t('landing.heroCtaPrimary') }}</span>
+              <small>{{ t('landing.heroCtaSubtext') }}</small>
             </NuxtLink>
             <a class="landing-cta-secondary" href="#demo">
-              <span>🎮 Probar Demo interactiva</span>
+              <span>{{ t('landing.heroCtaSecondary') }}</span>
             </a>
           </div>
 
           <div class="hero-trust-bar">
-            <div class="trust-item"><span>✅</span> 7 días de prueba gratis</div>
-            <div class="trust-item"><span>📱</span> Funciona en cualquier celular (PWA)</div>
-            <div class="trust-item"><span>🔒</span> 100% privado y seguro</div>
+            <div class="trust-item"><span>✅</span> {{ t('landing.trustFreeTrial') }}</div>
+            <div class="trust-item"><span>📱</span> {{ t('landing.trustPwa') }}</div>
+            <div class="trust-item"><span>🔒</span> {{ t('landing.trustPrivate') }}</div>
           </div>
         </div>
 
@@ -168,20 +90,20 @@ const faqs = [
               <span class="dot red" />
               <span class="dot yellow" />
               <span class="dot green" />
-              <span class="interactive-bar-title">✨ Simulador en vivo: Vista de tu hijo</span>
+              <span class="interactive-bar-title">{{ t('landing.sim.title') }}</span>
             </div>
 
             <div class="interactive-screen-body">
               <!-- Child Header -->
               <div class="sim-header">
                 <div>
-                  <small>Explorador</small>
-                  <h4>Mateo (8 años)</h4>
+                  <small>{{ t('landing.sim.explorer') }}</small>
+                  <h4>{{ t('landing.sim.childName') }}</h4>
                 </div>
                 <div class="sim-stars-badge">
                   <span>⭐</span>
                   <strong>{{ demoStars }}</strong>
-                  <small>Estrellas</small>
+                  <small>{{ t('landing.sim.stars') }}</small>
                 </div>
               </div>
 
@@ -189,17 +111,17 @@ const faqs = [
               <div class="sim-streak-bar">
                 <div class="sim-flame-icon">🔥</div>
                 <div class="sim-streak-text">
-                  <strong>{{ demoStreak }} Días de Racha</strong>
-                  <span>{{ demoStreakProtected ? '✨ ¡Racha protegida hoy!' : '⚠️ Completa 1 misión para cuidar tu racha' }}</span>
+                  <strong>{{ t('landing.sim.streakDays', { count: demoStreak }) }}</strong>
+                  <span>{{ demoStreakProtected ? t('landing.sim.streakProtected') : t('landing.sim.streakWarning') }}</span>
                 </div>
-                <span class="sim-multiplier-pill">⚡ +10% bonus</span>
+                <span class="sim-multiplier-pill">{{ t('landing.sim.bonusMultiplier') }}</span>
               </div>
 
               <!-- Daily Lucky Wheel Demo Widget -->
               <div class="sim-wheel-card">
                 <div class="sim-wheel-left">
-                  <span>🎡 <strong>Ruleta Diaria</strong></span>
-                  <small v-if="!demoSpinPrize">¡Gira tu ruleta gratis de hoy!</small>
+                  <span>🎡 <strong>{{ t('landing.sim.wheelTitle') }}</strong></span>
+                  <small v-if="!demoSpinPrize">{{ t('landing.sim.wheelSubtext') }}</small>
                   <small v-else class="prize-highlight">{{ demoSpinPrize }}</small>
                 </div>
                 <button
@@ -208,15 +130,15 @@ const faqs = [
                   :disabled="demoSpinning || Boolean(demoSpinPrize)"
                   @click="spinDemoWheel"
                 >
-                  {{ demoSpinning ? '🎰 Girando...' : demoSpinPrize ? '✅ Reclamado' : '🎲 ¡Girar!' }}
+                  {{ demoSpinning ? t('landing.sim.wheelBtnSpinning') : demoSpinPrize ? t('landing.sim.wheelBtnClaimed') : t('landing.sim.wheelBtnSpin') }}
                 </button>
               </div>
 
               <!-- Live Mission to Complete -->
               <div class="sim-mission-card">
                 <div class="sim-mission-info">
-                  <div class="sim-mission-title">🛏️ Tender la cama y ordenar cuarto</div>
-                  <div class="sim-mission-reward">Gana <strong>+10 ⭐</strong> y protege tu racha</div>
+                  <div class="sim-mission-title">{{ t('landing.sim.missionTitle') }}</div>
+                  <div class="sim-mission-reward">{{ t('landing.sim.missionReward') }}</div>
                 </div>
                 <button
                   class="sim-action-btn"
@@ -224,12 +146,12 @@ const faqs = [
                   type="button"
                   @click="completeDemoMission"
                 >
-                  {{ demoMissionDone ? '✅ ¡Cumplida! (+10 ⭐)' : '👉 Toca para cumplir' }}
+                  {{ demoMissionDone ? t('landing.sim.missionBtnDone') : t('landing.sim.missionBtnPending') }}
                 </button>
               </div>
 
               <div class="sim-tip">
-                💡 <em>¡Prueba tocar los botones! Así es como tus hijos se motivan todos los días.</em>
+                <em>{{ t('landing.sim.tip') }}</em>
               </div>
             </div>
           </div>
@@ -242,19 +164,19 @@ const faqs = [
       <div class="landing-stats-grid">
         <div class="stat-pill-item">
           <strong>⭐ 4.9 / 5</strong>
-          <span>Satisfacción de padres</span>
+          <span>{{ t('landing.stats.satisfaction') }}</span>
         </div>
         <div class="stat-pill-item">
           <strong>-92%</strong>
-          <span>Menos peleas por tareas y pantallas</span>
+          <span>{{ t('landing.stats.reduction') }}</span>
         </div>
         <div class="stat-pill-item">
           <strong>+120,000</strong>
-          <span>Hábitos completados en el hogar</span>
+          <span>{{ t('landing.stats.habitsCompleted') }}</span>
         </div>
         <div class="stat-pill-item">
-          <strong>3 minutos/día</strong>
-          <span>Tiempo de gestión para los padres</span>
+          <strong>{{ t('landing.stats.minutesPerDay') }}</strong>
+          <span>{{ t('landing.stats.parentTime') }}</span>
         </div>
       </div>
     </section>
@@ -262,33 +184,33 @@ const faqs = [
     <!-- ═══ 3. BEFORE VS AFTER TRANSFORMATION ═══ -->
     <section class="transformation-section">
       <div class="section-badge-header">
-        <span class="badge-tag">EL CAMBIO REAL</span>
-        <h2>¿Cómo cambia la dinámica en tu hogar?</h2>
-        <p>De las órdenes repetitivas al entusiasmo y la autonomía natural.</p>
+        <span class="badge-tag">{{ t('landing.transformation.badge') }}</span>
+        <h2>{{ t('landing.transformation.title') }}</h2>
+        <p>{{ t('landing.transformation.subtitle') }}</p>
       </div>
 
       <div class="comparison-grid">
         <!-- Before -->
         <div class="comparison-card before">
-          <div class="card-tag negative">❌ Sin NidoQuest</div>
-          <h3>La lucha diaria por cada rutina</h3>
+          <div class="card-tag negative">{{ t('landing.transformation.beforeTitle') }}</div>
+          <h3>{{ t('landing.transformation.beforeHeadline') }}</h3>
           <ul class="comparison-list">
-            <li>🗣️ Repetir 5 veces: "¡Apaga la tablet!", "¡Ve a bañarte!", "¡Haz las tareas!"</li>
-            <li>😫 Discusiones antes de dormir y mañanas con carreras y mal humor.</li>
-            <li>📱 Castigos que generan frustración y no enseñan hábitos duraderos.</li>
-            <li>🤷‍♂️ Hijos desmotivados que sienten las tareas del hogar como un castigo.</li>
+            <li>{{ t('landing.transformation.beforeItem1') }}</li>
+            <li>{{ t('landing.transformation.beforeItem2') }}</li>
+            <li>{{ t('landing.transformation.beforeItem3') }}</li>
+            <li>{{ t('landing.transformation.beforeItem4') }}</li>
           </ul>
         </div>
 
         <!-- After -->
         <div class="comparison-card after">
-          <div class="card-tag positive">✨ Con NidoQuest</div>
-          <h3>Hábitos positivos que tus hijos quieren hacer</h3>
+          <div class="card-tag positive">{{ t('landing.transformation.afterTitle') }}</div>
+          <h3>{{ t('landing.transformation.afterHeadline') }}</h3>
           <ul class="comparison-list">
-            <li>🎯 Misiones visuales claras: saben exactamente qué hacer y qué ganarán.</li>
-            <li>🔥 Cuidan su racha de días como un juego y te muestran orgullosos sus logros.</li>
-            <li>⭐ Aprenden el valor del esfuerzo, la constancia y la educación financiera sana.</li>
-            <li>🤝 Recompensas justas acordadas en familia (tiempo de calidad, parque, juegos).</li>
+            <li>{{ t('landing.transformation.afterItem1') }}</li>
+            <li>{{ t('landing.transformation.afterItem2') }}</li>
+            <li>{{ t('landing.transformation.afterItem3') }}</li>
+            <li>{{ t('landing.transformation.afterItem4') }}</li>
           </ul>
         </div>
       </div>
@@ -297,34 +219,34 @@ const faqs = [
     <!-- ═══ 4. THE 4 GAMIFIED ENGINES ═══ -->
     <section class="engines-section">
       <div class="section-badge-header">
-        <span class="badge-tag">MOTIVACIÓN CIENTÍFICA</span>
-        <h2>Los 4 motores de gamificación que encantan a los niños</h2>
-        <p>Inspirado en los principios de psicología positiva y micro-recompensas que funcionan.</p>
+        <span class="badge-tag">{{ t('landing.engines.badge') }}</span>
+        <h2>{{ t('landing.engines.title') }}</h2>
+        <p>{{ t('landing.engines.subtitle') }}</p>
       </div>
 
       <div class="engines-grid">
         <div class="engine-card">
           <div class="engine-icon-wrap wheel-bg">🎡</div>
-          <h3>Ruleta Diaria de la Suerte</h3>
-          <p>Un incentivo sorpresa cada mañana que despierta su curiosidad para empezar el día con energía y optimismo.</p>
+          <h3>{{ t('landing.engines.wheelTitle') }}</h3>
+          <p>{{ t('landing.engines.wheelText') }}</p>
         </div>
 
         <div class="engine-card">
           <div class="engine-icon-wrap flame-bg">🔥</div>
-          <h3>Rachas de Fuego & Escudos</h3>
-          <p>La mecánica de "Streaks" tipo Duolingo que los motiva a no romper su cadena de hábitos día tras día.</p>
+          <h3>{{ t('landing.engines.streakTitle') }}</h3>
+          <p>{{ t('landing.engines.streakText') }}</p>
         </div>
 
         <div class="engine-card">
           <div class="engine-icon-wrap star-bg">⭐</div>
-          <h3>Economía de Estrellas</h3>
-          <p>Un sistema tangible donde cada estrella ganada representa constancia, colaboración y responsabilidad.</p>
+          <h3>{{ t('landing.engines.starsTitle') }}</h3>
+          <p>{{ t('landing.engines.starsText') }}</p>
         </div>
 
         <div class="engine-card">
           <div class="engine-icon-wrap gift-bg">🎁</div>
-          <h3>Recompensas Sanas y Reales</h3>
-          <p>Ellos eligen cuándo canjear sus estrellas por experiencias en familia, salidas o tiempo controlado de ocio.</p>
+          <h3>{{ t('landing.engines.rewardsTitle') }}</h3>
+          <p>{{ t('landing.engines.rewardsText') }}</p>
         </div>
       </div>
     </section>
@@ -332,9 +254,9 @@ const faqs = [
     <!-- ═══ 5. AGE ADAPTATION GUIDE ═══ -->
     <section class="age-guide-section">
       <div class="section-badge-header">
-        <span class="badge-tag">ADAPTADO A SU ETAPA</span>
-        <h2>Personalizado para la edad exacta de tus hijos</h2>
-        <p>El sistema ajusta automáticamente la dificultad y las estrellas sugeridas.</p>
+        <span class="badge-tag">{{ t('landing.ageGuide.badge') }}</span>
+        <h2>{{ t('landing.ageGuide.title') }}</h2>
+        <p>{{ t('landing.ageGuide.subtitle') }}</p>
       </div>
 
       <div class="age-tabs-switcher">
@@ -344,7 +266,7 @@ const faqs = [
           type="button"
           @click="selectedAgeTab = 'peques'"
         >
-          🐣 Peques (5 a 8 años)
+          {{ t('landing.ageGuide.tabPeques') }}
         </button>
         <button
           class="age-tab-btn"
@@ -352,7 +274,7 @@ const faqs = [
           type="button"
           @click="selectedAgeTab = 'medios'"
         >
-          🎒 Medios (9 a 13 años)
+          {{ t('landing.ageGuide.tabMedios') }}
         </button>
         <button
           class="age-tab-btn"
@@ -360,23 +282,23 @@ const faqs = [
           type="button"
           @click="selectedAgeTab = 'jovenes'"
         >
-          🚀 Jóvenes (14+ años)
+          {{ t('landing.ageGuide.tabJovenes') }}
         </button>
       </div>
 
       <div class="age-tab-content-card">
         <div class="age-content-header">
-          <span class="age-content-badge">{{ ageGuides[selectedAgeTab].badge }}</span>
-          <h3>{{ ageGuides[selectedAgeTab].title }}</h3>
+          <span class="age-content-badge">{{ currentAgeGuide.badge }}</span>
+          <h3>{{ currentAgeGuide.title }}</h3>
         </div>
 
         <div class="age-columns-preview">
           <!-- Sample Missions -->
           <div class="age-preview-col">
-            <h4>🎯 Misiones sugeridas</h4>
+            <h4>{{ t('landing.ageGuide.missionsHeading') }}</h4>
             <div class="age-preview-items">
               <div
-                v-for="mission in ageGuides[selectedAgeTab].missions"
+                v-for="mission in currentAgeGuide.missions"
                 :key="mission.title"
                 class="age-preview-item"
               >
@@ -388,10 +310,10 @@ const faqs = [
 
           <!-- Sample Rewards -->
           <div class="age-preview-col">
-            <h4>🎁 Recompensas sugeridas</h4>
+            <h4>{{ t('landing.ageGuide.rewardsHeading') }}</h4>
             <div class="age-preview-items">
               <div
-                v-for="reward in ageGuides[selectedAgeTab].rewards"
+                v-for="reward in currentAgeGuide.rewards"
                 :key="reward.name"
                 class="age-preview-item reward"
               >
@@ -407,9 +329,9 @@ const faqs = [
     <!-- ═══ 6. TESTIMONIALS ═══ -->
     <section class="testimonials-section">
       <div class="section-badge-header">
-        <span class="badge-tag">FAMILIAS FELICES</span>
-        <h2>Lo que dicen los padres que ya transformaron su hogar</h2>
-        <p>Resultados reales desde la primera semana de uso.</p>
+        <span class="badge-tag">{{ t('landing.testimonials.badge') }}</span>
+        <h2>{{ t('landing.testimonials.title') }}</h2>
+        <p>{{ t('landing.testimonials.subtitle') }}</p>
       </div>
 
       <div class="testimonials-grid">
@@ -432,74 +354,74 @@ const faqs = [
     <!-- ═══ 7. PRICING SECTION ═══ -->
     <section id="pricing" class="landing-pricing-wrap">
       <div class="section-badge-header">
-        <span class="badge-tag">INVERSIÓN FAMILIAR</span>
-        <h2>Menos de lo que cuesta un café a la semana</h2>
-        <p>Una pequeña inversión para una armonía familiar que no tiene precio.</p>
+        <span class="badge-tag">{{ t('landing.pricing.badge') }}</span>
+        <h2>{{ t('landing.pricing.title') }}</h2>
+        <p>{{ t('landing.pricing.subtitle') }}</p>
       </div>
 
       <div class="pricing-cards-container">
         <!-- Plan Mensual -->
         <div class="pricing-plan-card">
           <div class="plan-header">
-            <h3>Plan Mensual</h3>
-            <p>Máxima flexibilidad mes a mes</p>
+            <h3>{{ t('landing.pricing.monthlyTitle') }}</h3>
+            <p>{{ t('landing.pricing.monthlySubtitle') }}</p>
             <div class="plan-price">
-              <strong>$14.900</strong>
-              <span>COP / mes</span>
+              <strong>{{ t('landing.pricing.monthlyPrice') }}</strong>
+              <span>{{ t('landing.pricing.monthlyPeriod') }}</span>
             </div>
           </div>
 
           <ul class="plan-features">
-            <li>✅ <strong>7 Días de Prueba Gratis</strong></li>
-            <li>✅ Hijos / Exploradores ilimitados</li>
-            <li>✅ Misiones, hábitos y ruleta diaria</li>
-            <li>✅ Notificaciones PWA al celular</li>
-            <li>✅ Cancela en 1 clic cuando quieras</li>
+            <li>✅ <strong>{{ t('landing.pricing.featureTrial') }}</strong></li>
+            <li>✅ {{ t('landing.pricing.featureExplorers') }}</li>
+            <li>✅ {{ t('landing.pricing.featureMissions') }}</li>
+            <li>✅ {{ t('landing.pricing.featurePwa') }}</li>
+            <li>✅ {{ t('landing.pricing.featureCancel') }}</li>
           </ul>
 
           <NuxtLink class="button primary large full-width" to="/auth/register">
-            Comenzar 7 días gratis
+            {{ t('landing.pricing.ctaMonthly') }}
           </NuxtLink>
         </div>
 
         <!-- Plan Anual Destacado -->
         <div class="pricing-plan-card featured">
-          <div class="featured-ribbon">⭐ MÁS POPULAR • AHORRA 35%</div>
+          <div class="featured-ribbon">{{ t('landing.pricing.popularBadge') }}</div>
           <div class="plan-header">
-            <h3>Plan Anual Familiar</h3>
-            <p>12 meses de tranquilidad y hábitos sólidos</p>
+            <h3>{{ t('landing.pricing.annualTitle') }}</h3>
+            <p>{{ t('landing.pricing.annualSubtitle') }}</p>
             <div class="plan-price">
-              <strong>$119.000</strong>
-              <span>COP / año</span>
+              <strong>{{ t('landing.pricing.annualPrice') }}</strong>
+              <span>{{ t('landing.pricing.annualPeriod') }}</span>
             </div>
-            <span class="plan-equivalent">Equivale a solo <strong>$9.900 COP / mes</strong></span>
+            <span class="plan-equivalent">{{ t('landing.pricing.annualEquivalent') }}</span>
           </div>
 
           <ul class="plan-features">
-            <li>✅ <strong>7 Días de Prueba Gratis</strong></li>
-            <li>✅ <strong>Ahorras 2 meses gratis</strong></li>
-            <li>✅ Hijos / Exploradores ilimitados</li>
-            <li>✅ Misiones, hábitos y ruleta diaria</li>
-            <li>✅ Multiplicadores y escudos de racha</li>
-            <li>✅ Soporte prioritario para familias</li>
+            <li>✅ <strong>{{ t('landing.pricing.featureTrial') }}</strong></li>
+            <li>✅ <strong>{{ t('landing.pricing.featureSaveMonths') }}</strong></li>
+            <li>✅ {{ t('landing.pricing.featureExplorers') }}</li>
+            <li>✅ {{ t('landing.pricing.featureMissions') }}</li>
+            <li>✅ {{ t('landing.pricing.featureStreaks') }}</li>
+            <li>✅ {{ t('landing.pricing.featureSupport') }}</li>
           </ul>
 
           <NuxtLink class="button primary large full-width pulse-glow" to="/auth/register">
-            🚀 Comenzar con 7 días gratis
+            {{ t('landing.pricing.ctaAnnual') }}
           </NuxtLink>
         </div>
       </div>
 
       <div class="pricing-guarantee-note">
-        <span>🔒 Pagos 100% seguros procesados por <strong>Wompi (Bancolombia, Nequi, PSE, Tarjetas)</strong></span>
+        <span>{{ t('landing.pricing.guaranteeNote') }}</span>
       </div>
     </section>
 
     <!-- ═══ 8. FAQ ACCORDION ═══ -->
     <section id="faq" class="landing-faq-wrap">
       <div class="section-badge-header">
-        <span class="badge-tag">PREGUNTAS FRECUENTES</span>
-        <h2>¿Tienes preguntas? Te las respondemos</h2>
+        <span class="badge-tag">{{ t('landing.faq.badge') }}</span>
+        <h2>{{ t('landing.faq.title') }}</h2>
       </div>
 
       <div class="landing-faq-list">
@@ -518,14 +440,14 @@ const faqs = [
     <!-- ═══ 9. FINAL CTA BANNER ═══ -->
     <section class="final-cta-section">
       <div class="final-cta-box">
-        <h2>¿Listo para transformar la rutina de tu familia hoy mismo?</h2>
-        <p>Únete a más de 1,400 familias que cambiaron las peleas por cooperación y entusiasmo.</p>
+        <h2>{{ t('landing.finalCta.title') }}</h2>
+        <p>{{ t('landing.finalCta.subtitle') }}</p>
         <div class="final-cta-actions">
           <NuxtLink class="landing-cta-primary large" to="/auth/register">
-            🚀 Empezar mi prueba gratis de 7 días
+            {{ t('landing.finalCta.button') }}
           </NuxtLink>
         </div>
-        <small>Toma menos de 2 minutos configurar tu Nido Familiar.</small>
+        <small>{{ t('landing.finalCta.note') }}</small>
       </div>
     </section>
   </div>

@@ -5,8 +5,8 @@
   },
   "nav": {
     "home": "Inicio",
-    "how": "Como funciona",
-    "pricing": "Precio",
+    "how": "Cómo funciona",
+    "pricing": "Precios",
     "faq": "Preguntas",
     "login": "Ingresar",
     "register": "Crear mi Nido",
@@ -14,75 +14,213 @@
     "logout": "Salir"
   },
   "landing": {
-    "heroTitle": "Haz que tus hijos quieran cumplir sus rutinas, sin convertir cada dia en una pelea",
-    "heroSubtitle": "NidoQuest convierte responsabilidades reales en misiones, estrellas y recompensas sanas para que las familias formen habitos con claridad, motivacion y seguimiento.",
-    "primaryCta": "Crear mi Nido",
-    "secondaryCta": "Ver como funciona",
-    "proof": {
-      "habits": "Rutinas visibles",
-      "rewards": "Recompensas bajo control",
-      "progress": "Progreso para cada explorador"
+    "urgencyBadge": "+1,400 familias formando hábitos sin peleas",
+    "heroTitle": "Haz que tus hijos quieran cumplir sus rutinas,",
+    "heroTitleHighlight": "sin convertir cada día en una batalla.",
+    "heroSubhead": "El sistema de gamificación familiar que reemplaza los gritos y el estrés por misiones claras, estrellas, rachas de fuego y recompensas sanas que tus hijos querrán ganar.",
+    "heroCtaPrimary": "🚀 Comenzar 7 días gratis",
+    "heroCtaSubtext": "Sin tarjeta obligatoria • Cancela cuando quieras",
+    "heroCtaSecondary": "🎮 Probar Demo interactiva",
+    "trustFreeTrial": "7 días de prueba gratis",
+    "trustPwa": "Funciona en cualquier celular (PWA)",
+    "trustPrivate": "100% privado y seguro",
+    "sim": {
+      "title": "✨ Simulador en vivo: Vista de tu hijo",
+      "explorer": "Explorador",
+      "childName": "Mateo (8 años)",
+      "stars": "Estrellas",
+      "streakDays": "{count} Días de Racha",
+      "streakProtected": "✨ ¡Racha protegida hoy!",
+      "streakWarning": "⚠️ Completa 1 misión para cuidar tu racha",
+      "bonusMultiplier": "⚡ +10% bonus",
+      "wheelTitle": "Ruleta Diaria",
+      "wheelSubtext": "¡Gira tu ruleta gratis de hoy!",
+      "wheelPrize": "🎁 ¡Ganaste +10 ⭐ y 1 Escudo de Racha!",
+      "wheelBtnSpinning": "🎰 Girando...",
+      "wheelBtnClaimed": "✅ Reclamado",
+      "wheelBtnSpin": "🎲 ¡Girar!",
+      "missionTitle": "🛏️ Tender la cama y ordenar cuarto",
+      "missionReward": "Gana +10 ⭐ y protege tu racha",
+      "missionBtnDone": "✅ ¡Cumplida! (+10 ⭐)",
+      "missionBtnPending": "👉 Toca para cumplir",
+      "tip": "💡 ¡Prueba tocar los botones! Así es como tus hijos se motivan todos los días."
     },
-    "product": {
-      "status": "Nido activo",
-      "nest": "Panel familiar",
-      "family": "Familia Castano",
-      "today": "para hoy",
-      "week": "esta semana",
-      "ready": "listas para redimir",
-      "missionOne": "Leer 20 minutos antes de dormir",
-      "missionTwo": "Organizar habitacion sin recordatorio"
+    "stats": {
+      "satisfaction": "Satisfacción de padres",
+      "reduction": "Menos peleas por tareas y pantallas",
+      "habitsCompleted": "Hábitos completados en el hogar",
+      "parentTime": "Tiempo de gestión para los padres",
+      "minutesPerDay": "3 minutos/día"
     },
-    "outcomes": {
-      "argumentsTitle": "Menos desgaste",
-      "argumentsText": "La tarea deja de ser un regano repetido y se vuelve un acuerdo visible.",
-      "routineTitle": "Mas constancia",
-      "routineText": "Cada explorador sabe que debe hacer, cuanto vale y como avanza.",
-      "screensTitle": "Mejores premios",
-      "screensText": "Tu eliges recompensas sanas: tiempo en familia, planes, permisos o experiencias."
+    "transformation": {
+      "badge": "EL CAMBIO REAL",
+      "title": "¿Cómo cambia la dinámica en tu hogar?",
+      "subtitle": "De las órdenes repetitivas al entusiasmo y la autonomía natural.",
+      "beforeTitle": "❌ Sin NidoQuest",
+      "beforeHeadline": "La lucha diaria por cada rutina",
+      "beforeItem1": "🗣️ Repetir 5 veces: \"¡Apaga la tablet!\", \"¡Ve a bañarte!\", \"¡Haz las tareas!\"",
+      "beforeItem2": "😫 Discusiones antes de dormir y mañanas con carreras y mal humor.",
+      "beforeItem3": "📱 Castigos que generan frustración y no enseñan hábitos duraderos.",
+      "beforeItem4": "🤷‍♂️ Hijos desmotivados que sienten las tareas del hogar como un castigo.",
+      "afterTitle": "✨ Con NidoQuest",
+      "afterHeadline": "Hábitos positivos que tus hijos quieren hacer",
+      "afterItem1": "🎯 Misiones visuales claras: saben exactamente qué hacer y qué ganarán.",
+      "afterItem2": "🔥 Cuidan su racha de días como un juego y te muestran orgullosos sus logros.",
+      "afterItem3": "⭐ Aprenden el valor del esfuerzo, la constancia y la educación financiera sana.",
+      "afterItem4": "🤝 Recompensas justas acordadas en familia (tiempo de calidad, parque, juegos)."
     },
-    "problemTitle": "El reto diario",
-    "problemText": "Sabemos que repetir todos los dias las mismas tareas puede ser agotador: estudiar, organizar la habitacion, limitar pantallas, cumplir rutinas y mantener buenos habitos.",
-    "solutionTitle": "Una forma clara y positiva",
-    "solutionText": "Con NidoQuest, cada responsabilidad se convierte en una mision clara, medible y motivadora.",
-    "howTitle": "Como funciona",
-    "howHeadline": "En pocos minutos tienes un sistema familiar listo para crear exploradores, misiones y recompensas.",
-    "steps": {
-      "nest": "Crea tu Nido",
-      "explorers": "Agrega tus Exploradores",
-      "missions": "Define Misiones",
-      "stars": "Entrega Estrellas",
-      "rewards": "Redime Recompensas"
+    "engines": {
+      "badge": "MOTIVACIÓN CIENTÍFICA",
+      "title": "Los 4 motores de gamificación que encantan a los niños",
+      "subtitle": "Inspirado en los principios de psicología positiva y micro-recompensas que funcionan.",
+      "wheelTitle": "Ruleta Diaria de la Suerte",
+      "wheelText": "Un incentivo sorpresa cada mañana que despierta su curiosidad para empezar el día con energía y optimismo.",
+      "streakTitle": "Rachas de Fuego & Escudos",
+      "streakText": "La mecánica de \"Streaks\" tipo Duolingo que los motiva a no romper su cadena de hábitos día tras día.",
+      "starsTitle": "Economía de Estrellas",
+      "starsText": "Un sistema tangible donde cada estrella ganada representa constancia, colaboración y responsabilidad.",
+      "rewardsTitle": "Recompensas Sanas y Reales",
+      "rewardsText": "Ellos eligen cuándo canjear sus estrellas por experiencias en familia, salidas o tiempo controlado de ocio."
     },
-    "benefitsTitle": "Beneficios",
-    "benefitsHeadline": "Pensado para vender tranquilidad: estructura para los padres y motivacion para los hijos.",
-    "benefits": {
-      "talks": "Menos discusiones en casa",
-      "motivation": "Mas motivacion",
-      "habits": "Habitos visibles",
-      "controlledRewards": "Recompensas controladas",
-      "progress": "Progreso medible",
-      "support": "Acompanamiento positivo"
+    "ageGuide": {
+      "badge": "ADAPTADO A SU ETAPA",
+      "title": "Personalizado para la edad exacta de tus hijos",
+      "subtitle": "El sistema ajusta automáticamente la dificultad y las estrellas sugeridas.",
+      "tabPeques": "🐣 Peques (5 a 8 años)",
+      "tabMedios": "🎒 Medios (9 a 13 años)",
+      "tabJovenes": "🚀 Jóvenes (14+ años)",
+      "missionsHeading": "🎯 Misiones sugeridas",
+      "rewardsHeading": "🎁 Recompensas sugeridas",
+      "guides": {
+        "peques": {
+          "badge": "🐣 5 a 8 años (Peques)",
+          "title": "Hábitos diarios, orden y rutinas sencillas con diversión",
+          "missions": [
+            { "title": "Tender mi cama al despertar", "stars": 5, "icon": "🛏️" },
+            { "title": "Cepillarme los dientes sin que me lo repitan", "stars": 4, "icon": "🪥" },
+            { "title": "Recoger mis juguetes después de jugar", "stars": 6, "icon": "🧸" },
+            { "title": "Leer 15 minutos un cuento", "stars": 8, "icon": "📖" }
+          ],
+          "rewards": [
+            { "name": "Elegir el postre del fin de semana", "stars": 30, "icon": "🍦" },
+            { "name": "Tarde de parque y juegos", "stars": 50, "icon": "🌳" },
+            { "name": "30 mins de dibujos animados", "stars": 25, "icon": "📺" }
+          ]
+        },
+        "medios": {
+          "badge": "🎒 9 a 13 años (Medios)",
+          "title": "Autonomía escolar, colaboración en el hogar y balance de pantallas",
+          "missions": [
+            { "title": "Terminar tareas antes de las 6:00 PM", "stars": 10, "icon": "📚" },
+            { "title": "Organizar mi morral y uniforme para mañana", "stars": 6, "icon": "🎒" },
+            { "title": "Ayudar a poner y recoger la mesa", "stars": 8, "icon": "🍽️" },
+            { "title": "Practicar mi instrumento o deporte 30 min", "stars": 12, "icon": "⚽" }
+          ],
+          "rewards": [
+            { "name": "1 hora extra de videojuegos el fin de semana", "stars": 60, "icon": "🎮" },
+            { "name": "Salida al cine con palomitas", "stars": 100, "icon": "🍿" },
+            { "name": "Elegir la cena de pizza familiar", "stars": 75, "icon": "🍕" }
+          ]
+        },
+        "jovenes": {
+          "badge": "🚀 14+ años (Jóvenes)",
+          "title": "Metas personales, responsabilidad y administración de recompensas",
+          "missions": [
+            { "title": "Sesión de estudio enfocado (Pomodoro 45m)", "stars": 15, "icon": "🧠" },
+            { "title": "Mantener cuarto ordenado toda la semana", "stars": 20, "icon": "✨" },
+            { "title": "Colaborar con compras o tareas del hogar", "stars": 12, "icon": "🛒" },
+            { "title": "Hábito de lectura / proyecto personal", "stars": 15, "icon": "💡" }
+          ],
+          "rewards": [
+            { "name": "Permiso para salida especial con amigos", "stars": 120, "icon": "🎟️" },
+            { "name": "Aporte para libro o accesorio tecnológico", "stars": 200, "icon": "🎧" },
+            { "name": "Noche de películas y snacks favoritos", "stars": 80, "icon": "🎬" }
+          ]
+        }
+      }
     },
-    "trustEyebrow": "Por que enamora",
-    "trustTitle": "No es otra app de tareas. Es un sistema para recuperar calma en casa.",
-    "trustQuote": "Cuando el nino ve sus misiones y sus estrellas, la conversacion cambia: ya no es solo obedecer, es avanzar.",
-    "priceTitle": "Plan anual",
-    "price": "COP $150.000 / ano por Nido",
-    "priceText": "Un valor simple para empezar a organizar habitos, recompensas y seguimiento familiar durante todo el ano.",
-    "faqTitle": "Preguntas frecuentes",
-    "faqHeadline": "Respuestas claras antes de crear tu Nido",
+    "testimonials": {
+      "badge": "FAMILIAS FELICES",
+      "title": "Lo que dicen los padres que ya transformaron su hogar",
+      "subtitle": "Resultados reales desde la primera semana de uso.",
+      "items": [
+        {
+          "name": "Carolina Gómez",
+          "role": "Mamá de Mateo (7 años) y Sofía (11 años)",
+          "city": "Medellín, Colombia",
+          "text": "Pasamos de pelear todos los días por apagar la tablet a que Mateo me diga: \"Mamá, ya leí 20 minutos, ¡mira mis estrellas para el cine!\". Cambió la energía de la casa por completo."
+        },
+        {
+          "name": "Andrés Felipe Restrepo",
+          "role": "Papá de Santiago (9 años)",
+          "city": "Bogotá, Colombia",
+          "text": "La ruleta diaria y la racha de fuego fueron la clave. Ahora mi hijo se levanta entusiasmado a tender su cama antes de que yo me despierte para no perder su racha. Es increíble."
+        },
+        {
+          "name": "Valeria Martínez",
+          "role": "Mamá de Lucas (6 años)",
+          "city": "Cali, Colombia",
+          "text": "Lo mejor es que no premia con cosas materiales caras, sino con tiempo en familia y privilegios claros. Todo es transparente y cero discusiones."
+        }
+      ]
+    },
+    "pricing": {
+      "badge": "INVERSIÓN FAMILIAR",
+      "title": "Menos de lo que cuesta un café a la semana",
+      "subtitle": "Una pequeña inversión para una armonía familiar que no tiene precio.",
+      "monthlyTitle": "Plan Mensual",
+      "monthlySubtitle": "Máxima flexibilidad mes a mes",
+      "monthlyPrice": "$14.900",
+      "monthlyPeriod": "COP / mes",
+      "annualTitle": "Plan Anual Familiar",
+      "annualSubtitle": "12 meses de tranquilidad y hábitos sólidos",
+      "annualPrice": "$119.000",
+      "annualPeriod": "COP / año",
+      "annualEquivalent": "Equivale a solo $9.900 COP / mes",
+      "popularBadge": "⭐ MÁS POPULAR • AHORRA 35%",
+      "featureTrial": "7 Días de Prueba Gratis",
+      "featureExplorers": "Hijos / Exploradores ilimitados",
+      "featureMissions": "Misiones, hábitos y ruleta diaria",
+      "featurePwa": "Notificaciones PWA al celular",
+      "featureCancel": "Cancela en 1 clic cuando quieras",
+      "featureSaveMonths": "Ahorras 2 meses gratis",
+      "featureStreaks": "Multiplicadores y escudos de racha",
+      "featureSupport": "Soporte prioritario para familias",
+      "ctaMonthly": "Comenzar 7 días gratis",
+      "ctaAnnual": "🚀 Comenzar con 7 días gratis",
+      "guaranteeNote": "🔒 Pagos 100% seguros procesados por Wompi (Bancolombia, Nequi, PSE, Tarjetas)"
+    },
     "faq": {
-      "parentingQ": "Esto reemplaza la crianza?",
-      "parentingA": "No. Es una herramienta de apoyo para acompanar habitos y responsabilidades.",
-      "childrenQ": "Puedo usarlo con mas de un hijo?",
-      "childrenA": "Si. Cada Nido puede tener varios Exploradores.",
-      "customRewardsQ": "Puedo crear mis propias recompensas?",
-      "customRewardsA": "Si. Tu defines recompensas familiares, permisos, experiencias o beneficios sanos.",
-      "mobileQ": "Funciona en celular?",
-      "mobileA": "Si. Es una PWA instalable.",
-      "languagesQ": "Tiene varios idiomas?",
-      "languagesA": "Si. Espanol Latino, Ingles y Frances."
+      "badge": "PREGUNTAS FRECUENTES",
+      "title": "¿Tienes preguntas? Te las respondemos",
+      "items": [
+        {
+          "q": "¿Qué pasa si mis hijos no tienen celular propio?",
+          "a": "¡No hay problema! NidoQuest está diseñado para usarse también desde el celular o tablet de los padres. Con 1 solo clic puedes alternar entre el modo Guía (padres) y el modo Explorador (hijos) para que ellos mismos marquen sus misiones."
+        },
+        {
+          "q": "¿Cómo funciona la prueba gratuita de 7 días?",
+          "a": "Tienes 7 días completos con acceso a todas las funcionalidades: exploradores ilimitados, misiones, ruleta diaria, notificaciones y canje de premios. No hay contratos y puedes cancelar cuando quieras."
+        },
+        {
+          "q": "¿Para qué edades es adecuado NidoQuest?",
+          "a": "NidoQuest cuenta con guías formativas adaptadas desde los 5 años hasta los 16+ años: Peques (5-8), Medios (9-13) y Jóvenes (14+), con dificultades y cantidades de estrellas acordes a su nivel de madurez."
+        },
+        {
+          "q": "¿Cómo ayuda a reducir el tiempo de pantallas?",
+          "a": "En lugar de prohibir las pantallas y generar conflicto, NidoQuest convierte el tiempo de pantalla en una recompensa saludable que ellos mismos deben ganar con hábitos positivos previos (lectura, orden, tareas)."
+        },
+        {
+          "q": "¿Qué métodos de pago aceptan?",
+          "a": "Procesamos los pagos con la pasarela segura Wompi (Bancolombia), aceptando Nequi, PSE, tarjetas de crédito y débito de cualquier banco."
+        }
+      ]
+    },
+    "finalCta": {
+      "title": "¿Listo para transformar la rutina de tu familia hoy mismo?",
+      "subtitle": "Únete a más de 1,400 familias que cambiaron las peleas por cooperación y entusiasmo.",
+      "button": "🚀 Empezar mi prueba gratis de 7 días",
+      "note": "Toma menos de 2 minutos configurar tu Nido Familiar."
     }
   },
   "auth": {
