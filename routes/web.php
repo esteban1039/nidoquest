@@ -3,6 +3,27 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', function () {
+    if (file_exists(public_path('index.html'))) {
+        return response()->file(public_path('index.html'));
+    }
+
+    $frontendUrl = rtrim((string) config('services.frontend.url'), '/');
+    $appUrl = rtrim((string) config('app.url'), '/');
+
+    if ($frontendUrl !== '' && $frontendUrl !== $appUrl) {
+        return redirect()->away($frontendUrl);
+    }
+
+    return response()->json([
+        'name' => config('app.name', 'NidoQuest'),
+        'status' => 'operational',
+        'message' => 'NidoQuest API backend is running.',
+        'version' => '1.0.0',
+        'time' => now()->toIso8601String(),
+    ]);
+});
+
 Route::get('/auth/login', function () {
     $frontendUrl = rtrim((string) config('services.frontend.url'), '/');
     $appUrl = rtrim((string) config('app.url'), '/');
@@ -83,4 +104,22 @@ Route::get('/auth/reset-password', function (Request $request) {
 </body>
 </html>
 HTML);
+});
+
+Route::fallback(function () {
+    if (file_exists(public_path('index.html'))) {
+        return response()->file(public_path('index.html'));
+    }
+
+    $frontendUrl = rtrim((string) config('services.frontend.url'), '/');
+    $appUrl = rtrim((string) config('app.url'), '/');
+
+    if ($frontendUrl !== '' && $frontendUrl !== $appUrl) {
+        return redirect()->away($frontendUrl . '/' . ltrim(request()->path(), '/'));
+    }
+
+    return response()->json([
+        'error' => 'Not Found',
+        'message' => 'The requested endpoint does not exist on this API backend.',
+    ], 404);
 });
