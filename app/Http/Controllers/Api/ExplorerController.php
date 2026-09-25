@@ -7,13 +7,13 @@ use App\Http\Requests\Explorer\StoreExplorerRequest;
 use App\Http\Resources\ExplorerResource;
 use App\Models\Explorer;
 use App\Models\User;
-use App\Services\MailgunEmailService;
+use App\Services\EmailService;
 use App\Services\TenantContext;
 use Illuminate\Support\Facades\DB;
 
 class ExplorerController extends Controller
 {
-    public function __construct(private readonly MailgunEmailService $mailgun)
+    public function __construct(private readonly EmailService $email)
     {
     }
 
@@ -61,7 +61,7 @@ class ExplorerController extends Controller
         });
 
         if ($explorer->user && ! empty($data['password']) && str_contains($explorer->user->email, '@') && ! str_ends_with($explorer->user->email, '@nidoquest.local')) {
-            $this->mailgun->sendWelcome($explorer->user, $data['password']);
+            $this->email->sendWelcome($explorer->user, $data['password']);
         }
 
         return ExplorerResource::make($explorer);

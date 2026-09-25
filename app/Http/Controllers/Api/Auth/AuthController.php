@@ -11,7 +11,7 @@ use App\Models\Subscription;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Services\BadgeService;
-use App\Services\MailgunEmailService;
+use App\Services\EmailService;
 use App\Services\TenantContext;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,7 +22,7 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    public function __construct(private readonly MailgunEmailService $mailgun)
+    public function __construct(private readonly EmailService $email)
     {
     }
 
@@ -77,7 +77,7 @@ class AuthController extends Controller
 
         app(BadgeService::class)->ensureStarterBadges($result['tenant']);
 
-        $this->mailgun->sendWelcome($result['user']);
+        $this->email->sendWelcome($result['user']);
 
         return response()->json([
             'user' => $result['user'],
@@ -154,7 +154,7 @@ class AuthController extends Controller
 
         if ($user) {
             $token = Password::broker()->createToken($user);
-            $this->mailgun->sendPasswordReset($user, $token);
+            $this->email->sendPasswordReset($user, $token);
         }
 
         return response()->json(['message' => 'Si el correo existe, enviaremos instrucciones para recuperar la contrasena.']);

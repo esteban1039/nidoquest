@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\MailgunEmailService;
+use App\Services\EmailService;
 use App\Services\TenantContext;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class GuideController extends Controller
 {
-    public function __construct(private readonly MailgunEmailService $mailgun)
+    public function __construct(private readonly EmailService $email)
     {
     }
 
@@ -46,7 +46,7 @@ class GuideController extends Controller
         ]);
 
         $guide->tenants()->attach($tenantContext->id(), ['role' => User::ROLE_GUIDE]);
-        $this->mailgun->sendWelcome($guide, $data['password']);
+        $this->email->sendWelcome($guide, $data['password']);
 
         return response()->json(['data' => $guide->only(['id', 'name', 'email', 'last_login_at'])], 201);
     }

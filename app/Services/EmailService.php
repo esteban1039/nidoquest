@@ -3,11 +3,10 @@
 namespace App\Services;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
-class MailgunEmailService
+class EmailService
 {
     public function sendPasswordReset(User $user, string $token): void
     {
@@ -51,34 +50,21 @@ class MailgunEmailService
 
     private function send(string $to, string $subject, string $text): void
     {
-        $domain = config('services.mailgun.domain');
-        $secret = config('services.mailgun.secret');
-
-        if (! $domain || ! $secret) {
-            Log::warning('Mailgun no esta configurado; correo omitido.', ['to' => $to, 'subject' => $subject]);
+        if (! config('mail.mailers.smtp.username') || ! config('mail.mailers.smtp.password')) {
+            Log::warning('SMTP no esta configurado; correo omitido.', ['to' => $to, 'subject' => $subject]);
 
             return;
         }
 
-        $fromName = config('services.mailgun.from_name', 'NidoQuest');
-        $from = config('services.mailgun.from', 'soporte@nidoquest.com');
-        $endpoint = rtrim((string) config('services.mailgun.endpoint', 'https://api.mailgun.net'), '/');
-
-        $response = Http::withBasicAuth('api', (string) $secret)
-            ->asForm()
-            ->post("{$endpoint}/v3/{$domain}/messages", [
-                'from' => Str::of((string) $fromName)->trim().' <'.$from.'>',
+        try {
+            Mail::raw($text, function ($message) use ($to, $subject): void {
+                $message->to($to)->subject($subject);
+            });
+        } catch (\Throwable $e) {
+            Log::error('No se pudo enviar correo por SMTP.', [
                 'to' => $to,
                 'subject' => $subject,
-                'text' => $text,
-            ]);
-
-        if (! $response->successful()) {
-            Log::error('No se pudo enviar correo por Mailgun.', [
-                'to' => $to,
-                'subject' => $subject,
-                'status' => $response->status(),
-                'body' => $response->body(),
+                'error' => $e->getMessage(),
             ]);
         }
     }

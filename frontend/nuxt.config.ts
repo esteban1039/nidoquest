@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     head: {
       title: 'NidoQuest - Hábitos y Misiones en Familia',
       meta: [
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover' },
         { name: 'theme-color', content: '#79c7c5' },
         {
           name: 'description',
