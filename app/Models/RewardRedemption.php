@@ -13,6 +13,7 @@ class RewardRedemption extends Model
         'tenant_id',
         'reward_id',
         'explorer_id',
+        'client_mutation_id',
         'approved_by',
         'status',
         'stars_cost',

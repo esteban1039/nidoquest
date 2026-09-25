@@ -4,6 +4,7 @@ definePageMeta({ middleware: 'auth', layout: false })
 const { t } = useI18n()
 const route = useRoute()
 const { request } = useApi()
+const { tenant } = useSession()
 const tones = ['mint', 'blue', 'yellow', 'coral'] as const
 
 type GuideDashboard = {
@@ -15,6 +16,19 @@ type GuideDashboard = {
   requested_rewards: number
   weekly_progress: number
   consistency_indicator: number
+  household?: {
+    explorers_active: number
+    approvals_last_7_days: number
+    stars_earned_last_7_days: number
+    family_weekly_goal: number | null
+    family_goal_progress: number | null
+  } | null
+}
+
+type MissionGuidance = {
+  difficulty: string
+  stars_min: number
+  stars_max: number
 }
 
 type Explorer = {
@@ -24,6 +38,9 @@ type Explorer = {
   password?: string
   status?: string
   available_stars: number
+  age?: number | null
+  age_group?: string | null
+  mission_guidance?: MissionGuidance | null
 }
 
 type GrowthArea = {
@@ -90,6 +107,28 @@ const activeTab = computed<GuideTab>({
 const saving = ref(false)
 const error = ref('')
 const success = ref('')
+const pendingDelete = ref<string | null>(null)
+let pendingDeleteTimer: ReturnType<typeof setTimeout> | null = null
+
+function armDelete(key: string): boolean {
+  if (pendingDelete.value === key) {
+    if (pendingDeleteTimer) {
+      clearTimeout(pendingDeleteTimer)
+      pendingDeleteTimer = null
+    }
+    pendingDelete.value = null
+    return true
+  }
+  pendingDelete.value = key
+  if (pendingDeleteTimer) {
+    clearTimeout(pendingDeleteTimer)
+  }
+  pendingDeleteTimer = setTimeout(() => {
+    pendingDelete.value = null
+    pendingDeleteTimer = null
+  }, 4000)
+  return false
+}
 
 const explorerForm = reactive({
   name: '',
@@ -126,6 +165,47 @@ const editingReward = ref<number | null>(null)
 const editingGuide = ref<number | null>(null)
 const reviewingMission = ref<number | null>(null)
 const reviewingReward = ref<number | null>(null)
+
+const difficultyLabels: Record<string, string> = {
+  easy: 'Fácil',
+  medium: 'Media',
+  challenging: 'Desafiante',
+}
+
+const ageGroupLabels: Record<string, string> = {
+  peques: '5 a 8 años',
+  medios: '9 a 13 años',
+  jovenes: '14 a 17 años',
+}
+
+const selectedExplorerGuidance = computed(() => {
+  const explorer = (explorers.value || []).find((item) => String(item.id) === String(missionForm.explorer_id))
+  return explorer?.mission_guidance ? { name: explorer.name, ageGroup: explorer.age_group, ...explorer.mission_guidance } : null
+})
+
+const familyGoalForm = reactive({ stars: 30 })
+
+async function saveFamilyGoal() {
+  if (!tenant.value?.id) {
+    return
+  }
+  saving.value = true
+  resetMessages()
+
+  try {
+    await request(`/nests/${tenant.value.id}/family-goal`, {
+      method: 'PUT',
+      body: { stars: Number(familyGoalForm.stars) },
+    })
+
+    success.value = 'Meta del Nido actualizada.'
+    await refreshDashboard()
+  } catch (goalError) {
+    error.value = getApiErrorMessage(goalError, 'No pudimos fijar la meta del Nido.')
+  } finally {
+    saving.value = false
+  }
+}
 
 const tabLabels: Record<GuideTab, string> = {
   overview: 'Indicadores',
@@ -486,7 +566,7 @@ async function updateReward(reward: Reward) {
 }
 
 async function deleteMission(mission: Mission) {
-  if (!confirm(`Borrar la mision "${mission.title}"?`)) {
+  if (!armDelete(`mission-${mission.id}`)) {
     return
   }
 
@@ -505,7 +585,7 @@ async function deleteMission(mission: Mission) {
 }
 
 async function deleteReward(reward: Reward) {
-  if (!confirm(`Borrar la recompensa "${reward.name}"?`)) {
+  if (!armDelete(`reward-${reward.id}`)) {
     return
   }
 
@@ -524,7 +604,7 @@ async function deleteReward(reward: Reward) {
 }
 
 async function deleteGuide(guide: Guide) {
-  if (!confirm(`Borrar el formador "${guide.name}"?`)) {
+  if (!armDelete(`guide-${guide.id}`)) {
     return
   }
 
@@ -653,6 +733,39 @@ async function toggleGuide(guide: Guide) {
 
       <section class="panel">
         <div class="panel-header">
+          <h2>Meta del Nido en familia</h2>
+          <span>Suma en familia, sin comparar</span>
+        </div>
+        <p v-if="error" class="form-error">{{ error }}</p>
+        <p v-if="success" class="form-success">{{ success }}</p>
+        <div class="explorer-list">
+          <div class="explorer-row">
+            <span>Aprobaciones esta semana<small>{{ dashboard?.household?.explorers_active || 0 }} exploradores activos</small></span>
+            <strong>{{ dashboard?.household?.approvals_last_7_days || 0 }}</strong>
+          </div>
+          <div class="explorer-row">
+            <span>Estrellas ganadas esta semana</span>
+            <strong>{{ dashboard?.household?.stars_earned_last_7_days || 0 }} {{ t('ui.stars') }}</strong>
+          </div>
+        </div>
+        <div v-if="dashboard?.household?.family_weekly_goal" class="mission-action">
+          <span>Meta semanal: {{ dashboard.household.family_weekly_goal }} {{ t('ui.stars') }}</span>
+          <strong>{{ dashboard.household.family_goal_progress || 0 }}%</strong>
+        </div>
+        <div v-else class="mission-action">
+          <span>Fijen una meta semanal del Nido para sumar juntos.</span>
+        </div>
+        <form class="form-stack" @submit.prevent="saveFamilyGoal">
+          <label>
+            <span>Meta semanal en estrellas</span>
+            <input v-model.number="familyGoalForm.stars" type="number" min="1" max="10000" required>
+          </label>
+          <button class="button small primary" type="submit" :disabled="saving">Fijar meta</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
           <h2>Acciones del Nido</h2>
           <span>Selecciona una opcion</span>
         </div>
@@ -728,6 +841,7 @@ async function toggleGuide(guide: Guide) {
               <option v-for="explorer in explorers || []" :key="explorer.id" :value="explorer.id">{{ explorer.name }}</option>
             </select>
           </label>
+          <p v-if="selectedExplorerGuidance" class="muted">Sugerido para {{ selectedExplorerGuidance.name }}{{ selectedExplorerGuidance.ageGroup && ageGroupLabels[selectedExplorerGuidance.ageGroup] ? ` (${ageGroupLabels[selectedExplorerGuidance.ageGroup]})` : '' }}: dificultad {{ difficultyLabels[selectedExplorerGuidance.difficulty] || selectedExplorerGuidance.difficulty }} · {{ selectedExplorerGuidance.stars_min }}–{{ selectedExplorerGuidance.stars_max }} estrellas.</p>
           <label>
             <span>Area</span>
             <select v-model="missionForm.growth_area_id" required>
@@ -738,28 +852,33 @@ async function toggleGuide(guide: Guide) {
             <span>Estrellas</span>
             <input v-model.number="missionForm.stars" type="number" min="1" max="100" required>
           </label>
-          <label>
-            <span>Repeticion</span>
-            <select v-model="missionForm.frequency">
-              <option value="once">Una sola vez</option>
-              <option value="daily">Diaria</option>
-              <option value="weekly">Semanal</option>
-              <option value="monthly">Mensual</option>
-              <option value="custom">Por rango de fechas</option>
-            </select>
-          </label>
-          <label>
-            <span>Fecha inicial</span>
-            <input v-model="missionForm.due_date" type="date">
-          </label>
-          <label v-if="missionForm.frequency !== 'once'">
-            <span>Repetir desde</span>
-            <input v-model="missionForm.starts_at" type="date">
-          </label>
-          <label v-if="missionForm.frequency !== 'once'">
-            <span>Repetir hasta</span>
-            <input v-model="missionForm.ends_at" type="date">
-          </label>
+          <details class="advanced">
+            <summary>{{ t('ui.moreOptions') }}</summary>
+            <div class="advanced-body">
+              <label>
+                <span>Repeticion</span>
+                <select v-model="missionForm.frequency">
+                  <option value="once">Una sola vez</option>
+                  <option value="daily">Diaria</option>
+                  <option value="weekly">Semanal</option>
+                  <option value="monthly">Mensual</option>
+                  <option value="custom">Por rango de fechas</option>
+                </select>
+              </label>
+              <label>
+                <span>Fecha inicial</span>
+                <input v-model="missionForm.due_date" type="date">
+              </label>
+              <label v-if="missionForm.frequency !== 'once'">
+                <span>Repetir desde</span>
+                <input v-model="missionForm.starts_at" type="date">
+              </label>
+              <label v-if="missionForm.frequency !== 'once'">
+                <span>Repetir hasta</span>
+                <input v-model="missionForm.ends_at" type="date">
+              </label>
+            </div>
+          </details>
           <button class="button primary full" type="submit" :disabled="saving || !explorers?.length">Crear mision</button>
         </form>
 
@@ -791,7 +910,7 @@ async function toggleGuide(guide: Guide) {
               <strong>{{ mission.stars }} {{ t('ui.stars') }}</strong>
               <button class="button small" type="button" @click="editingMission = mission.id">Editar</button>
               <button class="button small" type="button" @click="toggleMission(mission)">{{ mission.active ? 'Inactivar' : 'Activar' }}</button>
-              <button class="button small danger" type="button" :disabled="saving" @click="deleteMission(mission)">Borrar</button>
+              <button class="button small danger" type="button" :disabled="saving" @click="deleteMission(mission)">{{ pendingDelete === `mission-${mission.id}` ? t('ui.confirmDeleteTap') : 'Borrar' }}</button>
             </template>
           </div>
         </div>
@@ -866,7 +985,7 @@ async function toggleGuide(guide: Guide) {
               <strong>{{ reward.stars_cost }} {{ t('ui.stars') }}</strong>
               <button class="button small" type="button" @click="editingReward = reward.id">Editar</button>
               <button class="button small" type="button" @click="toggleReward(reward)">{{ reward.active ? 'Inactivar' : 'Activar' }}</button>
-              <button class="button small danger" type="button" :disabled="saving" @click="deleteReward(reward)">Borrar</button>
+              <button class="button small danger" type="button" :disabled="saving" @click="deleteReward(reward)">{{ pendingDelete === `reward-${reward.id}` ? t('ui.confirmDeleteTap') : 'Borrar' }}</button>
             </template>
           </div>
         </div>
@@ -902,7 +1021,7 @@ async function toggleGuide(guide: Guide) {
               <strong>{{ guide.last_login_at ? new Date(guide.last_login_at).toLocaleDateString() : 'Sin ingreso' }}</strong>
               <button class="button small" type="button" @click="editingGuide = guide.id">Editar</button>
               <button class="button small" type="button" @click="toggleGuide(guide)">{{ guide.active ? 'Inactivar' : 'Activar' }}</button>
-              <button class="button small danger" type="button" :disabled="saving" @click="deleteGuide(guide)">Borrar</button>
+              <button class="button small danger" type="button" :disabled="saving" @click="deleteGuide(guide)">{{ pendingDelete === `guide-${guide.id}` ? t('ui.confirmDeleteTap') : 'Borrar' }}</button>
             </template>
           </div>
         </div>

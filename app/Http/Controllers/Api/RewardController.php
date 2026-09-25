@@ -60,8 +60,8 @@ class RewardController extends Controller
             ->when(request()->user()->role === 'explorer', fn ($query) => $query->where('user_id', request()->user()->id))
             ->findOrFail(request('explorer_id'));
 
-        $redemption = $redemptions->request($explorer, $reward, request('note'));
+        $redemption = $redemptions->request($explorer, $reward, request('note'), request('client_mutation_id'));
 
-        return response()->json(['data' => $redemption], 201);
+        return response()->json(['data' => $redemption], $redemption->wasRecentlyCreated ? 201 : 200);
     }
 }

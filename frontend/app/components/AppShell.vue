@@ -53,7 +53,28 @@ defineProps<{
           <button class="button small" type="button" @click="logout">Salir</button>
         </div>
       </header>
+      <OfflineBanner />
       <slot />
     </section>
+
+    <nav class="bottom-nav" aria-label="Dashboard">
+      <template v-if="role === 'guide'">
+        <NuxtLink to="/dashboard/guide" :class="{ active: guideTab === 'overview' && route.path === '/dashboard/guide' }">Indicadores</NuxtLink>
+        <NuxtLink to="/dashboard/guide?tab=explorers" :class="{ active: guideTab === 'explorers' && route.path === '/dashboard/guide' }">Exploradores</NuxtLink>
+        <NuxtLink to="/dashboard/guide?tab=missions" :class="{ active: guideTab === 'missions' && route.path === '/dashboard/guide' }">Misiones</NuxtLink>
+        <NuxtLink to="/dashboard/guide?tab=rewards" :class="{ active: guideTab === 'rewards' && route.path === '/dashboard/guide' }">Recompensas</NuxtLink>
+        <NuxtLink to="/dashboard/guide?tab=guides" :class="{ active: guideTab === 'guides' && route.path === '/dashboard/guide' }">Formadores</NuxtLink>
+        <NuxtLink to="/billing" :class="{ active: isBilling }">Cobros</NuxtLink>
+        <NuxtLink to="/profile" :class="{ active: isProfile }">Mi perfil</NuxtLink>
+      </template>
+      <template v-else-if="role === 'explorer'">
+        <NuxtLink to="/dashboard/explorer" :class="{ active: section === 'explorer' }">Mis misiones</NuxtLink>
+        <NuxtLink to="/profile" :class="{ active: isProfile }">Mi perfil</NuxtLink>
+      </template>
+      <template v-else>
+        <NuxtLink to="/dashboard/admin" :class="{ active: section === 'admin' }">Clientes SaaS</NuxtLink>
+        <NuxtLink to="/profile" :class="{ active: isProfile }">Perfil</NuxtLink>
+      </template>
+    </nav>
   </div>
 </template>

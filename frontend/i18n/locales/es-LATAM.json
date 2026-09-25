@@ -142,7 +142,9 @@
     "users": "Usuarios",
     "plans": "Planes",
     "payments": "Pagos",
-    "globalMetrics": "Metricas globales"
+    "globalMetrics": "Metricas globales",
+    "viewingAs": "Viendo a",
+    "noGoal": "Pide a tu formador que cree una recompensa como meta"
   },
   "ui": {
     "stars": "Estrellas",
@@ -153,8 +155,15 @@
     "trial": "Prueba",
     "calmProgress": "Avance tranquilo",
     "save": "Guardar",
+    "confirmDeleteTap": "Toca de nuevo para borrar",
+    "moreOptions": "Mas opciones",
     "offlineTitle": "Estas sin conexion",
-    "offlineText": "Puedes volver cuando tengas internet. Tu Nido estara esperandote."
+    "offlineText": "Puedes volver cuando tengas internet. Tu Nido estara esperandote.",
+    "queuedAction": "Se guardo sin conexion. Se enviara sola al volver internet.",
+    "pendingActions": "Acciones por enviar: {count}",
+    "syncing": "Enviando…",
+    "staleData": "Viendo datos guardados.",
+    "conflicted": "Tu formador ya la habia revisado. Mostramos lo ultimo."
   },
   "pwa": {
     "title": "Lleva tu Nido contigo",

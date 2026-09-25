@@ -37,6 +37,7 @@ const availableLocales = computed(() => locales.value)
     </header>
 
     <main>
+      <OfflineBanner />
       <slot />
     </main>
   </div>

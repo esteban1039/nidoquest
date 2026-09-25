@@ -19,6 +19,9 @@ class ExplorerResource extends JsonResource
             'avatar' => $this->avatar,
             'status' => $this->status,
             'available_stars' => $this->availableStars(),
+            'age' => $this->age(),
+            'age_group' => $this->ageGroup(),
+            'mission_guidance' => $this->missionGuidance(),
         ];
     }
 }

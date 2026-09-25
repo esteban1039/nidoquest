@@ -11,12 +11,26 @@ use Illuminate\Validation\ValidationException;
 
 class RewardRedemptionService
 {
-    public function __construct(private readonly StarService $stars)
+    public function __construct(private readonly StarService $stars, private readonly BadgeService $badges)
     {
     }
 
-    public function request(Explorer $explorer, Reward $reward, ?string $note = null): RewardRedemption
+    public function request(Explorer $explorer, Reward $reward, ?string $note = null, ?string $mutationId = null): RewardRedemption
     {
+        // Reintento de la cola offline: devuelve la solicitud ya creada.
+        if (is_string($mutationId) && $mutationId !== '') {
+            $existing = RewardRedemption::query()
+                ->where('tenant_id', $explorer->tenant_id)
+                ->where('reward_id', $reward->id)
+                ->where('explorer_id', $explorer->id)
+                ->where('client_mutation_id', $mutationId)
+                ->first();
+
+            if ($existing) {
+                return $existing;
+            }
+        }
+
         $reservedStars = RewardRedemption::query()
             ->where('explorer_id', $explorer->id)
             ->where('status', 'requested')
@@ -32,6 +46,7 @@ class RewardRedemptionService
             'tenant_id' => $explorer->tenant_id,
             'reward_id' => $reward->id,
             'explorer_id' => $explorer->id,
+            'client_mutation_id' => is_string($mutationId) && $mutationId !== '' ? $mutationId : null,
             'status' => 'requested',
             'stars_cost' => $reward->stars_cost,
             'note' => $note,
@@ -54,6 +69,7 @@ class RewardRedemptionService
             ]);
 
             $this->stars->redeem($redemption->explorer, $redemption->reward, $guide);
+            $this->badges->grantForRedemption($redemption->explorer);
 
             return $redemption->refresh();
         });

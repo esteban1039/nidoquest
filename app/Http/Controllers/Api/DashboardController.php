@@ -7,6 +7,8 @@ use App\Models\Explorer;
 use App\Models\Mission;
 use App\Models\MissionSubmission;
 use App\Models\RewardRedemption;
+use App\Models\Setting;
+use App\Models\StarMovement;
 use App\Models\Tenant;
 use App\Services\StarService;
 use App\Services\TenantContext;
@@ -16,6 +18,17 @@ class DashboardController extends Controller
     public function guide(TenantContext $tenantContext)
     {
         $tenantId = $tenantContext->id();
+
+        $approvedThisWeek = MissionSubmission::forTenant($tenantId)
+            ->where('status', 'approved')
+            ->where('reviewed_at', '>=', now()->subWeek());
+
+        $starsEarnedThisWeek = StarMovement::forTenant($tenantId)
+            ->where('type', StarMovement::EARNED)
+            ->where('created_at', '>=', now()->subWeek())
+            ->sum('amount');
+
+        $familyGoal = (int) (Setting::forTenant($tenantId)->where('key', 'family_weekly_goal')->first()?->value['stars'] ?? 0);
 
         return response()->json([
             'stars_by_explorer' => Explorer::forTenant($tenantId)->get()->map(fn (Explorer $explorer) => [
@@ -28,8 +41,15 @@ class DashboardController extends Controller
             'completed_missions' => MissionSubmission::forTenant($tenantId)->where('status', 'approved')->count(),
             'expired_missions' => Mission::forTenant($tenantId)->where('status', 'expired')->count(),
             'requested_rewards' => RewardRedemption::forTenant($tenantId)->where('status', 'requested')->count(),
-            'weekly_progress' => MissionSubmission::forTenant($tenantId)->where('reviewed_at', '>=', now()->subWeek())->where('status', 'approved')->count(),
-            'consistency_indicator' => Mission::forTenant($tenantId)->where('created_at', '>=', now()->subWeek())->count(),
+            'weekly_progress' => (clone $approvedThisWeek)->count(),
+            'consistency_indicator' => (clone $approvedThisWeek)->selectRaw('COUNT(DISTINCT DATE(reviewed_at)) as days')->value('days') ?? 0,
+            'household' => [
+                'explorers_active' => Explorer::forTenant($tenantId)->where('status', 'active')->count(),
+                'approvals_last_7_days' => (clone $approvedThisWeek)->count(),
+                'stars_earned_last_7_days' => (int) $starsEarnedThisWeek,
+                'family_weekly_goal' => $familyGoal > 0 ? $familyGoal : null,
+                'family_goal_progress' => $familyGoal > 0 ? min(100, (int) round($starsEarnedThisWeek / $familyGoal * 100)) : null,
+            ],
         ]);
     }
 

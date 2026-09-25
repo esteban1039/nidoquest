@@ -8,6 +8,7 @@ use App\Http\Requests\Mission\SubmitMissionRequest;
 use App\Http\Resources\MissionResource;
 use App\Models\Mission;
 use App\Models\MissionSubmission;
+use App\Services\BadgeService;
 use App\Services\StarService;
 use App\Services\TenantContext;
 use Carbon\CarbonInterface;
@@ -72,12 +73,30 @@ class MissionController extends Controller
     public function submit(SubmitMissionRequest $request, Mission $mission)
     {
         $this->authorize('view', $mission);
+
+        // Reintento de la cola offline: si esta mutación ya se registró,
+        // se devuelve el envío existente en vez de duplicarlo o fallar.
+        $mutationId = $request->input('client_mutation_id');
+
+        if (is_string($mutationId) && $mutationId !== '') {
+            $existing = MissionSubmission::query()
+                ->where('tenant_id', $mission->tenant_id)
+                ->where('mission_id', $mission->id)
+                ->where('client_mutation_id', $mutationId)
+                ->first();
+
+            if ($existing) {
+                return response()->json(['data' => $existing, 'duplicate' => true]);
+            }
+        }
+
         abort_unless(in_array($mission->status, ['pending', 'rejected'], true), 422, 'La mision no esta disponible para enviar.');
 
         $submission = MissionSubmission::create($request->validated() + [
             'tenant_id' => $mission->tenant_id,
             'mission_id' => $mission->id,
             'explorer_id' => $mission->explorer_id,
+            'client_mutation_id' => is_string($mutationId) && $mutationId !== '' ? $mutationId : null,
             'status' => 'submitted',
             'submitted_at' => now(),
         ]);
@@ -87,7 +106,7 @@ class MissionController extends Controller
         return response()->json(['data' => $submission], 201);
     }
 
-    public function approve(Mission $mission, StarService $stars)
+    public function approve(Mission $mission, StarService $stars, BadgeService $badges)
     {
         $this->authorize('manage', $mission);
         abort_unless($mission->status === 'submitted', 422, 'La mision debe estar enviada para aprobarla.');
@@ -102,6 +121,7 @@ class MissionController extends Controller
 
         $mission->loadMissing('schedule');
         $mission->update($this->approvalState($mission));
+        $badges->grantForApproval($mission->explorer);
 
         return response()->json(['mission' => MissionResource::make($mission), 'star_movement' => $movement]);
     }

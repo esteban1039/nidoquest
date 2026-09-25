@@ -15,10 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->api(prepend: [
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-        ]);
-
+        // Sin EnsureFrontendRequestsAreStateful a propósito: la API autentica
+        // solo por token y ese middleware convertía los POST del navegador en
+        // sesión web, devolviendo 419 (ver tests/Feature/AuthLoginTest.php).
         $middleware->alias([
             'tenant' => EnsureTenantAccess::class,
             'subscription' => EnsureSubscriptionAccess::class,

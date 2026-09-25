@@ -13,6 +13,7 @@ class MissionSubmission extends Model
         'tenant_id',
         'mission_id',
         'explorer_id',
+        'client_mutation_id',
         'reviewed_by',
         'status',
         'evidence_text',

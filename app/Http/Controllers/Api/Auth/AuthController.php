@@ -10,6 +10,7 @@ use App\Models\GrowthArea;
 use App\Models\Subscription;
 use App\Models\Tenant;
 use App\Models\User;
+use App\Services\BadgeService;
 use App\Services\MailgunEmailService;
 use App\Services\TenantContext;
 use Illuminate\Http\JsonResponse;
@@ -73,6 +74,8 @@ class AuthController extends Controller
 
             return compact('user', 'tenant');
         });
+
+        app(BadgeService::class)->ensureStarterBadges($result['tenant']);
 
         $this->mailgun->sendWelcome($result['user']);
 

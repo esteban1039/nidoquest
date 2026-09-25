@@ -40,7 +40,26 @@ const { data: explorers } = await useAsyncData('explorers', async () => {
   return Array.isArray(response.data) ? response.data : response.data.data || []
 })
 
-const activeExplorer = computed(() => explorers.value?.[0] || null)
+const selectedExplorerId = ref<number | null>(null)
+
+const activeExplorer = computed(() => {
+  const list = explorers.value || []
+  return list.find((explorer) => explorer.id === selectedExplorerId.value) || list[0] || null
+})
+
+const nextGoal = computed(() => {
+  const costs = (explorer.value?.available_rewards || [])
+    .map((reward) => reward.stars_cost)
+    .filter((cost) => cost > 0)
+  return costs.length ? Math.min(...costs) : null
+})
+
+const goalProgress = computed(() => {
+  if (!nextGoal.value) {
+    return 0
+  }
+  return Math.min(100, ((explorer.value?.available_stars || 0) / nextGoal.value) * 100)
+})
 
 const { data: explorer } = await useAsyncData(
   'explorer-dashboard',
@@ -56,10 +75,14 @@ async function submitMission(missionId: number) {
   success.value = ''
 
   try {
-    await request(`/missions/${missionId}/submit`, {
+    const result = await request<{ queued?: boolean }>(`/missions/${missionId}/submit`, {
       method: 'POST',
       body: {},
     })
+
+    if (result?.queued) {
+      success.value = t('ui.queuedAction')
+    }
 
     await refreshNuxtData('explorer-dashboard')
   } catch (submitError) {
@@ -79,12 +102,12 @@ async function redeemReward(reward: ExplorerDashboard['available_rewards'][numbe
   success.value = ''
 
   try {
-    await request(`/rewards/${reward.id}/redeem`, {
+    const result = await request<{ queued?: boolean }>(`/rewards/${reward.id}/redeem`, {
       method: 'POST',
       body: { explorer_id: activeExplorer.value.id },
     })
 
-    success.value = 'Recompensa solicitada. Un formador la revisara pronto.'
+    success.value = result?.queued ? t('ui.queuedAction') : 'Recompensa solicitada. Un formador la revisara pronto.'
     await refreshNuxtData('explorer-dashboard')
   } catch (redeemError) {
     error.value = getApiErrorMessage(redeemError, 'No pudimos solicitar la recompensa.')
@@ -103,6 +126,13 @@ async function redeemReward(reward: ExplorerDashboard['available_rewards'][numbe
       </div>
       <strong>{{ explorer?.redeemable_stars ?? explorer?.available_stars ?? 0 }} {{ t('ui.stars') }}</strong>
     </section>
+
+    <div v-if="(explorers || []).length > 1" class="explorer-picker">
+      <label for="explorer-picker">{{ t('dashboard.viewingAs') }}</label>
+      <select id="explorer-picker" v-model.number="selectedExplorerId">
+        <option v-for="item in explorers || []" :key="item.id" :value="item.id">{{ item.name }}</option>
+      </select>
+    </div>
 
     <section class="dashboard-columns">
       <article class="panel wide">
@@ -127,8 +157,9 @@ async function redeemReward(reward: ExplorerDashboard['available_rewards'][numbe
 
       <article class="panel">
         <h2>{{ t('dashboard.nextGoal') }}</h2>
-        <p class="goal-number">100 {{ t('ui.stars') }}</p>
-        <div class="progress-track"><span :style="{ width: `${Math.min(100, explorer?.available_stars || 0)}%` }" /></div>
+        <p v-if="nextGoal" class="goal-number">{{ nextGoal }} {{ t('ui.stars') }}</p>
+        <p v-else class="muted">{{ t('dashboard.noGoal') }}</p>
+        <div v-if="nextGoal" class="progress-track"><span :style="{ width: `${goalProgress}%` }" /></div>
       </article>
     </section>
 
